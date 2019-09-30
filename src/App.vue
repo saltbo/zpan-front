@@ -10,7 +10,7 @@
 						<el-autocomplete class="search" size="medium" prefix-icon="el-icon-search" placeholder="搜索..." v-model="searchKw" :trigger-on-focus="false" :fetch-suggestions="suggestions" @select="search"></el-autocomplete>
 					</el-col>
 					<el-col :span="12" style="text-align: right;">
-						<el-dropdown trigger="click">
+						<el-dropdown trigger="click" @command="onDropdown">
 							<el-avatar :size="30" :src="profile.avatar" style="vertical-align: middle;"></el-avatar>
 							<el-dropdown-menu slot="dropdown">
 								<el-row style="padding: 10px; width: 230px;">
@@ -23,8 +23,8 @@
 										<el-tag>管理员</el-tag>
 									</el-col>
 								</el-row>
-								<el-dropdown-item icon="el-icon-s-home" divided>个人主页</el-dropdown-item>
-								<el-dropdown-item icon="el-icon-switch-button">退出</el-dropdown-item>
+								<el-dropdown-item icon="el-icon-s-home" command="profile" divided>个人主页</el-dropdown-item>
+								<el-dropdown-item icon="el-icon-switch-button" command="signout">退出</el-dropdown-item>
 							</el-dropdown-menu>
 						</el-dropdown>
 					</el-col>
@@ -92,12 +92,10 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Cookies from 'js-cookie';
 export default {
 	name: 'app',
 	components: {
-		HelloWorld
 	},
 	data() {
 		return {
@@ -121,8 +119,15 @@ export default {
 		search() {
 
 		},
-		menuSelect(index, indexPath) {
-			console.log(index, indexPath)
+		onDropdown(index) {
+			switch (index) {
+				case 'profile':
+					break
+				case 'signout':
+					Cookies.remove('intoken');
+					window.location = '/'
+					break
+			}
 		}
 	},
 }

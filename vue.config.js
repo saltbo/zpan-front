@@ -49,13 +49,13 @@ module.exports = {
         // and falls back to `public/index.html` if not found.
         // Output filename is inferred to be `subpage.html`.
         // subpage: 'src/subpage/main.js'
-        // login: {
-        //     entry: 'src/login.js',
-        //     template: 'src/template/index.ejs',
-        //     filename: 'login.html',
-        //     title: 'GWProtal - Login',
-        //     chunks: ['chunk-vendors', 'chunk-common', 'login']
-        // }
+        login: {
+            entry: 'src/login.js',
+            template: 'src/template/index.ejs',
+            filename: 'login.html',
+            title: 'GWProtal - Login',
+            chunks: ['chunk-vendors', 'chunk-common', 'login']
+        }
     },
 
     // CSS related options
@@ -102,13 +102,13 @@ module.exports = {
 
     // options for 3rd party plugins
     pluginOptions: {
-      gitDescribe: {
-        variableName: 'GIT_DESCRIBE'
-      },
-      moment: {
-        locales: [
-          'en'
-        ]
-      }
+        gitDescribe: {
+            variableName: 'GIT_DESCRIBE'
+        },
+        moment: {
+            locales: [
+                'en'
+            ]
+        }
     }
 }
