@@ -44,6 +44,13 @@ module.exports = {
             // extracted common chunks and vendor chunks.
             chunks: ['chunk-vendors', 'chunk-common', 'index']
         },
+        404: {
+            entry: 'src/main.js',
+            template: 'src/template/index.ejs',
+            filename: '404.html',
+            title: 'ZPan',
+            chunks: ['chunk-vendors', 'chunk-common', 'index']
+        },
         // when using the entry-only string format,
         // template is inferred to be `public/subpage.html`
         // and falls back to `public/index.html` if not found.
