@@ -35,8 +35,10 @@ _axios.interceptors.response.use(
     return response;
   },
   function (error) {
-    // Do something with response error
-    Notification.error(error.response.data.msg)
+    if (error.response) {
+      Notification.error(error.response.data.msg)
+    }
+
     return Promise.reject(error);
   }
 );

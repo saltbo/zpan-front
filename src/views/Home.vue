@@ -108,7 +108,6 @@ export default {
 	data() {
 		return {
 			uploadShow: false,
-			folderName: '',
 			currentDir: '',
 			items: [],
 			fileList: [],
@@ -229,11 +228,11 @@ export default {
 				cancelButtonText: '取消',
 			}).then(({ value }) => {
 				let body = {
-					path: this.currentDir + this.folderName + '/',
+					path: this.currentDir + value + '/',
 					parent: this.currentDir,
 					type: '', size: 0,
 				}
-				this.$axios.post('/api/files', body).then(ret => {
+				this.$axios.post('/api/files/folders', body).then(ret => {
 					this.$message({
 						type: 'success',
 						message: '创建成功!'
@@ -248,11 +247,12 @@ export default {
 			if (file.type) type = file.type;
 			this.$axios.get('/api/urls/upload', { params: { object: this.currentDir + file.name, type: type, parent: this.currentDir } }).then(ret => {
 				let data = ret.data.data;
-				let options = { headers: { 'content-type': type, 'content-disposition': `attachment;filename="${file.name}"`, 'x-oss-callback': data.callback } };
+				let options = { headers: { 'content-type': type, 'content-disposition': `attachment;filename="${encodeURIComponent(file.name)}"`, 'x-oss-callback': data.callback } };
 				options.onUploadProgress = function (event) {
 					file.percent = event.loaded / event.total * 100;
 					fileObj.onProgress(file);
 				}
+				console.log(data.url, file, options)
 				this.$axios.put(data.url, file, options).then(ret => {
 					fileObj.onSuccess();
 					this.listRefresh();
