@@ -33,32 +33,32 @@
 			</el-header>
 			<el-container>
 				<el-aside width="200px" style="height: 100%; background-color: #f7f7f7;">
-					<el-menu default-active="home" background-color="#f7f7f7" router>
-						<el-menu-item index="home">
+					<el-menu :default-active="currentActive" background-color="#f7f7f7" router>
+						<el-menu-item index="/home">
 							<i class="el-icon-document"></i>
 							<span slot="title">全部文件</span>
 						</el-menu-item>
-						<el-menu-item index="home?type=doc">
+						<el-menu-item index="/home?type=doc">
 							<i class="el-icon-xx"></i>
 							<span slot="title">文档</span>
 						</el-menu-item>
-						<el-menu-item index="home?type=image">
+						<el-menu-item index="/home?type=image">
 							<i class="el-icon-xx"></i>
 							<span slot="title">图片</span>
 						</el-menu-item>
-						<el-menu-item index="home?type=audio">
+						<el-menu-item index="/home?type=audio">
 							<i class="el-icon-xx"></i>
 							<span slot="title">音频</span>
 						</el-menu-item>
-						<el-menu-item index="home?type=video">
+						<el-menu-item index="/home?type=video">
 							<i class="el-icon-xx"></i>
 							<span slot="title">视频</span>
 						</el-menu-item>
-						<el-menu-item index="share">
+						<el-menu-item index="/share">
 							<i class="el-icon-share"></i>
 							<span slot="title">我的分享</span>
 						</el-menu-item>
-						<el-menu-item index="recyclebin">
+						<el-menu-item index="/recyclebin">
 							<i class="el-icon-delete-solid"></i>
 							<span slot="title">回收站</span>
 						</el-menu-item>
@@ -100,6 +100,7 @@ export default {
 	data() {
 		return {
 			searchKw: '',
+			currentActive: 'home',
 			profile: {
 				nickname: 'Admin',
 				email: 'admin@zzpan.cn',
@@ -107,7 +108,14 @@ export default {
 			}
 		}
 	},
+	watch: {
+		'$route': 'onRouteChange',
+	},
 	methods: {
+		onRouteChange(newVal, oldVal) {
+			console.log(newVal.fullPath)
+			this.currentActive = newVal.fullPath
+		},
 		suggestions(kw, cb) {
 			var results = [
 				{ value: `在我的文件中搜索 ${kw}` },
@@ -130,6 +138,8 @@ export default {
 			}
 		}
 	},
+	mounted() {
+	}
 }
 </script>
 

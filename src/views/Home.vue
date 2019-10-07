@@ -109,6 +109,7 @@ export default {
 		return {
 			uploadShow: false,
 			currentDir: '',
+			currentType: '',
 			items: [],
 			fileList: [],
 			tableData: [],
@@ -137,11 +138,16 @@ export default {
 		},
 		onRouteChange(newVal, oldVal) {
 			this.currentDir = ''
+			this.currentType = ''
 			if (newVal.query.path) {
 				this.currentDir = newVal.query.path;
 			}
 
-			this.loadCurrentDir(newVal);
+			if (newVal.query.type) {
+				this.currentType = newVal.query.type;
+			}
+
+			this.loadCurrentDir();
 			this.listRefresh();
 		},
 		formatBytes(bytes, decimals) {
@@ -153,7 +159,7 @@ export default {
 			return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 		},
 		listRefresh() {
-			this.$axios.get('/api/files', { params: { path: this.currentDir } }).then(ret => {
+			this.$axios.get('/api/files', { params: { path: this.currentDir, type: this.currentType } }).then(ret => {
 				this.tableData = ret.data.list.map(item => { item.size = this.formatBytes(item.size, 1); return item });
 			})
 		},
@@ -278,6 +284,9 @@ export default {
 	mounted() {
 		if (this.$route.query.path) {
 			this.currentDir = this.$route.query.path;
+		}
+		if (this.$route.query.type) {
+			this.currentType = this.$route.query.type;
 		}
 
 		this.loadCurrentDir()
