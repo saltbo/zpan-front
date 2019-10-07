@@ -69,8 +69,8 @@
 						</el-col>
 						<el-col :span="17">
 							<p>存储空间</p>
-							<el-progress :percentage="10"></el-progress>
-							<p style="color: rgba(0, 0, 0, 0.54); font-size: 0.75rem;">已使用3.22MB，共1GB</p>
+							<el-progress :percentage="storage.percentage"></el-progress>
+							<p style="color: rgba(0, 0, 0, 0.54); font-size: 0.75rem;">已使用{{storage.used}}，共{{storage.max}}</p>
 						</el-col>
 					</el-row>
 				</el-aside>
@@ -105,7 +105,8 @@ export default {
 				nickname: 'Admin',
 				email: 'admin@zzpan.cn',
 				avatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-			}
+			},
+			storage: {},
 		}
 	},
 	watch: {
@@ -127,6 +128,25 @@ export default {
 		search() {
 
 		},
+		formatBytes(bytes, decimals) {
+			if (bytes == 0) return '0 Bytes';
+			var k = 1000,
+				dm = decimals + 1 || 3,
+				sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+				i = Math.floor(Math.log(bytes) / Math.log(k));
+			return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + '' + sizes[i];
+		},
+		userInfo() {
+			let uid = Cookies.get('uid')
+			this.$axios.get('/api/users/' + uid).then(ret => {
+				this.profile = ret.data.data
+				this.storage = {
+					used: this.formatBytes(this.profile.storage_used, 0),
+					max: this.formatBytes(this.profile.storage_max, 0),
+					percentage: Math.round((this.profile.storage_used / this.profile.storage_max) * 100)
+				}
+			})
+		},
 		onDropdown(index) {
 			switch (index) {
 				case 'profile':
@@ -139,6 +159,7 @@ export default {
 		}
 	},
 	mounted() {
+		this.userInfo();
 	}
 }
 </script>

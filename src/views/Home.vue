@@ -251,7 +251,7 @@ export default {
 			let file = fileObj.file
 			let type = 'application/octet-stream';
 			if (file.type) type = file.type;
-			this.$axios.get('/api/urls/upload', { params: { object: this.currentDir + file.name, type: type, parent: this.currentDir } }).then(ret => {
+			this.$axios.get('/api/urls/upload', { params: { object: this.currentDir + file.name, type: type, size: file.size, parent: this.currentDir } }).then(ret => {
 				let data = ret.data.data;
 				let options = { headers: { 'content-type': type, 'content-disposition': `attachment;filename="${encodeURIComponent(file.name)}"`, 'x-oss-callback': data.callback } };
 				options.onUploadProgress = function (event) {
