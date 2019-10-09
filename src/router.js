@@ -12,6 +12,11 @@ let router = new Router({
       component: () => import('./views/Home.vue')
     },
     {
+      path: '/share',
+      name: 'share',
+      component: () => import('./views/Share.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       component: () => import('./views/About.vue')

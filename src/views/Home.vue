@@ -92,6 +92,38 @@
 			</el-upload>
 		</el-dialog>
 
+		<!-- dialog -->
+		<el-dialog title="分享链接" :width="shareForm.width" :visible.sync="shareShow">
+			<el-form v-show="!shareForm.done">
+				<el-form-item label="使用提取码保护链接" style="margin-left: 20px;">
+					<el-switch v-model="shareForm.private"></el-switch>
+				</el-form-item>
+				<el-form-item label="有效期" style="margin-left: 20px;">
+					<el-select v-model="shareForm.expire_sec">
+						<el-option label="7天" :value="604800"></el-option>
+						<el-option label="30天" :value="2592000"></el-option>
+						<el-option label="一年" :value="31536000"></el-option>
+					</el-select>
+				</el-form-item>
+			</el-form>
+
+			<div v-show="shareForm.done" style="margin-left: 50px; line-height: 30px;">
+				<p>链接地址：<a :href="shareForm.link" target="_blank">{{shareForm.link}} </a></p>
+				<p v-if="shareForm.secret">提取码：{{shareForm.secret}} </p>
+			</div>
+
+			<span slot="footer" class="dialog-footer">
+				<div v-if="!shareForm.done">
+					<el-button @click="shareShow = false">取 消</el-button>
+					<el-button type="primary" @click="shareBuild">确 定</el-button>
+				</div>
+				<div v-else>
+					<el-button type="primary">点击复制链接</el-button>
+					<el-button @click="shareShow = false">关 闭</el-button>
+				</div>
+			</span>
+		</el-dialog>
+
 		<!-- photoView -->
 		<PhotoPreview ref="photoView"></PhotoPreview>
 	</div>
@@ -108,12 +140,19 @@ export default {
 	data() {
 		return {
 			uploadShow: false,
+			shareShow: false,
 			currentDir: '',
 			currentType: '',
 			items: [],
 			fileList: [],
 			tableData: [],
 			selectedItems: [],
+			shareForm: {
+				mid: 0,
+				private: false,
+				done: false,
+				width: '30%',
+			},
 		}
 	},
 	watch: {
@@ -212,7 +251,28 @@ export default {
 				a.click();
 			})
 		},
-		share(obj) { },
+		share(obj) {
+			this.shareShow = true;
+			this.shareForm = {
+				done: false,
+				width: '30%',
+				mid: obj.id,
+				private: false,
+				expire_sec: 604800
+			}
+		},
+		shareBuild(done) {
+			// this.shareShow = false;
+			this.$axios.post('/api/shares', this.shareForm).then(ret => {
+				let host = window.location.host;
+				let alias = ret.data.data.alias;
+
+				this.shareForm.done = true;
+				this.shareForm.width = '50%';
+				this.shareForm.link = `http://${host}/s/${alias}`
+				this.shareForm.secret = ret.data.data.secret;
+			})
+		},
 		remove(obj) {
 			this.$confirm('此操作将永久删除该文件, 是否继续?', `删除${obj.name}`, {
 				type: 'warning',

@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@vue/babel-sugar-v-model": "^1.0.0",
     "core-js": "^2.6.5",
     "element-ui": "^2.4.5",
     "js-cookie": "^2.2.1",
