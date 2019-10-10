@@ -14,12 +14,17 @@ let router = new Router({
     {
       path: '/share',
       name: 'share',
-      component: () => import('./views/Share.vue')
+      component: () => import('./views/MyShare.vue')
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('./views/About.vue')
+      path: '/recyclebin',
+      name: 'recyclebin',
+      component: () => import('./views/Recyclebin.vue')
+    },
+    {
+      path: '/s/:alias',
+      name: 'share-info',
+      component: () => import('./views/ShareInfo.vue')
     },
     {
       path: '/login',
