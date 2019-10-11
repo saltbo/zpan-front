@@ -1,5 +1,6 @@
 <template>
-	<div>
+	<div style="margin: 20px 50px;">
+		<!-- for file -->
 		<div v-show="file.dir==false" style="width: 800px; margin: 0 auto">
 			<el-card class="box-card">
 				<div slot="header" class="clearfix">
@@ -10,6 +11,20 @@
 				</div>
 			</el-card>
 		</div>
+
+		<!-- for private file -->
+		<el-card v-show="private" class="box-card" style="width: 500px; margin: 100px auto;">
+			<el-form :inline="true" class="demo-form-inline">
+				<el-form-item label="提取码">
+					<el-input v-model="drawcode" placeholder="请输入提取码"></el-input>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" @click="draw">提取文件</el-button>
+				</el-form-item>
+			</el-form>
+		</el-card>
+
+		<!-- for folder -->
 		<el-card v-show="file.dir" class="box-card">
 			<div slot="header" class="clearfix">
 				<span>{{file.name}}</span>
@@ -37,6 +52,8 @@ export default {
 			rootDir: '',
 			currentDir: '',
 			tableData: [],
+			private: false,
+			drawcode: ''
 		}
 	},
 	watch: {
@@ -61,6 +78,32 @@ export default {
 				}).catch(reject)
 			})
 		},
+		draw() {
+			console.log();
+			let alias = this.$route.params.alias
+			let path = this.$route.query.path ? this.$route.query.path : ""
+			this.$axios.get(`/api/shares/${alias}`, { params: { secret: this.drawcode } }).then(ret => {
+				this.file = ret.data.data;
+				this.private = false;
+				if (!this.file.name) {
+					this.private = true
+					return;
+				}
+
+				if (this.file.dir) {
+					this.rootDir = this.file.path // 以分享的文件夹为根路径
+					this.currentDir = path //以query中的path作为当前路径
+					this.listRefresh()
+					return;
+				}
+
+				// auto download
+				utils.objectURL(this.file).then(ret => {
+					utils.download(this.file.name, ret.url)
+					this.fileURL = ret.url;
+				})
+			})
+		},
 		listRefresh() {
 			utils.listObjects(this.rootDir + this.currentDir).then(objects => {
 				this.tableData = objects
@@ -68,23 +111,7 @@ export default {
 		},
 	},
 	mounted() {
-		let alias = this.$route.params.alias
-		let path = this.$route.query.path ? this.$route.query.path : ""
-		this.$axios.get(`/api/shares/${alias}`).then(ret => {
-			this.file = ret.data.data;
-			if (this.file.dir) {
-				this.rootDir = this.file.path // 以分享的文件夹为根路径
-				this.currentDir = path //以query中的path作为当前路径
-				this.listRefresh()
-				return;
-			}
-
-			// auto download
-			utils.download(this.file.name, this.fileURL)
-			utils.objectURL(this.file).then(ret => {
-				this.fileURL = ret.url;
-			})
-		})
+		this.draw()
 	},
 }
 </script>

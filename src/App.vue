@@ -29,94 +29,27 @@
 						</el-dropdown>
 					</el-col>
 				</el-row>
-
 			</el-header>
-			<el-container>
-				<el-aside width="200px" style="height: 100%; background-color: #f7f7f7;">
-					<el-menu :default-active="currentActive" background-color="#f7f7f7" router>
-						<el-menu-item index="/home">
-							<i class="el-icon-document"></i>
-							<span slot="title">全部文件</span>
-						</el-menu-item>
-						<el-menu-item index="/home?type=doc">
-							<i class="el-icon-xx"></i>
-							<span slot="title">文档</span>
-						</el-menu-item>
-						<el-menu-item index="/home?type=image">
-							<i class="el-icon-xx"></i>
-							<span slot="title">图片</span>
-						</el-menu-item>
-						<el-menu-item index="/home?type=audio">
-							<i class="el-icon-xx"></i>
-							<span slot="title">音频</span>
-						</el-menu-item>
-						<el-menu-item index="/home?type=video">
-							<i class="el-icon-xx"></i>
-							<span slot="title">视频</span>
-						</el-menu-item>
-						<el-menu-item index="/share">
-							<i class="el-icon-share"></i>
-							<span slot="title">我的分享</span>
-						</el-menu-item>
-						<el-menu-item index="/recyclebin">
-							<i class="el-icon-delete-solid"></i>
-							<span slot="title">回收站</span>
-						</el-menu-item>
-					</el-menu>
-					<el-row class="storage">
-						<el-col :span="7" style="font-size: 40px;">
-							<i class="el-icon-coin"></i>
-						</el-col>
-						<el-col :span="17">
-							<p>存储空间</p>
-							<el-progress :percentage="storage.percentage"></el-progress>
-							<p style="color: rgba(0, 0, 0, 0.54); font-size: 0.75rem;">已使用{{storage.used}}，共{{storage.max}}</p>
-						</el-col>
-					</el-row>
-				</el-aside>
-
-				<el-container>
-					<el-main>
-						<router-view></router-view>
-					</el-main>
-					<el-footer>
-						<span class="brand">
-							Powered by <a target="_blank" href="https://github.com/eyebluecn/tank">ZPan</a>
-						</span>
-					</el-footer>
-				</el-container>
-			</el-container>
-
+			<router-view></router-view>
 		</el-container>
 	</div>
 </template>
 
 <script>
 import Cookies from 'js-cookie';
+import {mutations} from '@/store'
 export default {
-	name: 'app',
-	components: {
-	},
 	data() {
 		return {
 			searchKw: '',
-			currentActive: 'home',
 			profile: {
 				nickname: 'Admin',
 				email: 'admin@zzpan.cn',
 				avatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
 			},
-			storage: {},
 		}
 	},
-	watch: {
-		'$route': 'onRouteChange',
-	},
 	methods: {
-		onRouteChange(newVal, oldVal) {
-			console.log(newVal.fullPath)
-			this.currentActive = newVal.fullPath
-		},
 		suggestions(kw, cb) {
 			var results = [
 				{ value: `在我的文件中搜索 ${kw}` },
@@ -144,7 +77,8 @@ export default {
 					used: this.formatBytes(this.profile.storage_used, 0),
 					max: this.formatBytes(this.profile.storage_max, 0),
 					percentage: Math.round((this.profile.storage_used / this.profile.storage_max) * 100)
-				}
+                }
+				mutations.setStorage(this.storage);
 			})
 		},
 		onDropdown(index) {
@@ -207,34 +141,5 @@ body {
 }
 .search i {
 	/* color: #fff; */
-}
-.el-main {
-	padding: 10px !important;
-}
-.el-footer {
-	height: 30px !important;
-	text-align: center;
-}
-
-.el-aside .el-menu {
-	border-right: solid 1px #fff;
-	font-weight: 500;
-}
-
-.el-aside .el-menu-item {
-	padding-left: 30px !important;
-}
-
-.el-aside .el-menu-item:focus,
-.el-aside .el-menu-item:hover {
-	outline: 0;
-	background-color: #eaeaea !important;
-}
-.el-aside .storage {
-	border-top: 1px solid #c9c9c9;
-	width: 200px;
-	padding: 20px 10px;
-	position: absolute;
-	bottom: 0;
 }
 </style>
