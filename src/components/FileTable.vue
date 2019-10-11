@@ -20,7 +20,10 @@
 			<el-table-column width="150">
 				<template slot-scope="scope">
 					<div style="float: right; vertical-align: super;" class="operation">
-						<el-link v-show="!scope.row.dir" type="primary" :underline="false"><i class="el-icon-download el-icon--right" @click="onDownload(scope.row)"></i></el-link>
+						<el-link v-show="showDown && !scope.row.dir" type="primary" :underline="false"><i class="el-icon-download el-icon--right" @click="onDownload(scope.row)"></i></el-link>
+						<el-link v-show="showShare" type="primary" :underline="false"><i class="el-icon-share el-icon--right" @click="onShare(scope.row)"></i></el-link>
+						<el-link v-show="showRemove" type="primary" :underline="false"><i class="el-icon-delete el-icon--right" @click="onRemove(scope.row)"></i></el-link>
+						<!-- <el-link type="primary" :underline="false"><i class="el-icon-more el-icon--right"></i></el-link> -->
 					</div>
 				</template>
 			</el-table-column>
@@ -48,6 +51,18 @@ export default {
 		value: Array,
 		current: String,
 		urlget: Function,
+		showDown: {
+			type: Boolean,
+			default: true,
+		},
+		showShare: {
+			type: Boolean,
+			default: false,
+		},
+		showRemove: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	components: {
 		PhotoPreview
@@ -115,6 +130,12 @@ export default {
 			this.urlget(obj).then(url => {
 				this.openDownload(obj.name, url)
 			})
+		},
+		onShare(obj) {
+			this.$emit("on-share", obj)
+		},
+		onRemove(obj) {
+			this.$emit("on-remove", obj)
 		},
 		openDownload(name, url) {
 			var a = document.createElement('a');

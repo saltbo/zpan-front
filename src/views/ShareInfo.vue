@@ -48,10 +48,6 @@ export default {
 				this.currentDir = '';
 			}
 
-			// if (newVal.query.type) {
-			// 	this.file.type = newVal.query.type;
-			// }
-
 			this.listRefresh();
 		},
 		openFolder(fullPath) {
@@ -66,14 +62,14 @@ export default {
 			})
 		},
 		listRefresh() {
-			utils.listObjects(this.rootDir + this.currentDir, this.file.type).then(objects => {
+			utils.listObjects(this.rootDir + this.currentDir).then(objects => {
 				this.tableData = objects
 			})
 		},
 	},
 	mounted() {
 		let alias = this.$route.params.alias
-		let path = this.$route.query.path
+		let path = this.$route.query.path ? this.$route.query.path : ""
 		this.$axios.get(`/api/shares/${alias}`).then(ret => {
 			this.file = ret.data.data;
 			if (this.file.dir) {

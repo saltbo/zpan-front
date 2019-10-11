@@ -18,7 +18,7 @@
 		</el-row>
 
 		<!-- main -->
-		<FileTable v-model="tableData" :current="currentDir" @folder-open="openFolder" :urlget="urlGet"></FileTable>
+		<FileTable v-model="tableData" :current="currentDir" :urlget="urlGet" @folder-open="openFolder" @on-share="share" @on-remove="remove" show-share show-remove></FileTable>
 
 		<!-- dialog -->
 		<el-dialog title="上传队列" :visible.sync="uploadShow">
