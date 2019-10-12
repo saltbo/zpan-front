@@ -122,7 +122,7 @@ export default {
 			// preview office file
 			if (this.isOfficeFile(obj.type)) {
 				this.urlget(obj).then(url => {
-					window.open('http://view.officeapps.live.com/op/view.aspx?src=' + url)
+					window.open('http://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(url))
 				})
 			}
 		},
