@@ -7,7 +7,7 @@
 		</el-row>
 
 		<!-- table -->
-		<el-table :data="value" tooltip-effect="dark" style="width: 100%">
+		<el-table :data="value" v-loading="loading" tooltip-effect="dark" style="width: 100%">
 			<el-table-column prop="name" label="名称" min-width="200" show-overflow-tooltip sortable>
 				<template slot-scope="scope">
 					<i v-if="scope.row.dir" class="matter-icon el-icon-folder" style="color: #ffc402;"></i>
@@ -49,6 +49,7 @@ export default {
 	name: 'FileTable',
 	props: {
 		value: Array,
+		loading: Boolean,
 		current: String,
 		urlget: Function,
 		showDown: {

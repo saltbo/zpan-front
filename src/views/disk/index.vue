@@ -18,7 +18,7 @@
 		</el-row>
 
 		<!-- main -->
-		<FileTable v-model="tableData" :current="currentDir" :urlget="urlGet" @folder-open="openFolder" @on-share="share" @on-remove="remove" show-share show-remove></FileTable>
+		<FileTable v-model="tableData" :loading="loading" :current="currentDir" :urlget="urlGet" @folder-open="openFolder" @on-share="share" @on-remove="remove" show-share show-remove></FileTable>
 
 		<!-- dialog -->
 		<el-dialog title="上传队列" :visible.sync="uploadShow">
@@ -80,6 +80,7 @@ export default {
 			items: [],
 			fileList: [],
 			tableData: [],
+			loading: false,
 			selectedItems: [],
 			shareForm: {
 				mid: 0,
@@ -107,8 +108,10 @@ export default {
 			this.listRefresh();
 		},
 		listRefresh() {
+			this.loading = true;
 			utils.listObjects(this.currentDir, this.currentType).then(objects => {
 				this.tableData = objects
+				this.loading = false;
 			})
 		},
 		openFolder(fullPath) {
