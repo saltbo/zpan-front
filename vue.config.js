@@ -60,7 +60,7 @@ module.exports = {
             entry: 'src/login.js',
             template: 'src/template/index.ejs',
             filename: 'login.html',
-            title: 'GWProtal - Login',
+            title: 'ZPan - Login',
             chunks: ['chunk-vendors', 'chunk-common', 'login']
         }
     },
