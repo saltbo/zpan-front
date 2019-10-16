@@ -112,7 +112,13 @@ export default {
 		},
 		listRefresh() {
 			this.loading = true;
-			utils.listObjects(this.currentDir, this.currentType).then(objects => {
+			let params = { dir: this.currentDir }
+			if (this.currentType) {
+				params.search = true;
+				params.type = this.currentType;
+			}
+
+			utils.listObjects(params).then(objects => {
 				this.tableData = objects
 				this.loading = false;
 			})

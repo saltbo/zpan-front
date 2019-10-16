@@ -23,13 +23,13 @@ let utils = {
             i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     },
-    listObjects(dir, type) {
+    listObjects(params) {
         return new Promise((resolve, reject) => {
-            window.axios.get('/api/files', { params: { path: dir, type: type } }).then(ret => {
+            window.axios.get('/api/files', { params: params }).then(ret => {
                 resolve(ret.data.list.map(item => { item.size = this.formatBytes(item.size, 1); return item }));
             }).catch(reject)
         })
-    }
+    },
 }
 
 export default utils;
