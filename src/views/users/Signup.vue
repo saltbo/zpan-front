@@ -1,10 +1,10 @@
 <template>
-	<div id="app">
+	<div class="guest">
 		<el-row style="height: 150px;"></el-row>
 		<div style="width: 400px; margin: 0 auto;">
 			<el-card class="box-card" style="padding: 10px 20px;">
 				<div slot="header">
-					<i class="icon el-icon-lock"></i>
+					<i class="icon el-icon-postcard"></i>
 					<p class="title">注册Z盘</p>
 				</div>
 

@@ -10,16 +10,16 @@
 						<el-autocomplete class="search" size="medium" prefix-icon="el-icon-search" placeholder="搜索..." v-model="searchKw" :trigger-on-focus="false" :fetch-suggestions="suggestions" @select="search"></el-autocomplete>
 					</el-col>
 					<el-col :span="12" style="text-align: right;">
-						<el-dropdown trigger="click" @command="onDropdown">
+						<el-dropdown v-show="logined" trigger="click" @command="onDropdown">
 							<el-avatar :size="30" :src="profile.avatar" style="vertical-align: middle;"></el-avatar>
 							<el-dropdown-menu slot="dropdown">
-								<el-row style="padding: 10px; width: 230px;">
-									<el-col :span="8">
-										<el-avatar :size="50" :src="profile.avatar"></el-avatar>
+								<el-row style="padding: 20px; width: 280px;">
+									<el-col :span="11">
+										<el-avatar :size="90" :src="profile.avatar"></el-avatar>
 									</el-col>
-									<el-col :span="16">
+									<el-col :span="13">
 										<p>{{ profile.nickname}}</p>
-										<p>{{ profile.email}}</p>
+										<p style="color: rgba(0, 0, 0, 0.54); margin: 5px 0">{{ profile.email}}</p>
 										<el-tag>管理员</el-tag>
 									</el-col>
 								</el-row>
@@ -42,10 +42,10 @@ export default {
 	data() {
 		return {
 			searchKw: '',
+			logined: true,
+			defaultAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png', 
 			profile: {
-				nickname: 'Admin',
-				email: 'admin@zzpan.cn',
-				avatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+
 			},
 		}
 	},
@@ -71,8 +71,17 @@ export default {
 		},
 		userInfo() {
 			let uid = Cookies.get('uid')
+			if (!uid) {
+				this.logined = false
+				return
+			}
+
 			this.$axios.get('/api/users/' + uid).then(ret => {
 				this.profile = ret.data.data
+				if (this.profile.avatar == '') {
+					this.profile.avatar = this.defaultAvatar;
+				}
+
 				this.storage = {
 					used: this.formatBytes(this.profile.storage_used, 0),
 					max: this.formatBytes(this.profile.storage_max, 0),
@@ -86,6 +95,7 @@ export default {
 				case 'profile':
 					break
 				case 'signout':
+					Cookies.remove('uid');
 					Cookies.remove('intoken');
 					window.location = '/'
 					break
@@ -134,12 +144,17 @@ body {
 .el-header .search {
 	width: 300px;
 }
-.search input {
-	/* background-color: rgba(255, 255, 255, 0.15);
-	caret-color: #fff;
-	border: none; */
+
+.guest .el-card__header {
+	text-align: center;
+	border-bottom: none !important;
 }
-.search i {
-	/* color: #fff; */
+.guest .el-card__header .title {
+	font-size: 20px;
+	margin-top: 10px;
+}
+.guest .el-card__header .icon {
+	font-size: 30px;
+	color: #f50057;
 }
 </style>

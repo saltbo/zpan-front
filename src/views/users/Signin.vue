@@ -1,5 +1,5 @@
 <template>
-	<div id="app">
+	<div class="guest">
 		<el-row style="height: 150px;"></el-row>
 		<div style="width: 400px; margin: 0 auto;">
 			<el-card class="box-card" style="padding: 10px 20px;">
