@@ -37,7 +37,7 @@
 
 <script>
 import Cookies from 'js-cookie';
-import {mutations} from '@/store'
+import { mutations } from '@/store'
 export default {
 	data() {
 		return {
@@ -77,7 +77,7 @@ export default {
 					used: this.formatBytes(this.profile.storage_used, 0),
 					max: this.formatBytes(this.profile.storage_max, 0),
 					percentage: Math.round((this.profile.storage_used / this.profile.storage_max) * 100)
-                }
+				}
 				mutations.setStorage(this.storage);
 			})
 		},
