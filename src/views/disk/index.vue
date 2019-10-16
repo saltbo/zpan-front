@@ -7,7 +7,7 @@
 <template>
 	<div>
 		<el-row class="menu">
-			<el-button type="primary" size="medium" icon="el-icon-upload" @click="()=>{this.uploadShow=true}">上传</el-button>
+			<el-button type="primary" size="medium" icon="el-icon-upload" @click="uploadShow=true">上传</el-button>
 			<el-button size="medium" icon="el-icon-folder-add" @click="createFolder">新建</el-button>
 			<el-button-group v-show="selectedItems.length>0" style="margin-left: 10px;">
 				<el-button type="primary" icon="el-icon-download" size="medium" plain>下载</el-button>
@@ -22,9 +22,9 @@
 
 		<!-- dialog -->
 		<el-dialog title="上传队列" :visible.sync="uploadShow">
-			<el-upload class="upload-demo" action="" :http-request="upload" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
-				<el-button size="small" type="primary">点击上传</el-button>
-				<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+			<el-upload class="upload-demo" action="" :http-request="handleUpload" :file-list="fileList" :limit="20" :on-exceed="handleExceed" drag multiple>
+				<i class="el-icon-upload"></i>
+				<div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
 			</el-upload>
 		</el-dialog>
 
@@ -92,6 +92,9 @@ export default {
 	},
 	watch: {
 		'$route': 'onRouteChange',
+		uploadShow() {
+			this.fileList = []
+		},
 	},
 	methods: {
 		onRouteChange(newVal, oldVal) {
@@ -140,7 +143,6 @@ export default {
 			}
 		},
 		shareBuild(done) {
-			// this.shareShow = false;
 			this.$axios.post('/api/shares', this.shareForm).then(ret => {
 				let host = window.location.host;
 				let alias = ret.data.data.alias;
@@ -185,7 +187,10 @@ export default {
 				})
 			})
 		},
-		upload(fileObj) {
+		handleExceed(files, fileList) {
+			this.$message.warning(`每次最多允许 20 个文件同时上传，请分批操作！`);
+		},
+		handleUpload(fileObj) {
 			let file = fileObj.file
 			let type = 'application/octet-stream';
 			if (file.type) type = file.type;
@@ -203,21 +208,6 @@ export default {
 				})
 			})
 		},
-		onSelectChange(val) {
-			this.selectedItems = val;
-		},
-		handleRemove(file, fileList) {
-			console.log(file, fileList);
-		},
-		handlePreview(file) {
-			console.log(file);
-		},
-		handleExceed(files, fileList) {
-			this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-		},
-		beforeRemove(file, fileList) {
-			return this.$confirm(`确定移除 ${file.name}？`);
-		}
 	},
 	mounted() {
 		if (this.$route.query.path) {
