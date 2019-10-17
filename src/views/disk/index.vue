@@ -197,6 +197,7 @@ export default {
 			this.$message.warning(`每次最多允许 20 个文件同时上传，请分批操作！`);
 		},
 		handleUpload(fileObj) {
+			fileObj.filename = fileObj.file.name;
 			utils.upload(fileObj, this.currentDir).then(ret => {
 				this.listRefresh();
 			})

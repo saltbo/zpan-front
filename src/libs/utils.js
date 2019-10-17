@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import '@/plugins/axios'
 
 let utils = {
@@ -35,21 +36,42 @@ let utils = {
             let file = fileObj.file
             let type = 'application/octet-stream';
             if (file.type) type = file.type;
-            window.axios.get('/api/urls/upload', { params: { object: distDir + file.name, type: type, size: file.size, parent: distDir } }).then(ret => {
+            window.axios.get('/api/urls/upload', { params: { object: distDir + fileObj.filename, type: type, size: file.size, parent: distDir } }).then(ret => {
                 let data = ret.data.data;
-                let options = { headers: { 'content-type': type, 'content-disposition': `attachment;filename="${encodeURIComponent(file.name)}"`, 'x-oss-callback': data.callback } };
+                let options = { headers: { 'content-type': type, 'content-disposition': `attachment;filename="${encodeURIComponent(fileObj.filename)}"`, 'x-oss-callback': data.callback } };
                 options.onUploadProgress = function (event) {
                     file.percent = event.loaded / event.total * 100;
-                    fileObj.onProgress(file);
+                    if (fileObj.onProgress) fileObj.onProgress(file);
                 }
 
                 window.axios.put(data.url, file, options).then((ret) => {
-                    fileObj.onSuccess();
+                    if (fileObj.onSuccess) fileObj.onSuccess();
                     resolve(ret)
                 }).catch(reject)
             }).catch(reject)
         })
     },
+    setupPasteUpload(fileCallback) {
+        document.addEventListener('paste', event => {
+            let clipboardData = null
+            if (event.clipboardData || event.originalEvent) { // 兼容问题
+                clipboardData = event.clipboardData || event.originalEvent.clipboardData;
+            }
+
+            if (clipboardData && clipboardData.items) {
+                event.preventDefault();  // 阻止默认行为
+
+                let item = clipboardData.items[0]
+                if (!item.type.startsWith('image')) {
+                    return;
+                }
+
+                let file = item.getAsFile();
+                let filename = file.name.replace('image', (new Date()).getTime())
+                fileCallback({ file: file, filename: filename })
+            }
+        });
+    }
 }
 
 export default utils;

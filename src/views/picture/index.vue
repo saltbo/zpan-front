@@ -3,6 +3,8 @@
 		<el-upload action="" list-type="picture-card" :http-request="handleUpload" :accept="acceptImgs" :file-list="fileList" :on-preview="showPicPreview" :before-remove="handleRemove">
 			<i class="el-icon-plus"></i>
 		</el-upload>
+
+		<!-- preview dialog -->
 		<el-dialog :visible.sync="dialog.show" :title="dialog.title" center>
 			<img width="100%" :src="dialog.imgUrl" alt="">
 
@@ -44,9 +46,22 @@ export default {
 			})
 		},
 		handleUpload(fileObj) {
+			const loading = this.$loading({
+				lock: true,
+				text: 'Uploading',
+				spinner: 'el-icon-loading',
+				background: 'rgba(0, 0, 0, 0.7)'
+			});
+
+			fileObj.filename = fileObj.file.name;
 			utils.upload(fileObj, this.picDir).then(ret => {
-				let file = { name: fileObj.file.name, url: `${this.picHost}${this.picDir}${fileObj.file.name}` }
+				let file = { name: fileObj.filename, url: `${this.picHost}${this.picDir}${fileObj.filename}` }
 				this.showPicPreview(file);
+				this.listRefresh();
+				loading.close();
+			}).catch(() => {
+				this.listRefresh();
+				loading.close();
 			})
 		},
 		handleRemove(file, fileList) {
@@ -83,6 +98,7 @@ export default {
 		this.$clipboard.on("error", (e) => {
 			this.$message.error('复制失败');
 		});
+		utils.setupPasteUpload(this.handleUpload);
 	},
 	beforeDestroy() {
 		this.$clipboard.destroy();
