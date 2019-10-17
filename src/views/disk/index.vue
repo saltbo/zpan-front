@@ -197,21 +197,8 @@ export default {
 			this.$message.warning(`每次最多允许 20 个文件同时上传，请分批操作！`);
 		},
 		handleUpload(fileObj) {
-			let file = fileObj.file
-			let type = 'application/octet-stream';
-			if (file.type) type = file.type;
-			this.$axios.get('/api/urls/upload', { params: { object: this.currentDir + file.name, type: type, size: file.size, parent: this.currentDir } }).then(ret => {
-				let data = ret.data.data;
-				let options = { headers: { 'content-type': type, 'content-disposition': `attachment;filename="${encodeURIComponent(file.name)}"`, 'x-oss-callback': data.callback } };
-				options.onUploadProgress = function (event) {
-					file.percent = event.loaded / event.total * 100;
-					fileObj.onProgress(file);
-				}
-				console.log(data.url, file, options)
-				this.$axios.put(data.url, file, options).then(ret => {
-					fileObj.onSuccess();
-					this.listRefresh();
-				})
+			utils.upload(fileObj, this.currentDir).then(ret => {
+				this.listRefresh();
 			})
 		},
 	},

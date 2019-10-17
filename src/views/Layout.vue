@@ -26,8 +26,12 @@
 					<i class="el-icon-share"></i>
 					<span slot="title">我的分享</span>
 				</el-menu-item>
+				<el-menu-item index="/picture">
+					<i class="el-icon-picture-outline"></i>
+					<span slot="title">我的图床</span>
+				</el-menu-item>
 				<el-menu-item index="/recyclebin">
-					<i class="el-icon-delete-solid"></i>
+					<i class="el-icon-delete"></i>
 					<span slot="title">回收站</span>
 				</el-menu-item>
 			</el-menu>
@@ -57,7 +61,7 @@
 </template>
 
 <script>
-import { store, mutations } from '@/store'
+import { store } from '@/store'
 export default {
 	name: 'app',
 	components: {

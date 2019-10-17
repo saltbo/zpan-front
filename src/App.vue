@@ -43,7 +43,7 @@ export default {
 		return {
 			searchKw: '',
 			logined: true,
-			defaultAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png', 
+			defaultAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
 			profile: {
 
 			},
@@ -88,6 +88,7 @@ export default {
 					percentage: Math.round((this.profile.storage_used / this.profile.storage_max) * 100)
 				}
 				mutations.setStorage(this.storage);
+				localStorage.setItem("uid", uid);
 			})
 		},
 		onDropdown(index) {
