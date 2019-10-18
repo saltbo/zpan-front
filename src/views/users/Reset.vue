@@ -8,9 +8,9 @@
 					<p class="title">找回密码</p>
 				</div>
 
-				<el-form :model="resetForm" :rules="rules" ref="resetForm">
+				<el-form :model="formItem" :rules="rules" ref="resetForm">
 					<el-form-item prop="email">
-						<el-input v-model="resetForm.email" placeholder="电子邮箱"></el-input>
+						<el-input v-model="formItem.email" placeholder="电子邮箱"></el-input>
 					</el-form-item>
 					<el-form-item>
 						<el-row>
@@ -30,13 +30,30 @@
 export default {
 	data() {
 		return {
-			rules: {},
-			resetForm: {}
+			rules: {
+				email: [
+					{ required: true, message: '请输入邮箱地址', trigger: 'blur' },
+					{ type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+				],
+			},
+			formItem: {}
 		}
 	},
 	methods: {
-		reset() {
+		reset(name) {
+			this.$refs[name].validate((valid) => {
+				if (!valid) {
+					return
+				}
 
+				this.$axios.post('/api/user/recover-tokens', this.formItem).then(ret => {
+					this.$message({
+						type: 'success',
+						message: '找回密码邮件发送成功!'
+					});
+					this.$router.push({ name: 'signin' })
+				})
+			});
 		},
 	},
 }

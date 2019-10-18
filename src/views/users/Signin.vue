@@ -62,10 +62,13 @@ export default {
 						type: 'success',
 						message: '登录成功!'
 					});
-					window.location = '/'
+					this.$router.push({ name: 'home' })
 				})
 			});
 		},
+	},
+	mounted() {
+		this.formItem = this.$route.query
 	},
 }
 </script>

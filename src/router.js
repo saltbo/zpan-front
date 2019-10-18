@@ -11,7 +11,7 @@ let router = new Router({
       path: '/',
       component: () => import('./views/Layout.vue'),
       children: [
-        { path: '/', redirect: '/disk' },
+        { path: '/', name: 'home', redirect: '/disk' },
         { path: '/disk', name: 'disk', meta: { title: "我的文件" }, component: () => import('./views/disk') },
         { path: '/share', name: 'share', meta: { title: "我的分享" }, component: () => import('./views/share') },
         { path: '/picture', name: 'picture', meta: { title: "我的图床" }, component: () => import('./views/picture') },
@@ -21,7 +21,8 @@ let router = new Router({
     { path: '/s/:alias', name: 'share-info', component: () => import('./views/share/home.vue') },
     { path: '/login', name: 'signin', meta: { title: "用户登录" }, component: () => import('./views/users/Signin.vue') },
     { path: '/login/signup', name: 'signup', meta: { title: "用户注册" }, component: () => import('./views/users/Signup.vue') },
-    { path: '/login/reset', name: 'reset', meta: { title: "密码找回" }, component: () => import('./views/users/Reset.vue') }
+    { path: '/login/reset', name: 'reset', meta: { title: "密码找回" }, component: () => import('./views/users/Reset.vue') },
+    { path: '/login/resetpwd', name: 'resetpwd', meta: { title: "密码找回" }, component: () => import('./views/users/Resetpwd.vue') }
   ]
 })
 
