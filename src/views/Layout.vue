@@ -30,10 +30,10 @@
 					<i class="el-icon-picture-outline"></i>
 					<span slot="title">我的图床</span>
 				</el-menu-item>
-				<el-menu-item index="/recyclebin">
+				<!-- <el-menu-item index="/recyclebin">
 					<i class="el-icon-delete"></i>
 					<span slot="title">回收站</span>
-				</el-menu-item>
+				</el-menu-item> -->
 			</el-menu>
 			<el-row class="storage">
 				<el-col :span="7" style="font-size: 40px;">

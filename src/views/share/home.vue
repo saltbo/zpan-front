@@ -105,7 +105,7 @@ export default {
 			})
 		},
 		listRefresh() {
-			utils.listObjects(this.rootDir + this.currentDir).then(objects => {
+			utils.listObjects({ dir: this.rootDir + this.currentDir }).then(objects => {
 				this.tableData = objects
 			})
 		},

@@ -7,7 +7,9 @@
 		</el-row>
 
 		<!-- table -->
-		<el-table :data="value" v-loading="loading" tooltip-effect="dark" style="width: 100%">
+		<el-table style="width: 100%" tooltip-effect="dark" :data="value" v-loading="loading" @selection-change="onSelectionChange">
+			<el-table-column type="selection" width="30">
+			</el-table-column>
 			<el-table-column prop="name" label="名称" min-width="200" show-overflow-tooltip sortable>
 				<template slot-scope="scope">
 					<i v-if="scope.row.dir" class="matter-icon el-icon-folder" style="color: #ffc402;"></i>
@@ -49,6 +51,7 @@ export default {
 	name: 'FileTable',
 	props: {
 		value: Array,
+		selection: Array,
 		loading: Boolean,
 		current: String,
 		urlget: Function,
@@ -71,7 +74,7 @@ export default {
 	data() {
 		return {
 			root: '',
-			pathItems: []
+			pathItems: [],
 		}
 	},
 	watch: {
@@ -126,6 +129,9 @@ export default {
 					window.open('http://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(url))
 				})
 			}
+		},
+		onSelectionChange(selection) {
+			this.$emit('update:selection', selection);
 		},
 		onDownload(obj) {
 			this.urlget(obj).then(url => {

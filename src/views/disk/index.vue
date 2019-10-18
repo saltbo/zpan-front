@@ -8,17 +8,17 @@
 	<div>
 		<el-row class="menu">
 			<el-button type="primary" size="medium" icon="el-icon-upload" @click="uploadShow=true">上传</el-button>
-			<el-button size="medium" icon="el-icon-folder-add" @click="createFolder">新建</el-button>
+			<el-button type="primary" size="medium" icon="el-icon-folder-add" @click="createFolder" plain>新建</el-button>
 			<el-button-group v-show="selectedItems.length>0" style="margin-left: 10px;">
-				<el-button type="primary" icon="el-icon-download" size="medium" plain>下载</el-button>
-				<el-button type="primary" icon="el-icon-share" size="medium" @click="share" plain>分享</el-button>
-				<el-button type="primary" icon="el-icon-delete" size="medium" plain>删除</el-button>
-				<el-button type="primary" size="medium" plain>移动到</el-button>
+				<el-button type="primary" icon="el-icon-download" size="medium" plain @click="downloadSelection">下载</el-button>
+				<!-- <el-button type="primary" icon="el-icon-share" size="medium" @click="share" plain>分享</el-button> -->
+				<el-button type="primary" icon="el-icon-delete" size="medium" plain @click="deleteSelection">删除</el-button>
+				<!-- <el-button type="primary" size="medium" plain>移动到</el-button> -->
 			</el-button-group>
 		</el-row>
 
 		<!-- main -->
-		<FileTable v-model="tableData" :loading="loading" :current="currentDir" :urlget="urlGet" @folder-open="openFolder" @on-share="share" @on-remove="remove" show-share show-remove></FileTable>
+		<FileTable v-model="tableData" :selection.sync="selectedItems" :loading="loading" :current="currentDir" :urlget="urlGet" @folder-open="openFolder" @on-share="share" @on-remove="remove" show-share show-remove></FileTable>
 
 		<!-- dialog -->
 		<el-dialog title="上传队列" :visible.sync="uploadShow">
@@ -110,6 +110,9 @@ export default {
 
 			this.listRefresh();
 		},
+		onSelectionChange(selection) {
+			this.selectedItems = selection;
+		},
 		listRefresh() {
 			this.loading = true;
 			let params = { dir: this.currentDir }
@@ -160,7 +163,12 @@ export default {
 			})
 		},
 		remove(obj) {
-			this.$confirm('此操作将永久删除该文件, 是否继续?', `删除${obj.name}`, {
+			if (obj.dir) {
+				this.$message('暂不支持删除文件夹')
+				return
+			}
+
+			this.$confirm('此操作将永久删除该文件, 是否继续?', `删除 ${obj.name}`, {
 				type: 'warning',
 				confirmButtonText: '确定',
 				cancelButtonText: '取消',
@@ -200,6 +208,37 @@ export default {
 			fileObj.filename = fileObj.file.name;
 			utils.upload(fileObj, this.currentDir).then(ret => {
 				this.listRefresh();
+			})
+		},
+		downloadSelection() {
+
+		},
+		deleteSelection() {
+			this.$confirm('此操作将永久删除所选文件, 是否继续?', `批量删除`, {
+				type: 'warning',
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+			}).then(() => {
+				const loading = this.$loading({
+					lock: true,
+					text: 'Deleting',
+					spinner: 'el-icon-loading',
+					background: 'rgba(0, 0, 0, 0.7)'
+				});
+
+				Promise.all(this.selectedItems.map(obj => {
+					return this.$axios.delete('/api/files/' + obj.id)
+				})).then(ret => {
+					this.listRefresh();
+					loading.close();
+					this.$message({
+						type: 'success',
+						message: '所选文件全部删除成功!'
+					});
+				}).catch(err => {
+					loading.close();
+					console.log(err);
+				});
 			})
 		},
 	},
