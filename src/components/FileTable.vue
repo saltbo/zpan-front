@@ -8,7 +8,7 @@
 
 		<!-- table -->
 		<el-table style="width: 100%" tooltip-effect="dark" :data="value" v-loading="loading" @selection-change="onSelectionChange">
-			<el-table-column type="selection" width="30">
+			<el-table-column type="selection" width="30" :selectable="selectable">
 			</el-table-column>
 			<el-table-column prop="name" label="名称" min-width="200" show-overflow-tooltip sortable>
 				<template slot-scope="scope">
@@ -97,6 +97,9 @@ export default {
 				this.pathItems.push({ name: item, dir: parentDir + item + '/' })
 				parentDir = `${item}/`
 			});
+		},
+		selectable(row, index) {
+			if (!row.dir) return true;
 		},
 		isOfficeFile(type) {
 			let officeTypes = [
