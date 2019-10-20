@@ -2,11 +2,34 @@
 import '@/plugins/axios'
 
 let utils = {
-    objectURL(obj) {
+    uploadURL(fileObj, distDir) {
+        let file = fileObj.file
+        let params = { name: fileObj.filename, type: file.type, size: file.size, dir: distDir };
         return new Promise((resolve, reject) => {
-            let params = { object: obj.parent + obj.name, type: obj.type, parent: obj.parent };
-            window.axios.get('/api/urls/download', { params: params }).then(ret => {
+            window.axios.get('/api/urls/upload', { params: params }).then(ret => {
                 resolve(ret.data.data)
+            }).catch(reject)
+        })
+    },
+    downloadURL(objectId) {
+        return new Promise((resolve, reject) => {
+            window.axios.get('/api/urls/download/' + objectId).then(ret => {
+                resolve(ret.data.data)
+            }).catch(reject)
+        })
+    },
+    upload(fileObj, destURL, headers) {
+        let file = fileObj.file
+        return new Promise((resolve, reject) => {
+            let options = { headers: headers };
+            options.onUploadProgress = function (event) {
+                file.percent = event.loaded / event.total * 100;
+                if (fileObj.onProgress) fileObj.onProgress(file);
+            }
+
+            window.axios.put(destURL, file, options).then((ret) => {
+                if (fileObj.onSuccess) fileObj.onSuccess();
+                resolve(ret)
             }).catch(reject)
         })
     },
@@ -28,26 +51,6 @@ let utils = {
         return new Promise((resolve, reject) => {
             window.axios.get('/api/files', { params: params }).then(ret => {
                 resolve(ret.data.list.map(item => { item.size = this.formatBytes(item.size, 1); return item }));
-            }).catch(reject)
-        })
-    },
-    upload(fileObj, distDir) {
-        return new Promise((resolve, reject) => {
-            let file = fileObj.file
-            let type = 'application/octet-stream';
-            if (file.type) type = file.type;
-            window.axios.get('/api/urls/upload', { params: { object: distDir + fileObj.filename, type: type, size: file.size, parent: distDir } }).then(ret => {
-                let data = ret.data.data;
-                let options = { headers: { 'content-type': type, 'content-disposition': `attachment;filename="${encodeURIComponent(fileObj.filename)}"`, 'x-oss-callback': data.callback } };
-                options.onUploadProgress = function (event) {
-                    file.percent = event.loaded / event.total * 100;
-                    if (fileObj.onProgress) fileObj.onProgress(file);
-                }
-
-                window.axios.put(data.url, file, options).then((ret) => {
-                    if (fileObj.onSuccess) fileObj.onSuccess();
-                    resolve(ret)
-                }).catch(reject)
             }).catch(reject)
         })
     },

@@ -26,7 +26,7 @@ export default {
 	methods: {
 		open(items) {
 			Promise.all(items.map(obj => {
-				return utils.objectURL(obj)
+				return utils.downloadURL(obj.id)
 			})).then(rets => {
 				rets.forEach(ret => {
 					this.links += ret.url + "\r\n"

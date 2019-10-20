@@ -73,7 +73,7 @@ export default {
 		},
 		urlGet(obj) {
 			return new Promise((resolve, reject) => {
-				utils.objectURL(obj).then(ret => {
+				utils.downloadURL(obj.id).then(ret => {
 					resolve(ret.url)
 				}).catch(reject)
 			})
@@ -91,14 +91,14 @@ export default {
 				}
 
 				if (this.file.dir) {
-					this.rootDir = this.file.path // 以分享的文件夹为根路径
+					this.rootDir = this.file.object // 以分享的文件夹为根路径
 					this.currentDir = path //以query中的path作为当前路径
 					this.listRefresh()
 					return;
 				}
 
 				// auto download
-				utils.objectURL(this.file).then(ret => {
+				utils.downloadURL(this.file.id).then(ret => {
 					utils.download(this.file.name, ret.url)
 					this.fileURL = ret.url;
 				})

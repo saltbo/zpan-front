@@ -10,7 +10,8 @@
 			<el-button type="primary" size="medium" icon="el-icon-upload" @click="$refs.uploader.open()">上传</el-button>
 			<el-button type="primary" size="medium" icon="el-icon-folder-add" @click="openCreateDiglog" plain>新建</el-button>
 			<el-button-group v-show="selectedItems.length>0" style="margin-left: 10px;">
-				<el-button type="primary" icon="el-icon-download" size="medium" plain @click="$refs.outlink.open(selectedItems);">下载</el-button>
+				<el-button type="primary" icon="el-icon-download" size="medium" plain
+					@click="$refs.outlink.open(selectedItems);">下载</el-button>
 				<!-- <el-button type="primary" icon="el-icon-share" size="medium" @click="share" plain>分享</el-button> -->
 				<el-button type="primary" icon="el-icon-delete" size="medium" plain @click="deleteSelection">删除</el-button>
 				<!-- <el-button type="primary" size="medium" plain>移动到</el-button> -->
@@ -18,7 +19,9 @@
 		</el-row>
 
 		<!-- main -->
-		<FileTable v-model="tableData" :selection.sync="selectedItems" :loading="loading" :current="currentDir" :urlget="urlGet" @folder-open="openFolder" @on-share="share" @on-remove="remove" show-share show-remove></FileTable>
+		<FileTable v-model="tableData" :selection.sync="selectedItems" :loading="loading" :current="currentDir"
+			:urlget="urlGet" @folder-open="openFolder" @on-share="share" @on-remove="remove" show-share show-remove>
+		</FileTable>
 
 		<!-- dialog -->
 		<DialogShare ref="share"></DialogShare>
@@ -90,12 +93,8 @@ export default {
 				confirmButtonText: '确定',
 				cancelButtonText: '取消',
 			}).then(({ value }) => {
-				let body = {
-					path: this.currentDir + value + '/',
-					parent: this.currentDir,
-					type: '', size: 0,
-				}
-				this.$axios.post('/api/files/folders', body).then(ret => {
+				let body = { name: value, dir: this.currentDir };
+				this.$axios.post('/api/folders', body).then(ret => {
 					this.$message({
 						type: 'success',
 						message: '创建成功!'
@@ -109,13 +108,13 @@ export default {
 		},
 		urlGet(obj) {
 			return new Promise((resolve, reject) => {
-				utils.objectURL(obj).then(ret => {
+				utils.downloadURL(obj.id).then(ret => {
 					resolve(ret.url)
 				}).catch(reject)
 			})
 		},
 		download(obj) {
-			utils.objectURL(obj).then((item) => {
+			utils.downloadURL(obj.id).then((item) => {
 				utils.download(obj.name, item.url)
 			})
 		},

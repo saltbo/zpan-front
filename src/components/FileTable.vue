@@ -115,7 +115,7 @@ export default {
 		objectOp(obj) {
 			if (obj.dir) {
 				// open a folder
-				this.$emit("folder-open", obj.path)
+				this.$emit("folder-open", obj.object)
 				return
 			}
 

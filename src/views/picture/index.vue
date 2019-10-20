@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<el-upload action="" list-type="picture-card" :http-request="handleUpload" :accept="acceptImgs" :file-list="fileList" :on-preview="showPicPreview" :before-remove="handleRemove">
+		<el-upload action="" list-type="picture-card" :http-request="handleUpload" :accept="acceptImgs"
+			:file-list="fileList" :on-preview="showPicPreview" :before-remove="handleRemove">
 			<i class="el-icon-plus"></i>
 		</el-upload>
 
@@ -9,7 +10,8 @@
 			<img width="100%" :src="dialog.imgUrl" alt="">
 
 			<span slot="footer" class="dialog-footer">
-				<el-button type="primary" class="copy-link" :data-clipboard-text="dialog.imgUrl" @click="dialog.show = false">复制外链</el-button>
+				<el-button type="primary" class="copy-link" :data-clipboard-text="dialog.imgUrl" @click="dialog.show = false">
+					复制外链</el-button>
 			</span>
 		</el-dialog>
 	</div>
@@ -20,7 +22,7 @@ import utils from '@/libs/utils.js'
 export default {
 	data() {
 		return {
-			picDir: '__pics/',
+			picDir: '.pics/',
 			picHost: '',
 			acceptImgs: 'image/jpeg,image/png,image/gif',
 			fileList: [],
@@ -33,15 +35,14 @@ export default {
 	},
 	methods: {
 		findPicHost() {
-			let host = 'https://saltbo-zpan-test.oss-cn-zhangjiakou.aliyuncs.com'
-
-			const uid = localStorage.getItem('uid');
-			this.picHost = `${host}/${uid}/`
+			this.$axios.get('/api/urls/store-host').then(ret => {
+				this.picHost = ret.data.data.host;
+			})
 		},
 		listRefresh() {
 			// this.loading = true;
 			utils.listObjects({ dir: this.picDir }).then(objects => {
-				this.fileList = objects.map(obj => { return { id: obj.id, name: obj.name, url: this.picHost + obj.path } })
+				this.fileList = objects.map(obj => { return { id: obj.id, name: obj.name, url: `${this.picHost}/${obj.object}` } })
 				this.loading = false;
 			})
 		},
@@ -54,14 +55,16 @@ export default {
 			});
 
 			fileObj.filename = fileObj.file.name;
-			utils.upload(fileObj, this.picDir).then(ret => {
-				let file = { name: fileObj.filename, url: `${this.picHost}${this.picDir}${fileObj.filename}` }
-				this.showPicPreview(file);
-				this.listRefresh();
-				loading.close();
-			}).catch(() => {
-				this.listRefresh();
-				loading.close();
+			utils.uploadURL(fileObj, this.picDir).then(ret => {
+				let file = { name: fileObj.filename, url: `${this.picHost}/${ret.object}` }
+				utils.upload(fileObj, ret.url, ret.headers).then(ret => {
+					this.showPicPreview(file);
+					this.listRefresh();
+					loading.close();
+				}).catch(() => {
+					this.listRefresh();
+					loading.close();
+				})
 			})
 		},
 		handleRemove(file, fileList) {
