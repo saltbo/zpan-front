@@ -20,7 +20,8 @@
 
 		<!-- main -->
 		<FileTable v-model="tableData" :selection.sync="selectedItems" :loading="loading" :current="currentDir"
-			:urlget="urlGet" @folder-open="openFolder" @on-share="share" @on-remove="remove" show-share show-remove>
+			:urlget="urlGet" @folder-open="openFolder" @on-share="share" @on-rename="raname" @on-remove="remove" show-share
+			show-more>
 		</FileTable>
 
 		<!-- dialog -->
@@ -120,6 +121,21 @@ export default {
 		},
 		share(obj) {
 			this.$refs.share.open(obj.id);
+		},
+		raname(obj) {
+			this.$prompt('请输入新的名称', '重命名', {
+				inputValue: obj.name,
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+			}).then(({ value }) => {
+				this.$axios.post('/api/files/operation', { id: obj.id, action: 3, dest: value }).then(ret => {
+					this.$message({
+						type: 'success',
+						message: '修改成功!'
+					});
+					this.listRefresh();
+				})
+			})
 		},
 		remove(obj) {
 			if (obj.dir) {

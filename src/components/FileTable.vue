@@ -2,12 +2,14 @@
 	<div>
 		<el-row class="bread">
 			<el-breadcrumb separator-class="el-icon-arrow-right">
-				<el-breadcrumb-item v-for="item in pathItems" :key="item.dir" :index="item.dir" :to="{ query: {path: item.dir} }">{{ item.name }}</el-breadcrumb-item>
+				<el-breadcrumb-item v-for="item in pathItems" :key="item.dir" :index="item.dir"
+					:to="{ query: {path: item.dir} }">{{ item.name }}</el-breadcrumb-item>
 			</el-breadcrumb>
 		</el-row>
 
 		<!-- table -->
-		<el-table style="width: 100%" tooltip-effect="dark" :data="value" v-loading="loading" @selection-change="onSelectionChange">
+		<el-table style="width: 100%" tooltip-effect="dark" :data="value" v-loading="loading" highlight-current-row
+			@selection-change="onSelectionChange">
 			<el-table-column type="selection" width="30" :selectable="selectable">
 			</el-table-column>
 			<el-table-column prop="name" label="名称" min-width="200" show-overflow-tooltip sortable>
@@ -22,10 +24,22 @@
 			<el-table-column width="150">
 				<template slot-scope="scope">
 					<div style="float: right; vertical-align: super;" class="operation">
-						<el-link v-show="showDown && !scope.row.dir" type="primary" :underline="false"><i class="el-icon-download el-icon--right" @click="onDownload(scope.row)"></i></el-link>
-						<el-link v-show="showShare" type="primary" :underline="false"><i class="el-icon-share el-icon--right" @click="onShare(scope.row)"></i></el-link>
-						<el-link v-show="showRemove" type="primary" :underline="false"><i class="el-icon-delete el-icon--right" @click="onRemove(scope.row)"></i></el-link>
-						<!-- <el-link type="primary" :underline="false"><i class="el-icon-more el-icon--right"></i></el-link> -->
+						<el-link v-show="showDown && !scope.row.dir" type="primary" :underline="false">
+							<i class="el-icon-download el-icon--right" @click="onDownload(scope.row)"></i></el-link>
+						<el-link v-show="showShare" type="primary" :underline="false">
+							<i class="el-icon-share el-icon--right" @click="onShare(scope.row)"></i></el-link>
+						<el-dropdown v-show="showMore" trigger="click" @command="handleCommand">
+							<el-link type="primary" class="el-dropdown-link" :underline="false">
+								<i class="el-icon-more el-icon--right"></i>
+							</el-link>
+
+							<el-dropdown-menu slot="dropdown">
+								<el-dropdown-item :command="{action:'move', row: scope.row}">移动到</el-dropdown-item>
+								<el-dropdown-item :command="{action:'copy', row: scope.row}">复制到</el-dropdown-item>
+								<el-dropdown-item :command="{action:'rename', row: scope.row}">重命名</el-dropdown-item>
+								<el-dropdown-item :command="{action:'remove', row: scope.row}" divided>删除</el-dropdown-item>
+							</el-dropdown-menu>
+						</el-dropdown>
 					</div>
 				</template>
 			</el-table-column>
@@ -63,7 +77,7 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		showRemove: {
+		showMore: {
 			type: Boolean,
 			default: false,
 		},
@@ -144,8 +158,8 @@ export default {
 		onShare(obj) {
 			this.$emit("on-share", obj)
 		},
-		onRemove(obj) {
-			this.$emit("on-remove", obj)
+		handleCommand(command) {
+			this.$emit(`on-${command.action}`, command.row)
 		},
 		openDownload(name, url) {
 			var a = document.createElement('a');
