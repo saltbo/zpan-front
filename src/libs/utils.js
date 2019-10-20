@@ -50,7 +50,12 @@ let utils = {
     listObjects(params) {
         return new Promise((resolve, reject) => {
             window.axios.get('/api/files', { params: params }).then(ret => {
-                resolve(ret.data.list.map(item => { item.size = this.formatBytes(item.size, 1); return item }));
+                resolve(ret.data.list.map(item => {
+                    item.size = this.formatBytes(item.size, 1);
+                    item.fullpath = `${item.parent}${item.name}`
+                    if (item.dir) item.fullpath += '/'
+                    return item
+                }));
             }).catch(reject)
         })
     },

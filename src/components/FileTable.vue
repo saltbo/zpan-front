@@ -128,7 +128,7 @@ export default {
 		objectOp(obj) {
 			if (obj.dir) {
 				// open a folder
-				this.$emit("folder-open", `${obj.parent}${obj.name}/`)
+				this.$emit("folder-open", `${obj.fullpath}`)
 				return
 			}
 

@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<el-dialog title="移动到" width="30%" :visible.sync="visible">
-			<el-tree :data="data" :props="props" node-key="id" :default-expanded-keys="[0]" :load="loadNode"
-				:highlight-current="true" @current-change="onCurrentChange" lazy>
+			<el-tree :props="props" node-key="id" :default-expanded-keys="[0]" :load="loadNode" :highlight-current="true"
+				@current-change="onCurrentChange" lazy>
 				<span class="custom-tree-node" slot-scope="{ node, data }">
 					<span>
 						<i class="el-icon-folder"></i> {{ node.label }}
@@ -51,8 +51,7 @@ export default {
 			}
 
 			let dir = ''
-			let obj = node.data
-			if (node.level > 1) dir = `${obj.parent}${obj.name}/`
+			if (node.level > 1) dir = node.data.fullpath
 			utils.listObjects({ dir: dir }).then(objects => {
 				setTimeout(() => {
 					return resolve(objects.filter(obj => { return obj.dir }));
@@ -60,7 +59,7 @@ export default {
 			})
 		},
 		submit() {
-			let body = { id: this.srcId, action: 2, dest: `${this.current.parent}${this.current.name}/` };
+			let body = { id: this.srcId, action: 2, dest: this.current.fullpath };
 			this.$axios.post('/api/files/operation', body).then(ret => {
 				this.$message({
 					type: 'success',
