@@ -20,11 +20,12 @@
 
 		<!-- main -->
 		<FileTable v-model="tableData" :selection.sync="selectedItems" :loading="loading" :current="currentDir"
-			:urlget="urlGet" @folder-open="openFolder" @on-share="share" @on-rename="raname" @on-remove="remove" show-share
-			show-more>
+			:urlget="urlGet" @folder-open="openFolder" @on-share="obj=>{$refs.share.open(obj.id)}"
+			@on-move="obj=>{$refs.move.open(obj)}" @on-rename="raname" @on-remove="remove" show-share show-more>
 		</FileTable>
 
 		<!-- dialog -->
+		<DialogMove ref="move" @completed="listRefresh"></DialogMove>
 		<DialogShare ref="share"></DialogShare>
 		<DialogUpload ref="uploader" :dest-dir="currentDir" @completed="listRefresh"></DialogUpload>
 		<DialogOutlink ref="outlink"></DialogOutlink>
@@ -36,6 +37,7 @@
 // @ is an alias to /src
 import utils from '@/libs/utils.js'
 import FileTable from '@/components/FileTable'
+import DialogMove from './components/DialogMove'
 import DialogShare from './components/DialogShare'
 import DialogUpload from './components/DialogUpload'
 import DialogOutlink from './components/DialogOutlink'
@@ -43,6 +45,7 @@ export default {
 	name: 'home',
 	components: {
 		FileTable,
+		DialogMove,
 		DialogShare,
 		DialogUpload,
 		DialogOutlink
@@ -118,9 +121,6 @@ export default {
 			utils.downloadURL(obj.id).then((item) => {
 				utils.download(obj.name, item.url)
 			})
-		},
-		share(obj) {
-			this.$refs.share.open(obj.id);
 		},
 		raname(obj) {
 			this.$prompt('请输入新的名称', '重命名', {

@@ -35,7 +35,6 @@
 
 							<el-dropdown-menu slot="dropdown">
 								<el-dropdown-item :command="{action:'move', row: scope.row}">移动到</el-dropdown-item>
-								<el-dropdown-item :command="{action:'copy', row: scope.row}">复制到</el-dropdown-item>
 								<el-dropdown-item :command="{action:'rename', row: scope.row}">重命名</el-dropdown-item>
 								<el-dropdown-item :command="{action:'remove', row: scope.row}" divided>删除</el-dropdown-item>
 							</el-dropdown-menu>
