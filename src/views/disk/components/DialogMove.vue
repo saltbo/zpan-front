@@ -25,9 +25,6 @@ export default {
 	mixins: [mixinDialog],
 	data() {
 		return {
-			data: [
-
-			],
 			props: {
 				label: 'name',
 				children: 'zones',
@@ -50,17 +47,20 @@ export default {
 		loadNode(node, resolve) {
 			console.log(node)
 			if (node.level === 0) {
-				return resolve([{ id: 0, name: '全部文件', object: '' }]);
+				return resolve([{ id: 0, name: '全部文件', parent: '' }]);
 			}
 
-			utils.listObjects({ dir: node.data.object }).then(objects => {
+			let dir = ''
+			let obj = node.data
+			if (node.level > 1) dir = `${obj.parent}${obj.name}/`
+			utils.listObjects({ dir: dir }).then(objects => {
 				setTimeout(() => {
 					return resolve(objects.filter(obj => { return obj.dir }));
 				}, 100);
 			})
 		},
 		submit() {
-			let body = { id: this.srcId, action: 2, dest: this.current.object };
+			let body = { id: this.srcId, action: 2, dest: `${this.current.parent}${this.current.name}/` };
 			this.$axios.post('/api/files/operation', body).then(ret => {
 				this.$message({
 					type: 'success',

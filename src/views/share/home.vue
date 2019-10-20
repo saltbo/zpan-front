@@ -61,8 +61,9 @@ export default {
 	},
 	methods: {
 		onRouteChange(newVal, oldVal) {
-			if (!newVal.query.path) {
-				this.currentDir = '';
+			this.currentDir = '';
+			if (newVal.query.path) {
+				this.currentDir = newVal.query.path;
 			}
 
 			this.listRefresh();
@@ -91,7 +92,7 @@ export default {
 				}
 
 				if (this.file.dir) {
-					this.rootDir = this.file.object // 以分享的文件夹为根路径
+					this.rootDir = `${this.file.parent}${this.file.name}/` // 以分享的文件夹为根路径
 					this.currentDir = path //以query中的path作为当前路径
 					this.listRefresh()
 					return;
