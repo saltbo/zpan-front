@@ -8,12 +8,13 @@
 					<p class="title">登录Z盘</p>
 				</div>
 
-				<el-form :model="formItem" :rules="rules" ref="formItem">
+				<el-form ref="formItem" :model="formItem" :rules="rules">
 					<el-form-item prop="email">
 						<el-input v-model="formItem.email" placeholder="电子邮箱"></el-input>
 					</el-form-item>
 					<el-form-item prop="password">
-						<el-input v-model="formItem.password" type="password" placeholder="密码" @keyup.enter.native="signIn('formItem')"></el-input>
+						<el-input v-model="formItem.password" type="password" placeholder="密码"
+							@keyup.enter.native="signIn('formItem')"></el-input>
 					</el-form-item>
 					<el-form-item>
 						<el-row>
@@ -68,7 +69,18 @@ export default {
 		},
 	},
 	mounted() {
-		this.formItem = this.$route.query
+		let query = this.$route.query;
+		// 邮件点击激活处理
+		if (query.email && query.atoken) {
+			let body = { email: query.email, atoken: query.atoken };
+			this.$axios.patch('/api/user/resources', body).then(ret => {
+				this.$set(this.formItem, "email", query.email)
+				this.$message({
+					type: 'success',
+					message: '激活成功，请输入密码登录。'
+				});
+			})
+		}
 	},
 }
 </script>

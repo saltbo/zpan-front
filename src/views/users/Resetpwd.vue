@@ -74,7 +74,7 @@ export default {
 					return
 				}
 
-				this.$axios.patch('/api/users/password', this.formItem).then(ret => {
+				this.$axios.patch('/api/user/password', this.formItem).then(ret => {
 					this.$message({
 						type: 'success',
 						message: '密码重置成功!'
