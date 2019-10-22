@@ -52,9 +52,9 @@ export default {
 
 			let dir = ''
 			if (node.level > 1) dir = node.data.fullpath
-			utils.listObjects({ dir: dir }).then(objects => {
+			utils.listFolders({ parent: dir }).then(objects => {
 				setTimeout(() => {
-					return resolve(objects.filter(obj => { return obj.dir }));
+					return resolve(objects);
 				}, 100);
 			})
 		},

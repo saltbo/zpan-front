@@ -53,7 +53,18 @@ let utils = {
                 resolve(ret.data.list.map(item => {
                     item.size = this.formatBytes(item.size, 1);
                     item.fullpath = `${item.parent}${item.name}`
-                    if (item.dir) item.fullpath += '/'
+                    if (item.dirtype) item.fullpath += '/'
+                    return item
+                }));
+            }).catch(reject)
+        })
+    },
+    listFolders(params) {
+        return new Promise((resolve, reject) => {
+            window.axios.get('/api/folders', { params: params }).then(ret => {
+                resolve(ret.data.list.map(item => {
+                    item.fullpath = `${item.parent}${item.name}`
+                    if (item.dirtype) item.fullpath += '/'
                     return item
                 }));
             }).catch(reject)

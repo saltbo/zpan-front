@@ -14,7 +14,7 @@
 			</el-table-column>
 			<el-table-column prop="name" label="名称" min-width="200" show-overflow-tooltip sortable>
 				<template slot-scope="scope">
-					<i v-if="scope.row.dir" class="matter-icon el-icon-folder" style="color: #ffc402;"></i>
+					<i v-if="scope.row.dirtype" class="matter-icon el-icon-folder" style="color: #ffc402;"></i>
 					<i v-else class="matter-icon el-icon-document"></i>
 					<el-link :underline="false" class="matter-title" href="Javascript: void(0);">
 						<span @click="objectOp(scope.row)">{{ scope.row.name }}</span>
@@ -24,7 +24,7 @@
 			<el-table-column width="150">
 				<template slot-scope="scope">
 					<div style="float: right; vertical-align: super;" class="operation">
-						<el-link v-show="showDown && !scope.row.dir" type="primary" :underline="false">
+						<el-link v-show="showDown && !scope.row.dirtype" type="primary" :underline="false">
 							<i class="el-icon-download el-icon--right" @click="onDownload(scope.row)"></i></el-link>
 						<el-link v-show="showShare" type="primary" :underline="false">
 							<i class="el-icon-share el-icon--right" @click="onShare(scope.row)"></i></el-link>
@@ -44,8 +44,8 @@
 			</el-table-column>
 			<el-table-column prop="size" label="大小" width="180">
 				<template slot-scope="scope">
-					<div v-if="scope.row.dir">-</div>
-					<dir v-else>{{ scope.row.size }}</dir>
+					<div v-if="scope.row.dirtype">-</div>
+					<div v-else>{{ scope.row.size }}</div>
 				</template>
 			</el-table-column>
 			<el-table-column prop="updated" label="修改日期" width="180">
@@ -112,7 +112,7 @@ export default {
 			});
 		},
 		selectable(row, index) {
-			if (!row.dir) return true;
+			if (!row.dirtype) return true;
 		},
 		isOfficeFile(type) {
 			let officeTypes = [
@@ -126,7 +126,7 @@ export default {
 			return officeTypes.includes(type)
 		},
 		objectOp(obj) {
-			if (obj.dir) {
+			if (obj.dirtype) {
 				// open a folder
 				this.$emit("folder-open", `${obj.fullpath}`)
 				return

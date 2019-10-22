@@ -138,7 +138,7 @@ export default {
 			})
 		},
 		remove(obj) {
-			if (obj.dir) {
+			if (obj.dirtype) {
 				this.$message('暂不支持删除文件夹')
 				return
 			}

@@ -7,7 +7,7 @@
 						<div class="logo">
 							<span>ZPan</span>
 						</div>
-						<el-autocomplete class="search" size="medium" prefix-icon="el-icon-search" placeholder="搜索..." v-model="searchKw" :trigger-on-focus="false" :fetch-suggestions="suggestions" @select="search"></el-autocomplete>
+						<!-- <el-autocomplete class="search" size="medium" prefix-icon="el-icon-search" placeholder="搜索..." v-model="searchKw" :trigger-on-focus="false" :fetch-suggestions="suggestions" @select="search"></el-autocomplete> -->
 					</el-col>
 					<el-col :span="12" style="text-align: right;">
 						<el-dropdown v-show="logined" trigger="click" @command="onDropdown">

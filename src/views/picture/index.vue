@@ -40,7 +40,8 @@ export default {
 			})
 		},
 		listRefresh() {
-			// this.loading = true;
+            this.$axios.get('/api/urls/folders', {params: {dir: '', name: '.'}})
+
 			utils.listObjects({ dir: this.picDir }).then(objects => {
 				this.fileList = objects.map(obj => { return { id: obj.id, name: obj.name, url: `${this.picHost}/${obj.object}` } })
 				this.loading = false;

@@ -1,7 +1,7 @@
 <template>
 	<div style="margin: 20px 50px;">
 		<!-- for file -->
-		<div v-show="file.dir==false" style="width: 800px; margin: 0 auto">
+		<div v-show="file.dirtype==0" style="width: 800px; margin: 0 auto">
 			<el-card class="box-card">
 				<div slot="header" class="clearfix">
 					<span>{{file.name}}</span>
@@ -25,7 +25,7 @@
 		</el-card>
 
 		<!-- for folder -->
-		<el-card v-show="file.dir" class="box-card">
+		<el-card v-show="file.dirtype" class="box-card">
 			<div slot="header" class="clearfix">
 				<span>{{file.name}}</span>
 				<p>{{file.created | moment}}</p>
@@ -91,7 +91,7 @@ export default {
 					return;
 				}
 
-				if (this.file.dir) {
+				if (this.file.dirtype) {
 					this.rootDir = `${this.file.parent}${this.file.name}/` // 以分享的文件夹为根路径
 					this.currentDir = path //以query中的path作为当前路径
 					this.listRefresh()
