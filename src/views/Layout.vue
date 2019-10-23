@@ -81,6 +81,7 @@ export default {
 		onRouteChange(newVal, oldVal) {
 			this.active = newVal.fullPath;
 			this.storage = store.storage;
+
 		},
 		onClientHeightChange(clientHeight) { //动态修改样式
 			this.$refs.main.$el.style.height = this.clientHeight - 80 + 'px';
@@ -94,7 +95,9 @@ export default {
 		};
 
 		this.active = this.$route.fullPath;
-		this.storage = store.storage;
+		setTimeout(() => {
+			this.storage = store.storage;
+		}, 100)
 	},
 }
 </script>

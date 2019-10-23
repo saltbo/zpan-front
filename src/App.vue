@@ -42,14 +42,20 @@ export default {
 	data() {
 		return {
 			searchKw: '',
-			logined: true,
+			logined: false,
 			defaultAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
 			profile: {
 
 			},
 		}
 	},
+	watch: {
+		'$route': 'onRouteChange',
+	},
 	methods: {
+		onRouteChange(newVal, oldVal) {
+			this.userInfo()
+		},
 		suggestions(kw, cb) {
 			var results = [
 				{ value: `在我的文件中搜索 ${kw}` },
@@ -70,12 +76,13 @@ export default {
 			return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + '' + sizes[i];
 		},
 		userInfo() {
-			let uid = Cookies.get('uid')
+			let uid = Cookies.get('uid');
 			if (!uid) {
-				this.logined = false
+				this.logined = false;
 				return
 			}
 
+			this.logined = true;
 			this.$axios.get('/api/users/' + uid).then(ret => {
 				this.profile = ret.data.data
 				if (this.profile.avatar == '') {
