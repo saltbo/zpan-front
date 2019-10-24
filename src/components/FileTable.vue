@@ -108,7 +108,7 @@ export default {
 				if (item == '') return;
 
 				this.pathItems.push({ name: item, dir: parentDir + item + '/' })
-				parentDir = `${item}/`
+				parentDir += `${item}/`
 			});
 		},
 		selectable(row, index) {
