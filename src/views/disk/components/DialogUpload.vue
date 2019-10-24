@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<el-dialog title="上传队列" :visible.sync="visible">
-			<el-upload class="upload-demo" action="" :http-request="handleUpload" :limit="20" :on-exceed="handleExceed" drag
-				multiple>
+			<el-upload class="upload-demo" action="" :http-request="handleUpload" :file-list="fileList" :limit="20"
+				:on-exceed="handleExceed" drag multiple>
 				<i class="el-icon-upload"></i>
 				<div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
 			</el-upload>
@@ -22,6 +22,11 @@ export default {
 	data() {
 		return {
 			fileList: [],
+		}
+	},
+	watch: {
+		visible(newValue, oldValue) {
+			this.fileList = [];
 		}
 	},
 	methods: {

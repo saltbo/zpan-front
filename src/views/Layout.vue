@@ -53,7 +53,7 @@
 			</el-main>
 			<el-footer>
 				<span class="brand">
-					Powered by <a target="_blank" href="https://github.com/eyebluecn/tank">ZPan</a>
+					Powered by <a target="_blank" href="https://github.com/saltbo/zpan">ZPan</a>
 				</span>
 			</el-footer>
 		</el-container>
@@ -84,7 +84,7 @@ export default {
 
 		},
 		onClientHeightChange(clientHeight) { //动态修改样式
-			this.$refs.main.$el.style.height = this.clientHeight - 80 + 'px';
+			this.$refs.main.$el.style.height = this.clientHeight - 60 + 'px';
 		},
 	},
 	mounted() {
