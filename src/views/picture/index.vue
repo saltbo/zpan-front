@@ -40,8 +40,6 @@ export default {
 			})
 		},
 		listRefresh() {
-            this.$axios.get('/api/urls/folders', {params: {dir: '', name: '.'}})
-
 			utils.listObjects({ dir: this.picDir }).then(objects => {
 				this.fileList = objects.map(obj => { return { id: obj.id, name: obj.name, url: `${this.picHost}/${obj.object}` } })
 				this.loading = false;
@@ -55,7 +53,8 @@ export default {
 				background: 'rgba(0, 0, 0, 0.7)'
 			});
 
-			fileObj.filename = fileObj.file.name;
+			var timestamp = new Date().getTime();
+			fileObj.filename = fileObj.file.name.replace('image', timestamp);
 			utils.uploadURL(fileObj, this.picDir).then(ret => {
 				let file = { name: fileObj.filename, url: `${this.picHost}/${ret.object}` }
 				utils.upload(fileObj, ret.url, ret.headers).then(ret => {
