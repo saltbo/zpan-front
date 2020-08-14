@@ -50,7 +50,7 @@ let utils = {
     listObjects(params) {
         return new Promise((resolve, reject) => {
             window.axios.get('/api/files', { params: params }).then(ret => {
-                resolve(ret.data.list.map(item => {
+                resolve(ret.data.data.list.map(item => {
                     item.size = this.formatBytes(item.size, 1);
                     item.fullpath = `${item.parent}${item.name}`
                     if (item.dirtype) item.fullpath += '/'
@@ -62,7 +62,7 @@ let utils = {
     listFolders(params) {
         return new Promise((resolve, reject) => {
             window.axios.get('/api/folders', { params: params }).then(ret => {
-                resolve(ret.data.list.map(item => {
+                resolve(ret.data.data.list.map(item => {
                     item.fullpath = `${item.parent}${item.name}`
                     if (item.dirtype) item.fullpath += '/'
                     return item

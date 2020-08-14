@@ -19,10 +19,6 @@ let router = new Router({
       ]
     },
     { path: '/s/:alias', name: 'share-info', component: () => import('./views/share/home.vue') },
-    { path: '/login', name: 'signin', meta: { title: "用户登录" }, component: () => import('./views/users/Signin.vue') },
-    { path: '/login/signup', name: 'signup', meta: { title: "用户注册" }, component: () => import('./views/users/Signup.vue') },
-    { path: '/login/reset', name: 'reset', meta: { title: "密码找回" }, component: () => import('./views/users/Reset.vue') },
-    { path: '/login/resetpwd', name: 'resetpwd', meta: { title: "密码找回" }, component: () => import('./views/users/Resetpwd.vue') }
   ]
 })
 
@@ -34,11 +30,6 @@ const setTitle = (title) => {
 
 router.beforeEach((to, from, next) => {
   setTitle(to.meta.title);
-  let token = Cookies.get('intoken')
-  if (!token && !to.path.startsWith('/login')) {  // 未登录则强制跳去登录
-    window.location = '/login'
-    return
-  }
 
   next();
 });

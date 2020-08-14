@@ -35,6 +35,11 @@ _axios.interceptors.response.use(
     return response;
   },
   function (error) {
+    if (error.response.status == 401) {
+      window.location = "/moreu/signin"
+      return
+    }
+
     if (error.response) {
       Notification.error(error.response.data.msg)
     }
