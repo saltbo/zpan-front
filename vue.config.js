@@ -92,11 +92,16 @@ module.exports = {
         hotOnly: false,
         disableHostCheck: true,
         proxy: {
-            '/api': {
+            '^/api': {
+                target: 'http://localhost:8222',
+                ws: true,
+                changeOrigin: true
+            },
+            '^/moreu': {
                 target: 'http://localhost:8081',
                 ws: true,
                 changeOrigin: true
-            }
+            },
         }
     },
 

@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       searchKw: "",
-      logined: false,
+      logined: true,
       defaultAvatar:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       profile: {},
@@ -73,29 +73,27 @@ export default {
       return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + "" + sizes[i];
     },
     userInfo() {
-      let uid = Cookies.get("uid");
-      if (!uid) {
-        this.logined = false;
-        return;
-      }
-
-      this.logined = true;
-      this.$axios.get("/api/users/" + uid).then((ret) => {
-        this.profile = ret.data.data;
+      this.$moreu.profile().then((profile) => {
+        this.profile = profile;
         if (this.profile.avatar == "") {
           this.profile.avatar = this.defaultAvatar;
         }
-
-        this.storage = {
-          used: this.formatBytes(this.profile.storage_used, 0),
-          max: this.formatBytes(this.profile.storage_max, 0),
-          percentage: Math.round(
-            (this.profile.storage_used / this.profile.storage_max) * 100
-          ),
-        };
-        mutations.setStorage(this.storage);
-        localStorage.setItem("uid", uid);
+        console.log(this.profile);
       });
+    },
+    userStorage() {
+      // this.$axios.get("/api/users/" + uid).then((ret) => {
+      //   this.profile = ret.data.data;
+      //   this.storage = {
+      //     used: this.formatBytes(this.profile.storage_used, 0),
+      //     max: this.formatBytes(this.profile.storage_max, 0),
+      //     percentage: Math.round(
+      //       (this.profile.storage_used / this.profile.storage_max) * 100
+      //     ),
+      //   };
+      //   mutations.setStorage(this.storage);
+      //   localStorage.setItem("uid", uid);
+      // });
     },
     onDropdown(index) {
       switch (index) {
@@ -103,6 +101,7 @@ export default {
           break;
         case "signout":
           window.location = "/moreu/signout";
+          // this.$moreu.signout();
           break;
       }
     },
