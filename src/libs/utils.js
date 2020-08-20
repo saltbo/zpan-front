@@ -4,16 +4,16 @@ import '@/plugins/axios'
 let utils = {
     uploadURL(fileObj, distDir) {
         let file = fileObj.file
-        let params = { name: fileObj.filename, type: file.type, size: file.size, dir: distDir };
+        let body = { name: fileObj.filename, type: file.type, size: file.size, dir: distDir };
         return new Promise((resolve, reject) => {
-            window.axios.get('/api/urls/upload', { params: params }).then(ret => {
+            window.axios.post('/api/links/upload', body).then(ret => {
                 resolve(ret.data.data)
             }).catch(reject)
         })
     },
-    downloadURL(objectId) {
+    downloadURL(alias) {
         return new Promise((resolve, reject) => {
-            window.axios.get('/api/urls/download/' + objectId).then(ret => {
+            window.axios.post('/api/links/download', { alias: alias }).then(ret => {
                 resolve(ret.data.data)
             }).catch(reject)
         })

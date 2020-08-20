@@ -82,18 +82,16 @@ export default {
       });
     },
     userStorage() {
-      // this.$axios.get("/api/users/" + uid).then((ret) => {
-      //   this.profile = ret.data.data;
-      //   this.storage = {
-      //     used: this.formatBytes(this.profile.storage_used, 0),
-      //     max: this.formatBytes(this.profile.storage_max, 0),
-      //     percentage: Math.round(
-      //       (this.profile.storage_used / this.profile.storage_max) * 100
-      //     ),
-      //   };
-      //   mutations.setStorage(this.storage);
-      //   localStorage.setItem("uid", uid);
-      // });
+      this.$axios.get("/api/storage").then((ret) => {
+        let storage = ret.data.data;
+        console.log(storage);
+        this.storage = {
+          used: this.formatBytes(storage.used, 0),
+          max: this.formatBytes(storage.max, 0),
+          percentage: Math.round((storage.used / storage.max) * 100),
+        };
+        mutations.setStorage(this.storage);
+      });
     },
     onDropdown(index) {
       switch (index) {
@@ -108,6 +106,7 @@ export default {
   },
   mounted() {
     this.userInfo();
+    this.userStorage();
   },
 };
 </script>
