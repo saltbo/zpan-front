@@ -13,7 +13,7 @@
     </div>
 
     <!-- for private file -->
-    <el-card v-show="private" class="box-card" style="width: 500px; margin: 100px auto;">
+    <el-card v-show="drawshow" class="box-card" style="width: 500px; margin: 100px auto;">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="提取码">
           <el-input v-model="drawcode" placeholder="请输入提取码"></el-input>
@@ -53,7 +53,7 @@ export default {
       rootDir: "",
       currentDir: "",
       tableData: [],
-      private: false,
+      drawshow: false,
       drawcode: "",
     };
   },
@@ -98,7 +98,7 @@ export default {
       zShare
         .find(alias, query)
         .then((data) => {
-          this.private = false;
+          this.drawshow = false;
           this.file = data.data.matter;
           if (this.file.dirtype == 0) {
             this.autoDownload(this.file.alias);
@@ -116,7 +116,7 @@ export default {
         })
         .catch((err) => {
           if (!this.file.name) {
-            this.private = true;
+            this.drawshow = true;
             return;
           }
         });

@@ -45,17 +45,6 @@ let zpan = {
             }).catch(reject)
         })
     },
-    listFolders(params) {
-        return new Promise((resolve, reject) => {
-            window.axios.get('/api/folders', { params: params }).then(data => {
-                resolve(data.data.list.map(item => {
-                    item.fullpath = `${item.parent}${item.name}`
-                    if (item.dirtype) item.fullpath += '/'
-                    return item
-                }));
-            }).catch(reject)
-        })
-    },
     rename(alias, name) {
         return window.axios.patch(`/api/files/${alias}/name`, { name: name })
     },

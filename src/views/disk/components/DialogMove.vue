@@ -2,7 +2,7 @@
   <div>
     <el-dialog title="移动到" width="30%" :visible.sync="visible">
       <el-tree :props="props" node-key="id" :default-expanded-keys="[0]" :load="loadNode" :highlight-current="true" @current-change="onCurrentChange" lazy>
-        <span class="custom-tree-node" slot-scope="{ node, data }">
+        <span class="custom-tree-node" slot-scope="{ node }">
           <span>
             <i class="el-icon-folder"></i>
             {{ node.label }}
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { zfile } from "@/libs/zpan";
+import { zfile, zfolder } from "@/libs/zpan";
 import mixinDialog from "@/libs/mixin-dialog.js";
 export default {
   mixins: [mixinDialog],
@@ -52,7 +52,7 @@ export default {
 
       let dir = "";
       if (node.level > 1) dir = node.data.fullpath;
-      zfile.listFolders({ parent: dir }).then((objects) => {
+      zfolder.list({ parent: dir }).then((objects) => {
         setTimeout(() => {
           return resolve(objects);
         }, 100);

@@ -30,7 +30,7 @@
 
 <script>
 // @ is an alias to /src
-import { zfile } from "@/libs/zpan";
+import { zfile, zfolder } from "@/libs/zpan";
 import FileTable from "@/components/FileTable";
 import DialogMove from "./components/DialogMove";
 import DialogShare from "./components/DialogShare";
@@ -93,7 +93,7 @@ export default {
         cancelButtonText: "取消",
       }).then(({ value }) => {
         let body = { name: value, dir: this.currentDir };
-        this.$axios.post("/api/folders", body).then((ret) => {
+        zfolder.create(body).then((ret) => {
           this.$message({
             type: "success",
             message: "创建成功!",
@@ -121,7 +121,8 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
       }).then(({ value }) => {
-        zfile.rename(obj.alias, value).then((ret) => {
+        let rename = obj.dirtype > 0 ? zfolder.rename : zfile.rename;
+        rename(obj.alias, value).then((ret) => {
           this.$message({
             type: "success",
             message: "修改成功!",
