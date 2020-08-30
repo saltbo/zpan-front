@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import utils from "@/libs/utils.js";
+import { zfile } from "@/libs/zpan";
 import mixinDialog from "@/libs/mixin-dialog.js";
 export default {
   name: "Uploader",
@@ -37,9 +37,8 @@ export default {
     },
     handleUpload(fileObj) {
       fileObj.filename = fileObj.file.name;
-      utils.uploadURL(fileObj, this.destDir).then((ret) => {
-        utils.upload(fileObj, ret.link, ret.headers).then(this.finish);
-      });
+
+      zfile.upload(fileObj, this.destDir).then(this.finish);
     },
   },
 };

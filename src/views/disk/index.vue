@@ -30,7 +30,7 @@
 
 <script>
 // @ is an alias to /src
-import utils from "@/libs/utils.js";
+import { zfile } from "@/libs/zpan";
 import FileTable from "@/components/FileTable";
 import DialogMove from "./components/DialogMove";
 import DialogShare from "./components/DialogShare";
@@ -82,7 +82,7 @@ export default {
         params.type = this.currentType;
       }
 
-      utils.listObjects(params).then((objects) => {
+      zfile.listObjects(params).then((objects) => {
         this.tableData = objects;
         this.loading = false;
       });
@@ -107,17 +107,12 @@ export default {
     },
     urlGet(obj) {
       return new Promise((resolve, reject) => {
-        utils
-          .downloadURL(obj.alias)
+        zfile
+          .findLink(obj.alias)
           .then((ret) => {
             resolve(ret.link);
           })
           .catch(reject);
-      });
-    },
-    download(obj) {
-      utils.downloadURL(obj.alias).then((item) => {
-        utils.download(obj.name, item.link);
       });
     },
     raname(obj) {
@@ -126,8 +121,7 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
       }).then(({ value }) => {
-        let body = { alias: obj.alias, action: 3, dest: value };
-        this.$axios.patch("/api/files", body).then((ret) => {
+        zfile.rename(obj.alias, value).then((ret) => {
           this.$message({
             type: "success",
             message: "修改成功!",
@@ -147,7 +141,7 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
       }).then(() => {
-        this.$axios.delete("/api/files/" + obj.alias).then((ret) => {
+        zfile.delete(obj.alias).then((ret) => {
           this.$message({
             type: "success",
             message: "删除成功!",
@@ -171,7 +165,7 @@ export default {
 
         Promise.all(
           this.selectedItems.map((obj) => {
-            return this.$axios.delete("/api/files/" + obj.alias);
+            return zfile.delete(obj.alias);
           })
         )
           .then((ret) => {

@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { zfile } from "@/libs/zpan";
 import utils from "@/libs/utils.js";
 export default {
   data() {
@@ -33,7 +34,7 @@ export default {
   },
   methods: {
     listRefresh() {
-      utils.listObjects({ dir: this.picDir }).then((objects) => {
+      zfile.listObjects({ dir: this.picDir }).then((objects) => {
         this.fileList = objects.map((obj) => {
           return {
             id: obj.id,
@@ -54,23 +55,22 @@ export default {
 
       var timestamp = new Date().getTime();
       fileObj.filename = fileObj.file.name.replace("image", timestamp);
-      utils.uploadURL(fileObj, this.picDir).then((ret) => {
-        utils
-          .upload(fileObj, ret.link, ret.headers)
-          .then((ret) => {
-            let file = {
-              name: fileObj.filename,
-              url: ret.link,
-            };
-            this.showPicPreview(file);
-            this.listRefresh();
-            loading.close();
-          })
-          .catch(() => {
-            this.listRefresh();
-            loading.close();
-          });
-      });
+
+      zfile
+        .upload(fileObj, this.picDir)
+        .then((ret) => {
+          let file = {
+            name: fileObj.filename,
+            url: ret.link,
+          };
+          this.showPicPreview(file);
+          this.listRefresh();
+          loading.close();
+        })
+        .catch(() => {
+          this.listRefresh();
+          loading.close();
+        });
     },
     handleRemove(file, fileList) {
       return this.$confirm(
@@ -82,7 +82,7 @@ export default {
           cancelButtonText: "取消",
         }
       ).then(() => {
-        this.$axios.delete("/api/files/" + file.id).then((ret) => {
+        zfile.delete(file.alias).then((ret) => {
           this.$message({
             type: "success",
             message: "删除成功!",

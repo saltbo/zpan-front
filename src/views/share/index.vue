@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { zShare } from "@/libs/zpan";
 export default {
   data() {
     return {
@@ -39,15 +40,14 @@ export default {
   methods: {
     listRefresh() {
       let host = window.location.host;
-      this.$axios.get("/api/shares").then((ret) => {
-        this.tData = ret.data.data.list.map((item) => {
+      zShare.list().then((data) => {
+        this.tData = data.data.list.map((item) => {
           item.link = `http://${host}/s/${item.alias}`;
           return item;
         });
       });
     },
     onCurrentChange(currentRow, oldCurrentRow) {
-      console.log(currentRow, 111);
       this.expandRowKeys = [currentRow.id];
     },
   },

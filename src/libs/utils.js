@@ -1,24 +1,7 @@
 /* eslint-disable no-console */
-import '@/plugins/axios'
 
 let utils = {
-    uploadURL(fileObj, distDir) {
-        let file = fileObj.file
-        let body = { name: fileObj.filename, type: file.type, size: file.size, dir: distDir };
-        return new Promise((resolve, reject) => {
-            window.axios.post('/api/links/upload', body).then(ret => {
-                resolve(ret.data.data)
-            }).catch(reject)
-        })
-    },
-    downloadURL(alias) {
-        return new Promise((resolve, reject) => {
-            window.axios.post('/api/links/download', { alias: alias }).then(ret => {
-                resolve(ret.data.data)
-            }).catch(reject)
-        })
-    },
-    upload(fileObj, destURL, headers) {
+    uploadStart(fileObj, destURL, headers) {
         let file = fileObj.file
         return new Promise((resolve, reject) => {
             let options = { headers: headers };
@@ -34,10 +17,13 @@ let utils = {
         })
     },
     download(name, url) {
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = name;
-        a.click();
+        return new Promise((resolve, reject) => {
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = name;
+            a.click();
+            resolve()
+        })
     },
     formatBytes(bytes, decimals) {
         if (bytes == 0) return '0 Bytes';
@@ -46,29 +32,6 @@ let utils = {
             sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
             i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-    },
-    listObjects(params) {
-        return new Promise((resolve, reject) => {
-            window.axios.get('/api/files', { params: params }).then(ret => {
-                resolve(ret.data.data.list.map(item => {
-                    item.size = this.formatBytes(item.size, 1);
-                    item.fullpath = `${item.parent}${item.name}`
-                    if (item.dirtype) item.fullpath += '/'
-                    return item
-                }));
-            }).catch(reject)
-        })
-    },
-    listFolders(params) {
-        return new Promise((resolve, reject) => {
-            window.axios.get('/api/folders', { params: params }).then(ret => {
-                resolve(ret.data.data.list.map(item => {
-                    item.fullpath = `${item.parent}${item.name}`
-                    if (item.dirtype) item.fullpath += '/'
-                    return item
-                }));
-            }).catch(reject)
-        })
     },
     setupPasteUpload(fileCallback) {
         document.addEventListener('paste', event => {

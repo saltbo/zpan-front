@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import utils from "@/libs/utils.js";
+import { zfile } from "@/libs/zpan";
 import mixinDialog from "@/libs/mixin-dialog.js";
 export default {
   mixins: [mixinDialog],
@@ -27,7 +27,7 @@ export default {
     open(items) {
       Promise.all(
         items.map((obj) => {
-          return utils.downloadURL(obj.alias);
+          return zfile.findLink(obj.alias);
         })
       ).then((rets) => {
         rets.forEach((ret) => {

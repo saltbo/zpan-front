@@ -38,6 +38,7 @@
 <script>
 import Cookies from "js-cookie";
 import { mutations } from "@/store";
+import utils from "@/libs/utils";
 export default {
   data() {
     return {
@@ -53,7 +54,7 @@ export default {
   },
   methods: {
     onRouteChange(newVal, oldVal) {
-      this.userInfo();
+      // this.userInfo();
     },
     suggestions(kw, cb) {
       var results = [
@@ -64,14 +65,6 @@ export default {
       cb(results);
     },
     search() {},
-    formatBytes(bytes, decimals) {
-      if (bytes == 0) return "0 Bytes";
-      var k = 1024,
-        dm = decimals + 1 || 3,
-        sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
-        i = Math.floor(Math.log(bytes) / Math.log(k));
-      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + "" + sizes[i];
-    },
     userInfo() {
       this.$moreu.profile().then((profile) => {
         this.profile = profile;
@@ -82,12 +75,12 @@ export default {
       });
     },
     userStorage() {
-      this.$axios.get("/api/storage").then((ret) => {
-        let storage = ret.data.data;
+      this.$axios.get("/api/storage").then((data) => {
+        let storage = data.data;
         console.log(storage);
         this.storage = {
-          used: this.formatBytes(storage.used, 0),
-          max: this.formatBytes(storage.max, 0),
+          used: utils.formatBytes(storage.used, 0),
+          max: utils.formatBytes(storage.max, 0),
           percentage: Math.round((storage.used / storage.max) * 100),
         };
         mutations.setStorage(this.storage);
@@ -105,7 +98,7 @@ export default {
     },
   },
   mounted() {
-    this.userInfo();
+    // this.userInfo();
     this.userStorage();
   },
 };

@@ -38,6 +38,7 @@
 
 <script>
 import mixinDialog from "@/libs/mixin-dialog.js";
+import { zShare } from "@/libs/zpan";
 export default {
   name: "Share",
   mixins: [mixinDialog],
@@ -58,14 +59,14 @@ export default {
       this.visible = true;
     },
     share(done) {
-      this.$axios.post("/api/shares", this.shareForm).then((ret) => {
+      zShare.create(this.shareForm).then((data) => {
         let host = window.location.host;
-        let alias = ret.data.data.alias;
+        let alias = data.data.alias;
 
         this.shareForm.done = true;
         this.shareForm.width = "50%";
         this.shareForm.link = `http://${host}/s/${alias}`;
-        this.shareForm.secret = ret.data.data.secret;
+        this.shareForm.secret = data.data.secret;
       });
     },
   },

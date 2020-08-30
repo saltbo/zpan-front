@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import utils from "@/libs/utils.js";
+import { zfile } from "@/libs/zpan";
 import mixinDialog from "@/libs/mixin-dialog.js";
 export default {
   mixins: [mixinDialog],
@@ -52,15 +52,14 @@ export default {
 
       let dir = "";
       if (node.level > 1) dir = node.data.fullpath;
-      utils.listFolders({ parent: dir }).then((objects) => {
+      zfile.listFolders({ parent: dir }).then((objects) => {
         setTimeout(() => {
           return resolve(objects);
         }, 100);
       });
     },
     submit() {
-      let body = { alias: this.alias, action: 2, dest: this.current.fullpath };
-      this.$axios.patch("/api/files", body).then((ret) => {
+      zfile.move(this.alias, this.current.fullpath).then((ret) => {
         this.$message({
           type: "success",
           message: "文件移动成功!",
