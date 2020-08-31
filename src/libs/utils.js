@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 let utils = {
-    uploadStart(fileObj, destURL, headers) {
+    upload(fileObj, destURL, headers) {
         let file = fileObj.file
         return new Promise((resolve, reject) => {
             let options = { headers: headers };

@@ -36,11 +36,7 @@ export default {
     listRefresh() {
       zfile.listObjects({ dir: this.picDir }).then((objects) => {
         this.fileList = objects.map((obj) => {
-          return {
-            id: obj.id,
-            name: obj.name,
-            url: `${this.picHost}/${obj.object}`,
-          };
+          return { id: obj.id, name: obj.name, url: obj.url };
         });
         this.loading = false;
       });
@@ -57,11 +53,11 @@ export default {
       fileObj.filename = fileObj.file.name.replace("image", timestamp);
 
       zfile
-        .upload(fileObj, this.picDir)
+        .upload(fileObj, this.picDir, true)
         .then((ret) => {
           let file = {
             name: fileObj.filename,
-            url: ret.link,
+            url: ret.data.url,
           };
           this.showPicPreview(file);
           this.listRefresh();

@@ -39,6 +39,7 @@
 import Cookies from "js-cookie";
 import { mutations } from "@/store";
 import utils from "@/libs/utils";
+import { zUser } from "@/libs/zpan";
 export default {
   data() {
     return {
@@ -75,14 +76,17 @@ export default {
       });
     },
     userStorage() {
-      this.$axios.get("/api/storage").then((data) => {
-        let storage = data.data;
-        console.log(storage);
+      zUser.myStorage().then((data) => {
+        let user = data.data;
+        console.log(user);
         this.storage = {
-          used: utils.formatBytes(storage.used, 0),
-          max: utils.formatBytes(storage.max, 0),
-          percentage: Math.round((storage.used / storage.max) * 100),
+          used: utils.formatBytes(user.storage_used, 0),
+          max: utils.formatBytes(user.storage_max, 0),
         };
+
+        this.percentage = Math.round(
+          (this.storage.used / this.storage.max) * 100
+        );
         mutations.setStorage(this.storage);
       });
     },
