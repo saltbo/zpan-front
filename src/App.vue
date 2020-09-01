@@ -96,13 +96,12 @@ export default {
           break;
         case "signout":
           window.location = "/moreu/signout";
-          // this.$moreu.signout();
           break;
       }
     },
   },
   mounted() {
-    // this.userInfo();
+    this.userInfo();
     this.userStorage();
   },
 };
