@@ -36,7 +36,7 @@ export default {
     listRefresh() {
       zfile.listObjects({ dir: this.picDir }).then((objects) => {
         this.fileList = objects.map((obj) => {
-          return { id: obj.id, name: obj.name, url: obj.url };
+          return { alias: obj.alias, name: obj.name, url: obj.url };
         });
         this.loading = false;
       });
