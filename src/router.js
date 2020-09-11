@@ -1,47 +1,41 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Cookies from 'js-cookie';
+
 Vue.use(Router)
 
 let router = new Router({
   mode: 'history',
   routes: [
     {
-      path: '/home',
-      name: 'home',
-      component: () => import('./views/Home.vue')
+      path: '/',
+      component: () => import('./views/Layout.vue'),
+      children: [
+        { path: '/', name: 'home', redirect: '/disk' },
+        { path: '/disk', name: 'disk', meta: { title: "我的文件" }, component: () => import('./views/disk') },
+        { path: '/share', name: 'share', meta: { title: "我的分享" }, component: () => import('./views/share') },
+        { path: '/picture', name: 'picture', meta: { title: "我的图床" }, component: () => import('./views/picture') },
+        { path: '/recyclebin', name: 'recyclebin', meta: { title: "回收站" }, component: () => import('./views/recyclebin') },
+      ]
     },
-    {
-      path: '/about',
-      name: 'about',
-      component: () => import('./views/About.vue')
-    },
-    {
-      path: '/login',
-      name: 'signin',
-      component: () => import('./views/users/Signin.vue')
-    },
-    {
-      path: '/login/signup',
-      name: 'signup',
-      component: () => import('./views/users/Signup.vue')
-    },
-    {
-      path: '/login/reset',
-      name: 'reset',
-      component: () => import('./views/users/Reset.vue')
-    }
+    { path: '/s/:alias', name: 'share-info', component: () => import('./views/share/home.vue') },
   ]
 })
 
+const setTitle = (title) => {
+  let defaultTitle = "ZPan"
+  title = title ? `${defaultTitle} - ${title}` : defaultTitle;
+  window.document.title = title;
+}
+
 router.beforeEach((to, from, next) => {
-  let token = Cookies.get('intoken')
-  if (!token && !to.path.startsWith('/login')) {  // 未登录则强制跳去登录
-    window.location = '/login'
-    return
-  }
+  setTitle(to.meta.title);
 
   next();
+});
+
+router.afterEach(() => {
+  window.scrollTo(0, 0);
 });
 
 

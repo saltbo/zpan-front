@@ -44,6 +44,11 @@ module.exports = {
             // extracted common chunks and vendor chunks.
             chunks: ['chunk-vendors', 'chunk-common', 'index']
         },
+        // when using the entry-only string format,
+        // template is inferred to be `public/subpage.html`
+        // and falls back to `public/index.html` if not found.
+        // Output filename is inferred to be `subpage.html`.
+        // subpage: 'src/subpage/main.js'
         404: {
             entry: 'src/main.js',
             template: 'src/template/index.ejs',
@@ -51,18 +56,6 @@ module.exports = {
             title: 'ZPan',
             chunks: ['chunk-vendors', 'chunk-common', 'index']
         },
-        // when using the entry-only string format,
-        // template is inferred to be `public/subpage.html`
-        // and falls back to `public/index.html` if not found.
-        // Output filename is inferred to be `subpage.html`.
-        // subpage: 'src/subpage/main.js'
-        login: {
-            entry: 'src/login.js',
-            template: 'src/template/index.ejs',
-            filename: 'login.html',
-            title: 'GWProtal - Login',
-            chunks: ['chunk-vendors', 'chunk-common', 'login']
-        }
     },
 
     // CSS related options
@@ -99,11 +92,11 @@ module.exports = {
         hotOnly: false,
         disableHostCheck: true,
         proxy: {
-            '/api': {
-                target: 'http://localhost:8081',
+            '^/moreu|^/api': {
+                target: 'http://localhost:8222',
                 ws: true,
                 changeOrigin: true
-            }
+            },
         }
     },
 
