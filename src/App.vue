@@ -18,9 +18,9 @@
                     <el-avatar :size="90" :src="profile.avatar"></el-avatar>
                   </el-col>
                   <el-col :span="13">
-                    <p>{{ profile.nickname}}</p>
+                    <p>{{ profile.nickname }}</p>
                     <p style="color: rgba(0, 0, 0, 0.54); margin: 5px 0">{{ profile.email}}</p>
-                    <el-tag>管理员</el-tag>
+                    <el-tag>{{ user.role }}</el-tag>
                   </el-col>
                 </el-row>
                 <el-dropdown-item icon="el-icon-s-home" command="profile" divided>个人主页</el-dropdown-item>
@@ -47,6 +47,7 @@ export default {
       logined: true,
       defaultAvatar:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      user: {},
       profile: {},
     };
   },
@@ -55,7 +56,7 @@ export default {
   },
   methods: {
     onRouteChange(newVal, oldVal) {
-      // this.userInfo();
+      this.userStorage();
     },
     suggestions(kw, cb) {
       var results = [
@@ -67,11 +68,14 @@ export default {
     },
     search() {},
     userInfo() {
-      this.$moreu.profile().then((profile) => {
-        this.profile = profile;
+      this.$moreu.profile().then((ret) => {
+        this.user = ret.data.user;
+        this.profile = ret.data.profile;
+
         if (this.profile.avatar == "") {
           this.profile.avatar = this.defaultAvatar;
         }
+
         console.log(this.profile);
       });
     },

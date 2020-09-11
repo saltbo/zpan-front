@@ -5304,13 +5304,10 @@ moment@^2.24.0:
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.27.0.tgz#8bff4e3e26a236220dfe3e36de756b6ebaa0105d"
   integrity sha512-al0MUK7cpIcglMv3YF13qSgdAIqxHTO7brRtaz3DlSULbqfazqkc5kEjNrLDOM7fsjshoFIihnU8snrP7zUvhQ==
 
-moreu-jssdk@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/moreu-jssdk/-/moreu-jssdk-1.0.0.tgz#76ae4ee9aec88363f22191a65216adad69ebad24"
-  integrity sha512-w17RQP5GPgXaV7n2LW0STBNdOw54EQwkmPQDJThQxlV1n8BdbgTWifZwlJMjuIQ4qZvegguQshQcuJJlv1dCdA==
-
-"moreu@file:../moreu-jssdk":
-  version "1.0.0"
+moreu-jssdk@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/moreu-jssdk/-/moreu-jssdk-1.0.2.tgz#d76679d2161880588fff2ef85bebec1ff47fbb39"
+  integrity sha512-quroq+QXYyzCZkb1i9McPhxAWOtABSvgcmt3Jv1t0UneYQhQXkUAmicr6blxXusj9wAuZKCVIxr5v8idQM2OKQ==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
