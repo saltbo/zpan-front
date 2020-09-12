@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog title="移动到" width="30%" :visible.sync="visible">
-      <el-tree :data="data" :props="props" node-key="id" :default-expanded-keys="[0]" :load="loadNode" :highlight-current="true" @current-change="onCurrentChange" lazy>
+      <el-tree :data="data" :props="props" node-key="id" :current-node-key="current.id" :default-expanded-keys="[0]" :load="loadNode" :highlight-current="true" @current-change="onCurrentChange" lazy>
         <span class="custom-tree-node" slot-scope="{ node }">
           <span>
             <i class="el-icon-folder"></i>
@@ -33,30 +33,40 @@ export default {
       },
       alias: "",
       current: {},
+      treectx: {},
     };
   },
   methods: {
     open(obj) {
       this.alias = obj.alias;
 
-      this.loadRootForlders();
+      if (this.treectx.node) {
+        this.loadNode(this.treectx.node, this.treectx.resolve);
+      }
       this.visible = true;
     },
     onCurrentChange(item, node) {
-      console.log(item);
       this.current = item;
-    },
-    loadRootForlders() {
-      zfolder.list({ parent: "" }).then((objects) => {
-        this.data = [{ id: 0, name: "/", parent: "", folders: objects }];
-      });
     },
     loadNode(node, resolve) {
       if (node.level === 0) {
+        resolve([{ id: 0, name: "/", parent: "" }]);
         return;
       }
 
-      zfolder.list({ parent: node.data.fullpath }).then(resolve);
+      // cache the args to refresh data
+      if (!this.treectx.node && node.level === 1) {
+        this.treectx.node = node;
+        this.treectx.resolve = resolve;
+      }
+
+      // pull the datas
+      zfolder.list({ parent: node.data.fullpath }).then((objects) => {
+        let folders = objects.filter((ele) => {
+          return ele.dirtype && ele.alias != this.alias;
+        });
+        resolve(folders);
+      });
     },
     submit() {
       zfile.move(this.alias, this.current.fullpath).then((ret) => {
