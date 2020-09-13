@@ -2,7 +2,7 @@
   <div>
     <el-row class="bread">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item v-for="item in pathItems" :key="item.dir" :index="item.dir" :to="{ query: {path: item.dir} }">{{ item.name }}</el-breadcrumb-item>
+        <el-breadcrumb-item v-for="item in pathItems" :key="item.dir" :index="item.dir" :to="{ query: {dir: item.dir} }">{{ item.name }}</el-breadcrumb-item>
       </el-breadcrumb>
     </el-row>
 
@@ -102,7 +102,7 @@ export default {
   methods: {
     loadPathItems() {
       this.pathItems = [{ name: "全部文件", dir: "" }];
-      if (this.current == "") {
+      if (!this.current) {
         return;
       }
 

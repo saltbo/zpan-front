@@ -7,7 +7,9 @@
             <div class="logo">
               <span>ZPan</span>
             </div>
-            <!-- <el-autocomplete class="search" size="medium" prefix-icon="el-icon-search" placeholder="搜索..." v-model="searchKw" :trigger-on-focus="false" :fetch-suggestions="suggestions" @select="search"></el-autocomplete> -->
+            <el-input class="search" size="medium" placeholder="搜索..." v-model="searchKw" @keyup.enter.native="search">
+              <i slot="prefix" class="el-input__icon el-icon-search"></i>
+            </el-input>
           </el-col>
           <el-col :span="12" style="text-align: right;">
             <el-dropdown v-show="logined" trigger="click" @command="onDropdown">
@@ -58,15 +60,9 @@ export default {
     onRouteChange(newVal, oldVal) {
       this.userStorage();
     },
-    suggestions(kw, cb) {
-      var results = [
-        { value: `在我的文件中搜索 ${kw}` },
-        { value: `在全站分享中搜索 ${kw}` },
-      ];
-      // 调用 callback 返回建议列表的数据
-      cb(results);
+    search() {
+      this.$router.push({ query: { kw: this.searchKw } });
     },
-    search() {},
     userInfo() {
       this.$moreu.profile().then((ret) => {
         this.user = ret.data.user;

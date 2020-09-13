@@ -8,7 +8,7 @@
   <div>
     <el-row class="menu">
       <el-button type="primary" size="medium" icon="el-icon-upload" @click="$refs.uploader.open()">上传</el-button>
-      <el-button v-show="!currentType" type="primary" size="medium" icon="el-icon-folder-add" @click="openCreateDiglog" plain>新建</el-button>
+      <el-button v-show="!query.type" type="primary" size="medium" icon="el-icon-folder-add" @click="openCreateDiglog" plain>新建</el-button>
       <el-button-group v-show="selectedItems.length>0" style="margin-left: 10px;">
         <el-button type="primary" icon="el-icon-download" size="medium" plain @click="$refs.outlink.open(selectedItems);">下载</el-button>
         <!-- <el-button type="primary" icon="el-icon-share" size="medium" @click="share" plain>分享</el-button> -->
@@ -18,12 +18,12 @@
     </el-row>
 
     <!-- main -->
-    <FileTable v-model="tableData" :selection.sync="selectedItems" :loading="loading" :current="currentDir" :urlget="urlGet" @folder-open="openFolder" @on-share="obj=>{$refs.share.open(obj.alias)}" @on-move="obj=>{$refs.move.open(obj)}" @on-rename="raname" @on-remove="remove" show-share show-more></FileTable>
+    <FileTable v-model="tableData" :selection.sync="selectedItems" :loading="loading" :current="query.dir" :urlget="urlGet" @folder-open="openFolder" @on-share="obj=>{$refs.share.open(obj.alias)}" @on-move="obj=>{$refs.move.open(obj)}" @on-rename="raname" @on-remove="remove" show-share show-more></FileTable>
 
     <!-- dialog -->
     <DialogMove ref="move" @completed="listRefresh"></DialogMove>
     <DialogShare ref="share"></DialogShare>
-    <DialogUpload ref="uploader" :dest-dir="currentDir" @completed="listRefresh"></DialogUpload>
+    <DialogUpload ref="uploader" :dest-dir="query.dir" @completed="listRefresh"></DialogUpload>
     <DialogOutlink ref="outlink"></DialogOutlink>
   </div>
 </template>
@@ -47,8 +47,7 @@ export default {
   },
   data() {
     return {
-      currentDir: "",
-      currentType: "",
+      query: {},
       tableData: [],
       loading: false,
       selectedItems: [],
@@ -62,27 +61,12 @@ export default {
   },
   methods: {
     onRouteChange(newVal, oldVal) {
-      this.currentDir = "";
-      this.currentType = "";
-      if (newVal.query.path) {
-        this.currentDir = newVal.query.path;
-      }
-
-      if (newVal.query.type) {
-        this.currentType = newVal.query.type;
-      }
-
+      this.query = newVal.query;
       this.listRefresh();
     },
     listRefresh() {
       this.loading = true;
-      let params = { dir: this.currentDir };
-      if (this.currentType) {
-        params.search = true;
-        params.type = this.currentType;
-      }
-
-      zfile.listObjects(params).then((objects) => {
+      zfile.listObjects(this.query).then((objects) => {
         this.tableData = objects;
         this.loading = false;
       });
@@ -92,7 +76,7 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
       }).then(({ value }) => {
-        let body = { name: value, dir: this.currentDir };
+        let body = { name: value, dir: query.dir };
         zfolder.create(body).then((ret) => {
           this.$message({
             type: "success",
@@ -102,8 +86,8 @@ export default {
         });
       });
     },
-    openFolder(fullPath) {
-      this.$router.push({ query: { path: fullPath } });
+    openFolder(dir) {
+      this.$router.push({ query: { dir: dir } });
     },
     urlGet(obj) {
       return new Promise((resolve, reject) => {
@@ -185,13 +169,7 @@ export default {
     },
   },
   mounted() {
-    if (this.$route.query.path) {
-      this.currentDir = this.$route.query.path;
-    }
-    if (this.$route.query.type) {
-      this.currentType = this.$route.query.type;
-    }
-
+    this.query = this.$route.query;
     this.listRefresh();
   },
 };
