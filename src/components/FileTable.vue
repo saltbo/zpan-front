@@ -54,11 +54,13 @@
 
     <!-- photoView -->
     <PhotoPreview ref="photoView"></PhotoPreview>
+    <MediaViewer v-model="selected" :visible="mediavv" @close="mediavv=false"></MediaViewer>
   </div>
 </template>
 
 <script>
 import PhotoPreview from "./PhotoPreview.vue";
+import MediaViewer from "./MediaViewer.vue";
 export default {
   name: "FileTable",
   props: {
@@ -82,11 +84,14 @@ export default {
   },
   components: {
     PhotoPreview,
+    MediaViewer,
   },
   data() {
     return {
       root: "",
       pathItems: [],
+      selected: {},
+      mediavv: false,
     };
   },
   watch: {
@@ -135,6 +140,15 @@ export default {
       if (obj.type.startsWith("image")) {
         this.urlget(obj).then((url) => {
           this.$refs.photoView.open(url);
+        });
+      }
+
+      // preview media file
+      if (obj.type.startsWith("audio") || obj.type.startsWith("video")) {
+        this.urlget(obj).then((url) => {
+          obj.url = url;
+          this.selected = obj;
+          this.mediavv = true;
         });
       }
 

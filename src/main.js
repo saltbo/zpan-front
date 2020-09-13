@@ -7,6 +7,7 @@ import './plugins/moment'
 import './plugins/element'
 import './plugins/clipboard'
 import './plugins/photoswipe'
+import './plugins/plyr'
 
 Vue.config.productionTip = false
 
