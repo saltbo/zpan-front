@@ -76,7 +76,7 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
       }).then(({ value }) => {
-        let body = { name: value, dir: query.dir };
+        let body = { name: value, dir: this.query.dir };
         zfolder.create(body).then((ret) => {
           this.$message({
             type: "success",
