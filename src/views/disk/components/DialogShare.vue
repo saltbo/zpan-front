@@ -1,35 +1,35 @@
 <template>
   <div>
-    <el-dialog title="分享链接" :width="shareForm.width" :visible.sync="visible">
+    <el-dialog :title="$t('dialog.share-title')" :width="shareForm.width" :visible.sync="visible">
       <el-form v-show="!shareForm.done">
-        <el-form-item label="使用提取码保护链接" style="margin-left: 20px;">
+        <el-form-item :label="$t('dialog.share-drawcode-switch')" style="margin-left: 20px;">
           <el-switch v-model="shareForm.private"></el-switch>
         </el-form-item>
-        <el-form-item label="有效期" style="margin-left: 20px;">
+        <el-form-item :label="$t('dialog.share-expire-time')" style="margin-left: 20px;">
           <el-select v-model="shareForm.expire_sec">
-            <el-option label="7天" :value="604800"></el-option>
-            <el-option label="30天" :value="2592000"></el-option>
-            <el-option label="一年" :value="31536000"></el-option>
+            <el-option :label="`7 ${$t('day')}`" :value="604800"></el-option>
+            <el-option :label="`30 ${$t('day')}`" :value="2592000"></el-option>
+            <el-option :label="`1 ${$t('year')}`" :value="31536000"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
 
       <div v-show="shareForm.done" style="margin-left: 50px; line-height: 30px;">
         <p>
-          链接地址：
+          {{ $t('dialog.share-link') }}：
           <a :href="shareForm.link" target="_blank">{{shareForm.link}}</a>
         </p>
-        <p v-if="shareForm.secret">提取码：{{shareForm.secret}}</p>
+        <p v-if="shareForm.secret">{{ $t('dialog.share-drawcode') }}：{{shareForm.secret}}</p>
       </div>
 
       <span slot="footer" class="dialog-footer">
         <div v-if="!shareForm.done">
-          <el-button @click="visible = false">取 消</el-button>
-          <el-button type="primary" @click="share">确 定</el-button>
+          <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
+          <el-button type="primary" @click="share">{{ $t('confirm') }}</el-button>
         </div>
         <div v-else>
-          <el-button type="primary">点击复制链接</el-button>
-          <el-button @click="visible = false">关 闭</el-button>
+          <el-button type="primary">{{ $t('click-copy-link') }}</el-button>
+          <el-button @click="visible = false">{{ $t('close') }}</el-button>
         </div>
       </span>
     </el-dialog>

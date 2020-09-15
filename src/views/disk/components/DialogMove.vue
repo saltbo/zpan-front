@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title="移动到" width="30%" :visible.sync="visible">
+    <el-dialog :title="$t('dialog.moveto-title')" width="30%" :visible.sync="visible">
       <el-tree :data="data" :props="props" node-key="id" :current-node-key="current.id" :default-expanded-keys="[0]" :load="loadNode" :highlight-current="true" @current-change="onCurrentChange" lazy>
         <span class="custom-tree-node" slot-scope="{ node }">
           <span>
@@ -11,8 +11,8 @@
       </el-tree>
 
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submit">确定</el-button>
-        <el-button @click="visible = false">取消</el-button>
+        <el-button type="primary" @click="submit">{{ $t('confirm') }}</el-button>
+        <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -72,7 +72,7 @@ export default {
       zfile.move(this.alias, this.current.fullpath).then((ret) => {
         this.$message({
           type: "success",
-          message: "文件移动成功!",
+          message: this.$t("msg.move-success"),
         });
         this.finish();
         this.close();

@@ -7,7 +7,7 @@
             <div class="logo">
               <span>ZPan</span>
             </div>
-            <el-input class="search" size="medium" placeholder="搜索..." v-model="searchKw" @keyup.enter.native="search">
+            <el-input class="search" size="medium" :placeholder="$t('topbar.search')" v-model="searchKw" @keyup.enter.native="search">
               <i slot="prefix" class="el-input__icon el-icon-search"></i>
             </el-input>
           </el-col>
@@ -25,8 +25,8 @@
                     <el-tag>{{ user.role }}</el-tag>
                   </el-col>
                 </el-row>
-                <el-dropdown-item icon="el-icon-s-home" command="profile" divided>个人主页</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-switch-button" command="signout">退出</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-setting" command="settings" divided>{{ $t('topbar.settings') }}</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-switch-button" command="signout">{{ $t('topbar.signout') }}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </el-col>
@@ -38,10 +38,9 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
 import { mutations } from "@/store";
-import utils from "@/libs/utils";
 import { zUser } from "@/libs/zpan";
+import utils from "@/libs/utils";
 export default {
   data() {
     return {
@@ -92,7 +91,7 @@ export default {
     },
     onDropdown(index) {
       switch (index) {
-        case "profile":
+        case "settings":
           break;
         case "signout":
           window.location = "/moreu/signout";

@@ -7,12 +7,12 @@
 <template>
   <div>
     <el-row class="menu">
-      <el-button type="primary" size="medium" icon="el-icon-upload" @click="$refs.uploader.open()">上传</el-button>
-      <el-button v-show="!query.type" type="primary" size="medium" icon="el-icon-folder-add" @click="openCreateDiglog" plain>新建</el-button>
+      <el-button type="primary" size="medium" icon="el-icon-upload" @click="$refs.uploader.open()">{{ $t('disk.upload') }}</el-button>
+      <el-button v-show="!query.type" type="primary" size="medium" icon="el-icon-folder-add" @click="openCreateDiglog" plain>{{ $t('disk.folder') }}</el-button>
       <el-button-group v-show="selectedItems.length>0" style="margin-left: 10px;">
-        <el-button type="primary" icon="el-icon-download" size="medium" plain @click="$refs.outlink.open(selectedItems);">下载</el-button>
+        <el-button type="primary" icon="el-icon-download" size="medium" plain @click="$refs.outlink.open(selectedItems);">{{ $t('disk.download') }}</el-button>
         <!-- <el-button type="primary" icon="el-icon-share" size="medium" @click="share" plain>分享</el-button> -->
-        <el-button type="primary" icon="el-icon-delete" size="medium" plain @click="deleteSelection">删除</el-button>
+        <el-button type="primary" icon="el-icon-delete" size="medium" plain @click="deleteSelection">{{ $t('disk.delete') }}</el-button>
         <!-- <el-button type="primary" size="medium" plain>移动到</el-button> -->
       </el-button-group>
     </el-row>
@@ -72,15 +72,15 @@ export default {
       });
     },
     openCreateDiglog() {
-      this.$prompt("请输入文件夹名称", "新建文件夹", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt(this.$t("tips.create-folder"), this.$t("create-folder"), {
+        confirmButtonText: this.$t("confirm"),
+        cancelButtonText: this.$t("cancel"),
       }).then(({ value }) => {
         let body = { name: value, dir: this.query.dir };
         zfolder.create(body).then((ret) => {
           this.$message({
             type: "success",
-            message: "创建成功!",
+            message: this.$t("msg.create-success"),
           });
           this.listRefresh();
         });
@@ -100,16 +100,16 @@ export default {
       });
     },
     raname(obj) {
-      this.$prompt("请输入新的名称", "重命名", {
+      this.$prompt(this.$t("tips.rename"), this.$t("rename"), {
         inputValue: obj.name,
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+        confirmButtonText: this.$t("confirm"),
+        cancelButtonText: this.$t("cancel"),
       }).then(({ value }) => {
         let rename = obj.dirtype > 0 ? zfolder.rename : zfile.rename;
         rename(obj.alias, value).then((ret) => {
           this.$message({
             type: "success",
-            message: "修改成功!",
+            message: this.$t("msg.rename-success"),
           });
           this.listRefresh();
         });
@@ -121,29 +121,33 @@ export default {
         return;
       }
 
-      this.$confirm("此操作将永久删除该文件, 是否继续?", `删除 ${obj.name}`, {
-        type: "warning",
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-      }).then(() => {
+      this.$confirm(
+        this.$t("tips.remove"),
+        this.$t("delete") + ` ${obj.name}`,
+        {
+          type: "warning",
+          confirmButtonText: this.$t("confirm"),
+          cancelButtonText: this.$t("cancel"),
+        }
+      ).then(() => {
         zfile.delete(obj.alias).then((ret) => {
           this.$message({
             type: "success",
-            message: "删除成功!",
+            message: this.$t("msg.delete-success"),
           });
           this.listRefresh();
         });
       });
     },
     deleteSelection() {
-      this.$confirm("此操作将永久删除所选文件, 是否继续?", `批量删除`, {
+      this.$confirm(this.$t("tips.batch-delete"), this.$t("batch-delete"), {
         type: "warning",
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+        confirmButtonText: this.$t("confirm"),
+        cancelButtonText: this.$t("cancel"),
       }).then(() => {
         const loading = this.$loading({
           lock: true,
-          text: "Deleting",
+          text: this.$t("loading.deleting"),
           spinner: "el-icon-loading",
           background: "rgba(0, 0, 0, 0.7)",
         });
@@ -158,7 +162,7 @@ export default {
             loading.close();
             this.$message({
               type: "success",
-              message: "所选文件全部删除成功!",
+              message: this.$t("msg.batch-delete-success"),
             });
           })
           .catch((err) => {

@@ -11,17 +11,17 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <p>
-            链接：
+            <span>{{ $t('share.link') }}：</span>
             <a :href="props.row.link" target="_blank">{{props.row.link}}</a>
-            <span v-if="props.row.secret" style="margin-left: 20px;">提取码：{{props.row.secret}}</span>
+            <span v-if="props.row.secret" style="margin-left: 20px;">{{ $t('share.drawcode') }}：{{props.row.secret}}</span>
           </p>
         </template>
       </el-table-column>
-      <el-table-column label="分享文件" prop="name"></el-table-column>
-      <el-table-column label="分享时间" prop="created">
+      <el-table-column prop="name" :label="$t('share.name')"></el-table-column>
+      <el-table-column prop="created" :label="$t('share.created')">
         <template slot-scope="scope">{{ scope.row.created | moment}}</template>
       </el-table-column>
-      <el-table-column label="失效时间" prop="expired">
+      <el-table-column prop="expired" :label="$t('share.expired')">
         <template slot-scope="scope">{{ scope.row.expire_at | moment}}</template>
       </el-table-column>
     </el-table>

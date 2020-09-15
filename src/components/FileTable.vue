@@ -9,7 +9,7 @@
     <!-- table -->
     <el-table style="width: 100%" tooltip-effect="dark" :data="value" v-loading="loading" highlight-current-row @selection-change="onSelectionChange">
       <el-table-column type="selection" width="30" :selectable="selectable"></el-table-column>
-      <el-table-column prop="name" label="名称" min-width="200" show-overflow-tooltip sortable>
+      <el-table-column prop="name" :label="$t('fth.name')" min-width="200" show-overflow-tooltip sortable>
         <template slot-scope="scope">
           <i v-if="scope.row.dirtype" class="matter-icon el-icon-folder" style="color: #ffc402;"></i>
           <i v-else class="matter-icon el-icon-document"></i>
@@ -33,21 +33,21 @@
               </el-link>
 
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item :command="{action:'move', row: scope.row}">移动到</el-dropdown-item>
-                <el-dropdown-item :command="{action:'rename', row: scope.row}">重命名</el-dropdown-item>
-                <el-dropdown-item :command="{action:'remove', row: scope.row}" divided>删除</el-dropdown-item>
+                <el-dropdown-item :command="{action:'move', row: scope.row}">{{ $t('ftb.move') }}</el-dropdown-item>
+                <el-dropdown-item :command="{action:'rename', row: scope.row}">{{ $t('ftb.rename') }}</el-dropdown-item>
+                <el-dropdown-item :command="{action:'remove', row: scope.row}" divided>{{ $t('ftb.remove') }}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="size" label="大小" width="180">
+      <el-table-column prop="size" :label="$t('fth.size')" width="180">
         <template slot-scope="scope">
           <div v-if="scope.row.dirtype">-</div>
           <div v-else>{{ scope.row.size }}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="updated" label="修改日期" width="180">
+      <el-table-column prop="updated" :label="$t('fth.updated')" width="180">
         <template slot-scope="scope">{{ scope.row.updated | moment}}</template>
       </el-table-column>
     </el-table>
@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     loadPathItems() {
-      this.pathItems = [{ name: "全部文件", dir: "" }];
+      this.pathItems = [{ name: this.$t("ft.breadcrumb"), dir: "" }];
       if (!this.current) {
         return;
       }

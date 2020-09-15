@@ -9,7 +9,7 @@
       <img width="100%" :src="dialog.imgUrl" alt />
 
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" class="copy-link" :data-clipboard-text="dialog.imgUrl" @click="dialog.show = false">复制外链</el-button>
+        <el-button type="primary" class="copy-link" :data-clipboard-text="dialog.imgUrl" @click="dialog.show = false">{{ $t("copy-link") }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -70,18 +70,18 @@ export default {
     },
     handleRemove(file, fileList) {
       return this.$confirm(
-        "此操作将永久删除该文件, 是否继续?",
-        `删除${file.name}`,
+        this.$t("tips.remove"),
+        this.$t("delete") + ` ${file.name}`,
         {
           type: "warning",
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
+          confirmButtonText: this.$t("confirm"),
+          cancelButtonText: this.$t("cancel"),
         }
       ).then(() => {
         zfile.delete(file.alias).then((ret) => {
           this.$message({
             type: "success",
-            message: "删除成功!",
+            message: this.$t("delete-success"),
           });
         });
       });
@@ -99,11 +99,11 @@ export default {
 
     // setup clipboard
     this.$clipboard.on("success", (e) => {
-      this.$message.success("复制成功");
+      this.$message.success(this.$t("copy-success"));
       e.clearSelection();
     });
     this.$clipboard.on("error", (e) => {
-      this.$message.error("复制失败");
+      this.$message.error(this.$t("copy-failed"));
     });
     utils.setupPasteUpload(this.handleUpload);
   },

@@ -102,13 +102,19 @@ module.exports = {
 
     // options for 3rd party plugins
     pluginOptions: {
-        gitDescribe: {
-            variableName: 'GIT_DESCRIBE'
-        },
-        moment: {
-            locales: [
-                'en'
-            ]
-        }
+      gitDescribe: {
+        variableName: 'GIT_DESCRIBE'
+      },
+      moment: {
+        locales: [
+          'en'
+        ]
+      },
+      i18n: {
+        locale: 'en',
+        fallbackLocale: 'en',
+        localeDir: 'locales',
+        enableInSFC: true
+      }
     }
 }

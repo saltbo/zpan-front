@@ -1,0 +1,84 @@
+{
+  "batch-delete": "批量删除",
+  "cancel": "取消",
+  "click-copy-link": "点击复制链接",
+  "close": "关闭",
+  "confirm": "确认",
+  "copy-link": "复制外链",
+  "create-folder": "新建文件夹",
+  "day": "天",
+  "delete": "删除",
+  "delete-success": "删除成功",
+  "dialog": {
+    "moveto-title": "移动到",
+    "outlink-title": "下载外链",
+    "share-drawcode": "提取码",
+    "share-drawcode-switch": "使用提取码保护链接",
+    "share-expire-time": "有效期",
+    "share-link": "链接地址",
+    "share-title": "分享链接",
+    "upload-click": "点击上传",
+    "upload-tips": "将文件拖到此处，或",
+    "upload-title": "上传队列"
+  },
+  "disk": {
+    "download": "下载",
+    "folder": "新建",
+    "share": "分享",
+    "upload": "上传"
+  },
+  "ft": {
+    "breadcrumb": "全部文件"
+  },
+  "ftb": {
+    "move": "移动到",
+    "remove": "删除",
+    "rename": "重命名"
+  },
+  "fth": {
+    "name": "名称",
+    "size": "大小",
+    "updated": "最近更新"
+  },
+  "leftnav": {
+    "audio": "音频",
+    "doc": "文档",
+    "files": "全部文件",
+    "image": "图片",
+    "imghosting": "我的图床",
+    "share": "我的分享",
+    "storage": "存储空间",
+    "video": "视频"
+  },
+  "moveTo": "移动到",
+  "msg": {
+    "batch-delete-success": "批量删除成功",
+    "create-success": "创建成功",
+    "delete-success": "删除成功",
+    "move-success": "移动成功",
+    "rename-success": "重命名成功"
+  },
+  "rename": "重命名",
+  "share": {
+    "auto-download-tips": "您的文件已经开始下载，如果没有开始请点击此处重试",
+    "created": "分享时间",
+    "drawcode": "提取码",
+    "drawcode-placeholder": "请输入提取码",
+    "drawfile": "提取文件",
+    "expired": "失效时间",
+    "link": "链接",
+    "name": "名称"
+  },
+  "tips": {
+    "batch-delete": "此操作将永久删除所选文件，是否继续？",
+    "create-folder": "请输入新的文件夹名称",
+    "remove": "此操作将永久删除该文件, 是否继续?",
+    "rename": "请输入新的名称"
+  },
+  "topbar": {
+    "search": "搜索...",
+    "settings": "设置",
+    "signout": "退出"
+  },
+  "year": "年"
+}

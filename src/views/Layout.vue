@@ -4,31 +4,31 @@
       <el-menu :default-active="active" background-color="#f7f7f7" router>
         <el-menu-item index="/disk">
           <i class="el-icon-document"></i>
-          <span slot="title">全部文件</span>
+          <span slot="title">{{ $t('leftnav.files') }}</span>
         </el-menu-item>
         <el-menu-item index="/disk?type=doc">
           <i class="el-icon-xx"></i>
-          <span slot="title">文档</span>
+          <span slot="title">{{ $t('leftnav.doc') }}</span>
         </el-menu-item>
         <el-menu-item index="/disk?type=image">
           <i class="el-icon-xx"></i>
-          <span slot="title">图片</span>
+          <span slot="title">{{ $t('leftnav.image') }}</span>
         </el-menu-item>
         <el-menu-item index="/disk?type=audio">
           <i class="el-icon-xx"></i>
-          <span slot="title">音频</span>
+          <span slot="title">{{ $t('leftnav.audio') }}</span>
         </el-menu-item>
         <el-menu-item index="/disk?type=video">
           <i class="el-icon-xx"></i>
-          <span slot="title">视频</span>
+          <span slot="title">{{ $t('leftnav.video') }}</span>
         </el-menu-item>
         <el-menu-item index="/share">
           <i class="el-icon-share"></i>
-          <span slot="title">我的分享</span>
+          <span slot="title">{{ $t('leftnav.share') }}</span>
         </el-menu-item>
         <el-menu-item index="/picture">
           <i class="el-icon-picture-outline"></i>
-          <span slot="title">我的图床</span>
+          <span slot="title">{{ $t('leftnav.imghosting') }}</span>
         </el-menu-item>
         <!-- <el-menu-item index="/recyclebin">
 					<i class="el-icon-delete"></i>
@@ -40,7 +40,7 @@
           <i class="el-icon-coin"></i>
         </el-col>
         <el-col :span="17">
-          <p>存储空间</p>
+          <p>{{ $t('leftnav.storage') }}</p>
           <el-progress :percentage="storage.percentage"></el-progress>
           <p style="color: rgba(0, 0, 0, 0.54); font-size: 0.75rem;">{{storage.used}}/{{storage.max}}</p>
         </el-col>

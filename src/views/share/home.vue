@@ -7,7 +7,7 @@
           <span>{{file.name}}</span>
         </div>
         <div class="text item">
-          <a :href="fileURL">您的文件已经开始下载，如果没有开始请单击此处重试</a>
+          <a :href="fileURL">{{ $t('share.auto-download-tips') }}</a>
         </div>
       </el-card>
     </div>
@@ -15,11 +15,11 @@
     <!-- for private file -->
     <el-card v-show="drawshow" class="box-card" style="width: 500px; margin: 100px auto;">
       <el-form :inline="true" class="demo-form-inline">
-        <el-form-item label="提取码">
-          <el-input v-model="drawcode" placeholder="请输入提取码"></el-input>
+        <el-form-item :label="$t('share.drawcode')">
+          <el-input v-model="drawcode" :placeholder="$t('share.drawcode-placeholder')"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="draw">提取文件</el-button>
+          <el-button type="primary" @click="draw">{{ $t('share.drawfile') }}</el-button>
         </el-form-item>
       </el-form>
     </el-card>

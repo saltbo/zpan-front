@@ -1,0 +1,83 @@
+{
+  "batch-delete": "Batch Delete",
+  "cancel": "Cancel",
+  "click-copy-link": "Click copy link",
+  "close": "Close",
+  "confirm": "Confirm",
+  "copy-link": "Copy Link",
+  "create-folder": "New Folder",
+  "day": "Days",
+  "delete": "Delete",
+  "dialog": {
+    "moveto-title": "MoveTo",
+    "outlink-title": "Outlink",
+    "share-drawcode-switch": "Protect",
+    "share-expire-time": "Expire Time",
+    "share-link": "Link Address",
+    "share-title": "Share Link",
+    "upload-click": "click to upload",
+    "upload-tips": "Drag the file here, or",
+    "upload-title": "Upload Queue"
+  },
+  "disk": {
+    "delete": "Delete",
+    "download": "Download",
+    "folder": "New Folder",
+    "upload": "Upload"
+  },
+  "ft": {
+    "breadcrumb": "root"
+  },
+  "ftb": {
+    "move": "MoveTo",
+    "remove": "Remove",
+    "rename": "Rename"
+  },
+  "fth": {
+    "name": "Name",
+    "size": "Size",
+    "updated": "LastUpdated"
+  },
+  "leftnav": {
+    "audio": "Audios",
+    "doc": "Documents",
+    "files": "All Files",
+    "image": "Pictures",
+    "imghosting": "Image Hosting",
+    "share": "Shares",
+    "storage": "Storage",
+    "video": "Videos"
+  },
+  "moveTo": "MoveTo",
+  "msg": {
+    "batch-delete-success": "Batch deleted!",
+    "create-success": "Created!",
+    "delete-success": "Deleted!",
+    "move-success": "Moved!",
+    "rename-success": "Renamed!"
+  },
+  "rename": "Rename",
+  "share": {
+    "auto-download-tips": "Your file has started downloading, if it has not started, please click here to try again",
+    "created": "ShareTime",
+    "drawcode": "DrawCode",
+    "drawcode-placeholder": "Please input your draw code",
+    "drawfile": "Draw",
+    "expired": "ExpireTime",
+    "link": "ShareLink",
+    "name": "Name"
+  },
+  "share-drawcode": "Draw code",
+  "tips": {
+    "batch-delete": "This operation will permanently delete the selected files, do you want to continue?",
+    "create-folder": "Please input folder name",
+    "remove": "This operation will permanently delete the file, do you want to continue?",
+    "rename": "Please input newly name"
+  },
+  "topbar": {
+    "search": "Searching...",
+    "settings": "Settings",
+    "signout": "Sign out"
+  },
+  "year": "Years"
+}
