@@ -116,11 +116,6 @@ export default {
       });
     },
     remove(obj) {
-      if (obj.dirtype) {
-        this.$message("暂不支持删除文件夹");
-        return;
-      }
-
       this.$confirm(
         this.$t("tips.remove"),
         this.$t("delete") + ` ${obj.name}`,
@@ -130,7 +125,8 @@ export default {
           cancelButtonText: this.$t("cancel"),
         }
       ).then(() => {
-        zfile.delete(obj.alias).then((ret) => {
+        let remove = obj.dirtype ? zfolder.delete : zfile.delete;
+        remove(obj.alias).then((ret) => {
           this.$message({
             type: "success",
             message: this.$t("msg.delete-success"),

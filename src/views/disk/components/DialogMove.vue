@@ -39,6 +39,7 @@ export default {
   methods: {
     open(obj) {
       this.alias = obj.alias;
+      this.isDir = obj.dirtype > 0;
 
       if (this.treectx.node) {
         this.loadNode(this.treectx.node, this.treectx.resolve);
@@ -69,7 +70,8 @@ export default {
       });
     },
     submit() {
-      zfile.move(this.alias, this.current.fullpath).then((ret) => {
+      let move = this.isDir ? zfolder.move : zfile.move;
+      move(this.alias, this.current.fullpath).then((ret) => {
         this.$message({
           type: "success",
           message: this.$t("msg.move-success"),

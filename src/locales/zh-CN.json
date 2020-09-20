@@ -22,6 +22,7 @@
     "upload-title": "上传队列"
   },
   "disk": {
+    "delete": "删除",
     "download": "下载",
     "folder": "新建",
     "share": "分享",

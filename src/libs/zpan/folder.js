@@ -17,8 +17,14 @@ let folder = {
         return window.axios.post(`/api/folders`, body)
     },
     rename(alias, name) {
-        return window.axios.patch(`/api/folders/${alias}`, { name: name })
+        return window.axios.patch(`/api/folders/${alias}/name`, { name: name })
     },
+    move(alias, newDir) {
+        return window.axios.patch(`/api/folders/${alias}/dir`, { dir: newDir })
+    },
+    delete(alias) {
+        return window.axios.delete(`/api/folders/${alias}`)
+    }
 }
 
 export default folder;
