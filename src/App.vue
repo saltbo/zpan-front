@@ -12,6 +12,10 @@
             </el-input>
           </el-col>
           <el-col :span="12" style="text-align: right;">
+            <el-select v-model="$i18n.locale" size="mini" style="width: 100px; margin-right: 20px;">
+              <el-option v-for="lang in langs" :key="lang.value" :value="lang.value" :label="lang.label">{{ lang.label }}</el-option>
+            </el-select>
+
             <el-dropdown v-show="logined" trigger="click" @command="onDropdown">
               <el-avatar :size="30" :src="profile.avatar" style="vertical-align: middle;"></el-avatar>
               <el-dropdown-menu slot="dropdown">
@@ -45,6 +49,10 @@ export default {
   data() {
     return {
       searchKw: "",
+      langs: [
+        { label: "中文", value: "zh-CN" },
+        { label: "English", value: "en" },
+      ],
       logined: true,
       defaultAvatar:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
