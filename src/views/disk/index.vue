@@ -15,6 +15,12 @@
         <el-button type="primary" icon="el-icon-delete" size="medium" plain @click="deleteSelection">{{ $t('disk.delete') }}</el-button>
         <!-- <el-button type="primary" size="medium" plain>移动到</el-button> -->
       </el-button-group>
+
+      <div style="float:right">
+        <el-input class="search" size="small" :placeholder="$t('topbar.search')" v-model="query.kw" @keyup.enter.native="listRefresh">
+          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+      </div>
     </el-row>
 
     <!-- main -->
@@ -48,6 +54,7 @@ export default {
   data() {
     return {
       query: {},
+      searchKw: "",
       tableData: [],
       loading: false,
       selectedItems: [],

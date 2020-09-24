@@ -1,7 +1,7 @@
 <template>
   <el-container>
-    <el-aside width="200px" style="height: 100%; background-color: #f7f7f7;">
-      <el-menu :default-active="active" background-color="#f7f7f7" router>
+    <el-aside width="200px" style="height: 100%; background-color: #f4f4f5;">
+      <el-menu :default-active="active" background-color="#f4f4f5" router>
         <el-menu-item index="/disk">
           <i class="el-icon-document"></i>
           <span slot="title">{{ $t('leftnav.files') }}</span>
@@ -26,50 +26,31 @@
           <i class="el-icon-share"></i>
           <span slot="title">{{ $t('leftnav.share') }}</span>
         </el-menu-item>
-        <el-menu-item index="/picture">
-          <i class="el-icon-picture-outline"></i>
-          <span slot="title">{{ $t('leftnav.imghosting') }}</span>
-        </el-menu-item>
         <!-- <el-menu-item index="/recyclebin">
 					<i class="el-icon-delete"></i>
 					<span slot="title">回收站</span>
         </el-menu-item>-->
       </el-menu>
-      <el-row class="storage">
-        <el-col :span="7" style="font-size: 40px;">
-          <i class="el-icon-coin"></i>
-        </el-col>
-        <el-col :span="17">
-          <p>{{ $t('leftnav.storage') }}</p>
-          <el-progress :percentage="storage.percentage"></el-progress>
-          <p style="color: rgba(0, 0, 0, 0.54); font-size: 0.75rem;">{{storage.used}}/{{storage.max}}</p>
-        </el-col>
-      </el-row>
+
+      <!-- <div class="copyright">
+        <span>Powered by</span>
+        <a href="https://github.com/saltbo/zpan" target="_blank">ZPan</a>
+      </div>-->
     </el-aside>
 
-    <el-container ref="main">
-      <el-main>
-        <router-view></router-view>
-      </el-main>
-      <el-footer>
-        <span class="brand">
-          Powered by
-          <a target="_blank" href="https://github.com/saltbo/zpan">ZPan</a>
-        </span>
-      </el-footer>
-    </el-container>
+    <el-main ref="main">
+      <router-view></router-view>
+    </el-main>
   </el-container>
 </template>
 
 <script>
-import { store } from "@/store";
 export default {
   name: "app",
   components: {},
   data() {
     return {
       active: "disk",
-      storage: {},
       clientHeight: 1000,
     };
   },
@@ -80,7 +61,6 @@ export default {
   methods: {
     onRouteChange(newVal, oldVal) {
       this.active = newVal.fullPath;
-      this.storage = store.storage;
     },
     onClientHeightChange(clientHeight) {
       //动态修改样式
@@ -95,9 +75,6 @@ export default {
     };
 
     this.active = this.$route.fullPath;
-    setTimeout(() => {
-      this.storage = store.storage;
-    }, 100);
   },
 };
 </script>
@@ -106,9 +83,11 @@ export default {
 .el-main {
   padding: 10px !important;
 }
-.el-footer {
-  height: 30px !important;
+.copyright {
   text-align: center;
+  position: absolute;
+  bottom: 20px;
+  font-size: 10px;
 }
 
 .el-aside .el-menu {
@@ -124,12 +103,5 @@ export default {
 .el-aside .el-menu-item:hover {
   outline: 0;
   background-color: #eaeaea !important;
-}
-.el-aside .storage {
-  border-top: 1px solid #c9c9c9;
-  width: 200px;
-  padding: 20px 10px;
-  position: absolute;
-  bottom: 0;
 }
 </style>

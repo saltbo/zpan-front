@@ -2,53 +2,56 @@
   <div id="app">
     <el-container style="height: 100%;">
       <el-header>
-        <el-row>
-          <el-col :span="12">
-            <div class="logo">
-              <span>ZPan</span>
-            </div>
-            <el-input class="search" size="medium" :placeholder="$t('topbar.search')" v-model="searchKw" @keyup.enter.native="search">
-              <i slot="prefix" class="el-input__icon el-icon-search"></i>
-            </el-input>
-          </el-col>
-          <el-col :span="12" style="text-align: right;">
-            <el-select v-model="$i18n.locale" size="mini" style="width: 100px; margin-right: 20px;">
-              <el-option v-for="lang in langs" :key="lang.value" :value="lang.value" :label="lang.label">{{ lang.label }}</el-option>
-            </el-select>
+        <div class="logo">
+          <img src="./assets/logo.png" alt />
+        </div>
+        <el-menu class="navbar" :default-active="activeIndex" mode="horizontal" style="width: 100%" router>
+          <el-menu-item index="disk">网盘</el-menu-item>
+          <el-menu-item index="picture">图床</el-menu-item>
+        </el-menu>
 
-            <el-dropdown v-show="logined" trigger="click" @command="onDropdown">
-              <el-avatar :size="30" :src="profile.avatar" style="vertical-align: middle;"></el-avatar>
-              <el-dropdown-menu slot="dropdown">
-                <el-row style="padding: 20px; width: 280px;">
-                  <el-col :span="11">
-                    <el-avatar :size="90" :src="profile.avatar"></el-avatar>
-                  </el-col>
-                  <el-col :span="13">
-                    <p>{{ profile.nickname }}</p>
-                    <p style="color: rgba(0, 0, 0, 0.54); margin: 5px 0">{{ profile.email}}</p>
-                    <el-tag>{{ user.role }}</el-tag>
-                  </el-col>
+        <div style="position: absolute; right: 20px">
+          <el-select v-model="$i18n.locale" size="mini" style="width: 100px; margin-right: 20px;">
+            <el-option v-for="lang in langs" :key="lang.value" :value="lang.value" :label="lang.label">{{ lang.label }}</el-option>
+          </el-select>
+          <el-dropdown v-show="logined" trigger="click" @command="onDropdown">
+            <el-avatar :size="30" :src="profile.avatar" style="vertical-align: middle;"></el-avatar>
+            <el-dropdown-menu slot="dropdown" style="width:200px;">
+              <div style="margin: auto 20px;">
+                <el-row style="text-align: center; margin: 10px 0;">
+                  <el-avatar :size="50" :src="profile.avatar"></el-avatar>
                 </el-row>
-                <el-dropdown-item icon="el-icon-setting" command="settings" divided>{{ $t('topbar.settings') }}</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-switch-button" command="signout">{{ $t('topbar.signout') }}</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </el-col>
-        </el-row>
+                <el-row class="storage">
+                  <p>
+                    <span style>{{ $t('leftnav.storage') }}</span>
+                    <span style="float: right;">{{storage.percentage}}%</span>
+                  </p>
+                  <el-progress :percentage="storage.percentage" :show-text="false"></el-progress>
+                  <p style="color: rgba(0, 0, 0, 0.54); font-size: 0.75rem;">{{storage.used}}/{{storage.max}}</p>
+                </el-row>
+              </div>
+
+              <el-dropdown-item icon="el-icon-setting" command="settings" divided>{{ $t('topbar.settings') }}</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-switch-button" command="signout">{{ $t('topbar.signout') }}</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
       </el-header>
-      <router-view></router-view>
+
+      <el-container>
+        <router-view></router-view>
+      </el-container>
     </el-container>
   </div>
 </template>
 
 <script>
-import { mutations } from "@/store";
 import { zUser } from "@/libs/zpan";
 import utils from "@/libs/utils";
 export default {
   data() {
     return {
-      searchKw: "",
+      activeIndex: "disk",
       langs: [
         { label: "中文", value: "zh-CN" },
         { label: "English", value: "en" },
@@ -56,6 +59,9 @@ export default {
       logined: true,
       defaultAvatar:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      storage: {
+        percentage: 0,
+      },
       user: {},
       profile: {},
     };
@@ -65,10 +71,8 @@ export default {
   },
   methods: {
     onRouteChange(newVal, oldVal) {
+      this.activeIndex = newVal.name;
       this.userStorage();
-    },
-    search() {
-      this.$router.push({ query: { kw: this.searchKw } });
     },
     userInfo() {
       this.$moreu.profile().then((ret) => {
@@ -78,23 +82,17 @@ export default {
         if (this.profile.avatar == "") {
           this.profile.avatar = this.defaultAvatar;
         }
-
-        console.log(this.profile);
       });
     },
     userStorage() {
       zUser.myStorage().then((data) => {
         let user = data.data;
-        console.log(user);
         this.storage = {
           used: utils.formatBytes(user.storage_used, 0),
           max: utils.formatBytes(user.storage_max, 0),
+          percentage:
+            Math.round((user.storage_used / user.storage_max) * 10000) / 100,
         };
-
-        this.percentage = Math.round(
-          (this.storage.used / this.storage.max) * 100
-        );
-        mutations.setStorage(this.storage);
       });
     },
     onDropdown(index) {
@@ -136,9 +134,11 @@ body {
 }
 
 .el-header {
-  color: #fff;
+  display: flex;
   line-height: 60px;
-  background-color: #3f51b5;
+  background-color: #fff;
+  box-shadow: 1px 1px 8px #c9c9c9;
+  z-index: 1;
 }
 .el-header .logo {
   width: 150px;
@@ -147,8 +147,12 @@ body {
   padding: 0 15px;
   vertical-align: middle;
 }
-.el-header .search {
-  width: 300px;
+.navbar {
+  font-weight: bold;
+}
+
+.storage {
+  margin: 15px 0;
 }
 
 .guest .el-card__header {
