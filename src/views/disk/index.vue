@@ -7,16 +7,16 @@
 <template>
   <div>
     <el-row class="menu">
-      <el-button type="primary" size="medium" icon="el-icon-upload" @click="$refs.uploader.open()">{{ $t('disk.upload') }}</el-button>
-      <el-button v-show="!query.type" type="primary" size="medium" icon="el-icon-folder-add" @click="openCreateDiglog" plain>{{ $t('disk.folder') }}</el-button>
-      <el-button-group v-show="selectedItems.length>0" style="margin-left: 10px;">
-        <el-button type="primary" icon="el-icon-download" size="medium" plain @click="$refs.outlink.open(selectedItems);">{{ $t('disk.download') }}</el-button>
+      <el-button type="primary" size="medium" icon="el-icon-upload" @click="$refs.uploader.open()">{{ $t("disk.upload") }}</el-button>
+      <el-button v-show="folderBtnShown" type="primary" size="medium" icon="el-icon-folder-add" @click="openCreateDiglog" plain>{{ $t("disk.folder") }}</el-button>
+      <el-button-group v-show="selectedItems.length > 0" style="margin-left: 10px">
+        <el-button type="primary" icon="el-icon-download" size="medium" plain @click="$refs.outlink.open(selectedItems)">{{ $t("disk.download") }}</el-button>
         <!-- <el-button type="primary" icon="el-icon-share" size="medium" @click="share" plain>分享</el-button> -->
-        <el-button type="primary" icon="el-icon-delete" size="medium" plain @click="deleteSelection">{{ $t('disk.delete') }}</el-button>
+        <el-button type="primary" icon="el-icon-delete" size="medium" plain @click="deleteSelection">{{ $t("disk.delete") }}</el-button>
         <!-- <el-button type="primary" size="medium" plain>移动到</el-button> -->
       </el-button-group>
 
-      <div style="float:right">
+      <div style="float: right">
         <el-input class="search" size="small" :placeholder="$t('topbar.search')" v-model="query.kw" @keyup.enter.native="listRefresh">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
@@ -24,7 +24,8 @@
     </el-row>
 
     <!-- main -->
-    <FileTable v-model="tableData" :selection.sync="selectedItems" :loading="loading" :current="query.dir" :urlget="urlGet" @folder-open="openFolder" @on-share="obj=>{$refs.share.open(obj.alias)}" @on-move="obj=>{$refs.move.open(obj)}" @on-rename="raname" @on-remove="remove" show-share show-more></FileTable>
+    <!-- <FileTable v-model="tableData" :selection.sync="selectedItems" :loading="loading" :current="query.dir" :urlget="urlGet" @folder-open="openFolder" @on-share="obj=>{$refs.share.open(obj.alias)}" @on-move="obj=>{$refs.move.open(obj)}" @on-rename="raname" @on-remove="remove" show-share show-more></FileTable> -->
+    <FileExplorer ref="fexp" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :moreButtons="moreButtons" @selection-change="onSelectionChange" />
 
     <!-- dialog -->
     <DialogMove ref="move" @completed="listRefresh"></DialogMove>
@@ -38,6 +39,7 @@
 // @ is an alias to /src
 import { zfile, zfolder } from "@/libs/zpan";
 import FileTable from "@/components/FileTable";
+import FileExplorer from "@/components/FileExplorer";
 import DialogMove from "./components/DialogMove";
 import DialogShare from "./components/DialogShare";
 import DialogUpload from "./components/DialogUpload";
@@ -46,6 +48,7 @@ export default {
   name: "home",
   components: {
     FileTable,
+    FileExplorer,
     DialogMove,
     DialogShare,
     DialogUpload,
@@ -54,28 +57,53 @@ export default {
   data() {
     return {
       query: {},
-      searchKw: "",
-      tableData: [],
-      loading: false,
+      folderBtnShown: false,
+      rowButtons: [
+        { name: "download", icon: "el-icon-download", action: this.openDownload, shown: (item) => !item.dirtype },
+        { name: "share", icon: "el-icon-share", action: this.share },
+      ],
+      moreButtons: [
+        { name: "move", title: this.$t("ftb.move"), action: this.move },
+        { name: "rename", title: this.$t("ftb.rename"), action: this.rename },
+        { name: "remove", title: this.$t("ftb.remove"), action: this.remove },
+      ],
       selectedItems: [],
     };
   },
   watch: {
-    $route: "onRouteChange",
-    uploadShow() {
-      this.fileList = [];
+    $route(newVal, oldVal) {
+      this.query.type = newVal.query.type;
+      this.folderBtnShown = !this.query.type;
+      this.listRefresh();
     },
   },
   methods: {
-    onRouteChange(newVal, oldVal) {
-      this.query = newVal.query;
-      this.listRefresh();
+    dataLoader(dir) {
+      if (dir != this.query.dir) {
+        this.query.dir = dir;
+      }
+
+      return zfile.listObjects(this.query);
+    },
+    linkLoader(obj) {
+      return new Promise((resolve, reject) => {
+        zfile
+          .findLink(obj.alias)
+          .then((ret) => {
+            resolve(ret.link);
+          })
+          .catch(reject);
+      });
     },
     listRefresh() {
-      this.loading = true;
-      zfile.listObjects(this.query).then((objects) => {
-        this.tableData = objects;
-        this.loading = false;
+      this.$refs.fexp.listRefresh();
+    },
+    openDownload(obj) {
+      this.linkLoader(obj).then((link) => {
+        var a = document.createElement("a");
+        a.href = link;
+        a.download = obj.name;
+        a.click();
       });
     },
     openCreateDiglog() {
@@ -93,20 +121,13 @@ export default {
         });
       });
     },
-    openFolder(dir) {
-      this.$router.push({ query: { dir: dir } });
+    share(obj) {
+      this.$refs.share.open(obj.alias);
     },
-    urlGet(obj) {
-      return new Promise((resolve, reject) => {
-        zfile
-          .findLink(obj.alias)
-          .then((ret) => {
-            resolve(ret.link);
-          })
-          .catch(reject);
-      });
+    move(obj) {
+      this.$refs.move.open(obj);
     },
-    raname(obj) {
+    rename(obj) {
       this.$prompt(this.$t("tips.rename"), this.$t("rename"), {
         inputValue: obj.name,
         confirmButtonText: this.$t("confirm"),
@@ -123,15 +144,11 @@ export default {
       });
     },
     remove(obj) {
-      this.$confirm(
-        this.$t("tips.remove"),
-        this.$t("delete") + ` ${obj.name}`,
-        {
-          type: "warning",
-          confirmButtonText: this.$t("confirm"),
-          cancelButtonText: this.$t("cancel"),
-        }
-      ).then(() => {
+      this.$confirm(this.$t("tips.remove"), this.$t("delete") + ` ${obj.name}`, {
+        type: "warning",
+        confirmButtonText: this.$t("confirm"),
+        cancelButtonText: this.$t("cancel"),
+      }).then(() => {
         let remove = obj.dirtype ? zfolder.delete : zfile.delete;
         remove(obj.alias).then((ret) => {
           this.$message({
@@ -141,6 +158,9 @@ export default {
           this.listRefresh();
         });
       });
+    },
+    onSelectionChange(selection) {
+      this.selectedItems = selection;
     },
     deleteSelection() {
       this.$confirm(this.$t("tips.batch-delete"), this.$t("batch-delete"), {
@@ -176,8 +196,7 @@ export default {
     },
   },
   mounted() {
-    this.query = this.$route.query;
-    this.listRefresh();
+    this.query.type = this.$route.query.type;
   },
 };
 </script>

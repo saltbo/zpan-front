@@ -1,10 +1,10 @@
 <template>
   <el-dialog :title="value.name" :visible.sync="show" width="30%" @opened="onOpen" @close="onClose">
-    <vue-plyr ref="audio" v-show="mediatype=='audio'">
+    <vue-plyr ref="audio" v-show="mediatype == 'audio'">
       <audio :src="value.url"></audio>
     </vue-plyr>
 
-    <vue-plyr ref="video" v-show="mediatype=='video'">
+    <vue-plyr ref="video" v-show="mediatype == 'video'">
       <video :src="value.url"></video>
     </vue-plyr>
   </el-dialog>

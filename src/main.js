@@ -9,8 +9,11 @@ import './plugins/element'
 import './plugins/clipboard'
 import './plugins/photoswipe'
 import './plugins/plyr'
+// import FileExplorer from './components/FileExplorer'
+
 
 Vue.config.productionTip = false
+// Vue.use(FileExplorer)
 
 new Vue({
   i18n,

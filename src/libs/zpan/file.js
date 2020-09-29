@@ -38,13 +38,15 @@ let zpan = {
     },
     listObjects(params) {
         return new Promise((resolve, reject) => {
-            window.axios.get('/api/files', { params: params }).then(data => {
-                resolve(data.data.list.map(item => {
+            window.axios.get('/api/files', { params: params }).then(ret => {
+                let data = ret.data
+                data.list = data.list.map(item => {
                     item.size = utils.formatBytes(item.size, 1);
                     item.fullpath = `${item.parent}${item.name}`
                     if (item.dirtype) item.fullpath += '/'
                     return item
-                }));
+                })
+                resolve(data);
             }).catch(reject)
         })
     },
