@@ -7,8 +7,12 @@
 
 <template>
   <div>
-    <div>链接分享</div>
-    <el-table :data="tData" @current-change="onCurrentChange" :expand-row-keys="expandRowKeys" row-key="id" highlight-current-row style="width: 100%">
+    <el-row class="th">
+      <span class="title">链接分享</span>
+      <span class="loadtips" style="float: right">{{ loadedtips }}</span>
+    </el-row>
+
+    <el-table :data="rows" @current-change="onCurrentChange" :expand-row-keys="expandRowKeys" row-key="id" highlight-current-row style="width: 100%">
       <el-table-column type="expand">
         <template slot-scope="props">
           <p>
@@ -34,18 +38,31 @@ import { zShare } from "@/libs/zpan";
 export default {
   data() {
     return {
-      tData: [],
+      rows: [],
+      total: 0,
       expandRowKeys: [],
     };
+  },
+  computed: {
+    loadedtips() {
+      let loadedNum = this.rows.length;
+      if (loadedNum == this.total) {
+        return `已全部加载，共${this.total}个`;
+      }
+
+      return `已加载${loadedNum}个，共${this.total}个`;
+    },
   },
   methods: {
     listRefresh() {
       let host = window.location.host;
-      zShare.list().then((data) => {
-        this.tData = data.data.list.map((item) => {
+      zShare.list().then((ret) => {
+        let data = ret.data;
+        this.rows = data.list.map((item) => {
           item.link = `http://${host}/s/${item.alias}`;
           return item;
         });
+        this.total = data.total;
       });
     },
     onCurrentChange(currentRow, oldCurrentRow) {
@@ -59,4 +76,9 @@ export default {
 </script>
 
 <style scoped>
+.th {
+  font-size: 12px;
+  color: #333;
+  padding-top: 5px;
+}
 </style>

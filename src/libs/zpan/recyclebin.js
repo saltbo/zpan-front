@@ -4,17 +4,20 @@ import '@/plugins/axios'
 let recyclebin = {
     list(params) {
         return new Promise((resolve, reject) => {
-            window.axios.get('/api/recycles', { params: params }).then(data => {
-                resolve(data.data.list.map(item => {
-                    item.fullpath = `${item.parent}${item.name}`
-                    if (item.dirtype) item.fullpath += '/'
-                    return item
-                }));
+            window.axios.get('/api/recycles', { params: params }).then(ret => {
+                let data = ret.data;
+                resolve(data);
             }).catch(reject)
         })
     },
+    recovery(alias) {
+        return window.axios.put(`/api/recycles/${alias}`)
+    },
     delete(alias) {
-        return window.axios.delete(`/api/folders/${alias}`)
+        return window.axios.delete(`/api/recycles/${alias}`)
+    },
+    clean() {
+        return window.axios.delete(`/api/recycles`)
     }
 }
 

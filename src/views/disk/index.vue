@@ -1,12 +1,14 @@
 <style scoped>
-.menu {
-  margin-bottom: 20px;
+.toolbar {
+  height: 45px;
+  border-bottom: 1px solid #f2f6fd;
+  margin-bottom: 5px;
 }
 </style>
 
 <template>
   <div>
-    <el-row class="menu">
+    <el-row class="toolbar">
       <el-button type="primary" size="medium" icon="el-icon-upload" @click="$refs.uploader.open()">{{ $t("disk.upload") }}</el-button>
       <el-button v-show="folderBtnShown" type="primary" size="medium" icon="el-icon-folder-add" @click="openCreateDiglog" plain>{{ $t("disk.folder") }}</el-button>
       <el-button-group v-show="selectedItems.length > 0" style="margin-left: 10px">
