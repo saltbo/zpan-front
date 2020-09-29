@@ -12,22 +12,21 @@
     <ListExplorer v-model="rows" :loading="loading" :rowButtons="rowButtons" :moreButtons="moreButtons" @on-click="onClick" @selection-change="onSelectionChange" v-else />
 
     <!-- viewer -->
-    <PhotoPreview ref="photoView"></PhotoPreview>
     <MediaViewer v-model="selected" :visible="mediavv" @close="mediavv = false"></MediaViewer>
+    <PictureViewer ref="photoView"></PictureViewer>
   </div>
 </template>
 
 <script>
-import GridExplorer from "./GridExplorer";
-import ListExplorer from "./ListExplorer";
-import PhotoPreview from "../PhotoPreview.vue";
-import MediaViewer from "../MediaViewer.vue";
+import GridExplorer from "./explorer/GridExplorer";
+import ListExplorer from "./explorer/ListExplorer";
+import { MediaViewer, PictureViewer } from "../FileViewer";
 export default {
   components: {
     GridExplorer,
     ListExplorer,
-    PhotoPreview,
     MediaViewer,
+    PictureViewer,
   },
   props: {
     layout: {
@@ -38,6 +37,10 @@ export default {
     linkLoader: Function,
     rowButtons: Array,
     moreButtons: Array,
+    rootDir: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
@@ -72,33 +75,39 @@ export default {
       return root;
     },
     loadedtips() {
-      if (this.rows.length == this.total) {
+      let loadedNum = this.rows.length;
+      if (loadedNum == this.total) {
         return `已全部加载，共${this.total}个`;
       }
 
-      return `已加载${this.rows.length}个，共${this.total}个`;
+      return `已加载${loadedNum}个，共${this.total}个`;
     },
   },
   methods: {
     onRouteChange(newVal, oldVal) {
       console.log(111, newVal, oldVal);
       // 外部路由发生变化时切换目录拉取数据
-      this.listRefresh(newVal.query.dir);
+      this.currentDir = newVal.query.dir;
+      this.listRefresh();
     },
     onSelectionChange(selection) {
       this.$emit("selection-change", selection);
     },
-    listRefresh(dir) {
+    listRefresh() {
       this.loading = true;
-      this.currentDir = dir;
-      this.dataLoader(this.currentDir).then((data) => {
-        console.log(111, data);
+      let dir = this.currentDir ? this.currentDir : "";
+      this.dataLoader(dir).then((data) => {
+        console.log("fe-list-refresh", data);
         this.rows = data.list;
         this.total = data.total;
         this.loading = false;
       });
     },
     buildQuery(dir) {
+      if (dir.startsWith(this.rootDir)) {
+        dir = dir.replace(this.rootDir, "");
+      }
+
       let query = !dir ? {} : { dir: dir };
       return { query: query };
     },
@@ -127,7 +136,8 @@ export default {
   },
   mounted() {
     // 启动时主动拉取数据
-    this.listRefresh(this.$route.query.dir);
+    this.currentDir = this.$route.query.dir ? this.$route.query.dir : "";
+    this.listRefresh();
   },
 };
 </script>

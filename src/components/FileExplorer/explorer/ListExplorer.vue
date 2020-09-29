@@ -13,11 +13,11 @@
     <el-table-column width="150">
       <template slot-scope="scope">
         <div style="float: right; vertical-align: super" class="operation">
-          <el-link v-for="item in rowButtons" :key="item.name" v-show="item.shown && item.shown(scope.row)" type="primary" :underline="false">
+          <el-link v-for="item in rowButtons" :key="item.name" v-show="!item.shown || item.shown(scope.row)" type="primary" :underline="false">
             <i :class="`${item.icon} el-icon--right`" @click="item.action(scope.row)"></i>
           </el-link>
 
-          <el-dropdown v-show="moreButtons.length > 0" trigger="click" @command="handleCommand">
+          <el-dropdown v-show="moreButtons && moreButtons.length > 0" trigger="click" @command="handleCommand">
             <el-link type="primary" class="el-dropdown-link" :underline="false">
               <i class="el-icon-more el-icon--right"></i>
             </el-link>

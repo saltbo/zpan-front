@@ -24,7 +24,6 @@
     </el-row>
 
     <!-- main -->
-    <!-- <FileTable v-model="tableData" :selection.sync="selectedItems" :loading="loading" :current="query.dir" :urlget="urlGet" @folder-open="openFolder" @on-share="obj=>{$refs.share.open(obj.alias)}" @on-move="obj=>{$refs.move.open(obj)}" @on-rename="raname" @on-remove="remove" show-share show-more></FileTable> -->
     <FileExplorer ref="fexp" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :moreButtons="moreButtons" @selection-change="onSelectionChange" />
 
     <!-- dialog -->
@@ -38,8 +37,6 @@
 <script>
 // @ is an alias to /src
 import { zfile, zfolder } from "@/libs/zpan";
-import FileTable from "@/components/FileTable";
-import FileExplorer from "@/components/FileExplorer";
 import DialogMove from "./components/DialogMove";
 import DialogShare from "./components/DialogShare";
 import DialogUpload from "./components/DialogUpload";
@@ -47,8 +44,6 @@ import DialogOutlink from "./components/DialogOutlink";
 export default {
   name: "home",
   components: {
-    FileTable,
-    FileExplorer,
     DialogMove,
     DialogShare,
     DialogUpload,
