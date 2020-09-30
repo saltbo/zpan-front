@@ -7,7 +7,7 @@
 </style>
 
 <template>
-  <div>
+  <div style="height: 100%">
     <el-row class="toolbar">
       <el-button type="primary" size="medium" icon="el-icon-upload" @click="$refs.uploader.open()">{{ $t("disk.upload") }}</el-button>
       <el-button v-show="folderBtnShown" type="primary" size="medium" icon="el-icon-folder-add" @click="openCreateDiglog" plain>{{ $t("disk.folder") }}</el-button>
@@ -26,7 +26,7 @@
     </el-row>
 
     <!-- main -->
-    <FileExplorer ref="fexp" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :moreButtons="moreButtons" @selection-change="onSelectionChange" />
+    <FileExplorer ref="fexp" style="height: calc(100% - 67px)" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :moreButtons="moreButtons" @selection-change="onSelectionChange" />
 
     <!-- dialog -->
     <DialogMove ref="move" @completed="listRefresh"></DialogMove>

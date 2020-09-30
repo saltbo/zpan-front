@@ -1,5 +1,5 @@
 <template>
-  <el-table style="width: 100%" tooltip-effect="dark" :data="data" v-loading="loading" highlight-current-row @selection-change="onSelectionChange">
+  <el-table style="width: 100%" height="100%" tooltip-effect="dark" :data="data" v-loading="loading" highlight-current-row @selection-change="onSelectionChange">
     <el-table-column type="selection" width="30" :selectable="onSelectable"></el-table-column>
     <el-table-column prop="name" :label="$t('fth.name')" min-width="200" show-overflow-tooltip sortable>
       <template slot-scope="scope">

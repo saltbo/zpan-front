@@ -38,7 +38,7 @@
       </div>-->
     </el-aside>
 
-    <el-main ref="main">
+    <el-main>
       <router-view></router-view>
     </el-main>
   </el-container>
@@ -51,29 +51,17 @@ export default {
   data() {
     return {
       active: "disk",
-      clientHeight: 1000,
     };
   },
   watch: {
     $route: "onRouteChange",
-    clientHeight: "onClientHeightChange",
   },
   methods: {
     onRouteChange(newVal, oldVal) {
       this.active = newVal.fullPath;
     },
-    onClientHeightChange(clientHeight) {
-      //动态修改样式
-      this.$refs.main.$el.style.height = this.clientHeight - 60 + "px";
-    },
   },
   mounted() {
-    // 获取浏览器可视区域高度
-    this.clientHeight = `${document.documentElement.clientHeight}`;
-    window.onresize = function temp() {
-      this.clientHeight = `${document.documentElement.clientHeight}`;
-    };
-
     this.active = this.$route.fullPath;
   },
 };
