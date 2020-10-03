@@ -27,6 +27,7 @@
     "@vue/cli-service": "^3.11.0",
     "axios": "^0.18.0",
     "babel-eslint": "^10.0.1",
+    "el-table-infinite-scroll": "^1.0.10",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "moreu-jssdk": "^1.0.2",

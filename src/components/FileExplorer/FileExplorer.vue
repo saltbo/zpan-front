@@ -9,7 +9,7 @@
 
     <!-- explorer -->
     <GridExplorer v-model="rows" :loading="loading" :moreButtons="moreButtons" @on-click="onClick" v-if="layout == 'grid'" />
-    <ListExplorer v-model="rows" :loading="loading" :rowButtons="rowButtons" :moreButtons="moreButtons" @on-click="onClick" @selection-change="onSelectionChange" v-else />
+    <ListExplorer v-model="rows" :loading="loading" :rowButtons="rowButtons" :moreButtons="moreButtons" @on-click="onClick" @scroll-end="onScrollEnd" @selection-change="onSelectionChange" v-else />
 
     <!-- viewer -->
     <MediaViewer v-model="selected" :visible="mediavv" @close="mediavv = false"></MediaViewer>
@@ -46,6 +46,8 @@ export default {
     return {
       currentDir: "",
       loading: false,
+      offset: 0,
+      limit: 10,
       rows: [],
       total: 0,
       selection: Array,
@@ -75,7 +77,7 @@ export default {
       return root;
     },
     loadedtips() {
-      let loadedNum = this.rows.length;
+      let loadedNum = this.rows.length
       if (loadedNum == this.total) {
         return `已全部加载，共${this.total}个`;
       }
@@ -93,13 +95,31 @@ export default {
     onSelectionChange(selection) {
       this.$emit("selection-change", selection);
     },
-    listRefresh() {
+    onScrollEnd() {
+      console.log(1111111111111)
+      if (this.total != 0 && this.rows.length == this.total) {
+        console.log("no more")
+        return
+      }
+
+      this.listRefresh(this.offset, this.limit);
+    },
+    listRefresh(offset, limit) {
+      if (!offset) {
+        offset = 0
+      }
+
+      if (!limit) {
+        limit = 10
+      }
+
       this.loading = true;
       let dir = this.currentDir ? this.currentDir : "";
-      this.dataLoader(dir).then((data) => {
+      this.dataLoader(dir, offset, limit).then((data) => {
         console.log("fe-list-refresh", data);
-        this.rows = data.list;
+        this.rows = this.rows.concat(data.list);
         this.total = data.total;
+        this.offset += this.limit
         this.loading = false;
       });
     },
@@ -137,7 +157,7 @@ export default {
   mounted() {
     // 启动时主动拉取数据
     this.currentDir = this.$route.query.dir ? this.$route.query.dir : "";
-    this.listRefresh();
+    // this.listRefresh();
   },
 };
 </script>

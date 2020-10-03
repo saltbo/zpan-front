@@ -3031,12 +3031,21 @@ ejs@^2.6.1:
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.7.4.tgz#48661287573dcc53e366c7a1ae52c3a120eec9ba"
   integrity sha512-7vmuyh5+kuUyJKePhQfRQBhXV5Ce+RnaeeQArKu1EAMpL3WbgMt5WG6uQZpEVvYSSsxMXRKOewtDk9RaTKXRlA==
 
+el-table-infinite-scroll@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/el-table-infinite-scroll/-/el-table-infinite-scroll-1.0.10.tgz#ac8cbbaf4eddf9158305be1dab79a2e97de9fb96"
+  integrity sha512-O7gcfcF9wOec/weeygMlJKQ8626jF5hIY6zABYKYqY96yxXZRrvPqEZW65Vb+C0D5d+8B8EgU9ax7mlA4K1x4A==
+  dependencies:
+    core-js "^2.6.5"
+    element-ui "^2.12.0"
+    vue "^2.6.10"
+
 electron-to-chromium@^1.3.523:
   version "1.3.533"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.533.tgz#d7e5ca4d57e9bc99af87efbe13e7be5dde729b0f"
   integrity sha512-YqAL+NXOzjBnpY+dcOKDlZybJDCOzgsq4koW3fvyty/ldTmsb4QazZpOWmVvZ2m0t5jbBf7L0lIGU3BUipwG+A==
 
-element-ui@^2.4.5:
+element-ui@^2.12.0, element-ui@^2.4.5:
   version "2.13.2"
   resolved "https://registry.yarnpkg.com/element-ui/-/element-ui-2.13.2.tgz#582bf47aaaaaafe23ea1958fae217a687ad06447"
   integrity sha512-r761DRPssMPKDiJZWFlG+4e4vr0cRG/atKr3Eqr8Xi0tQMNbtmYU1QXvFnKiFPFFGkgJ6zS6ASkG+sellcoHlQ==

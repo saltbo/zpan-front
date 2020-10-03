@@ -75,11 +75,13 @@ export default {
     },
   },
   methods: {
-    dataLoader(dir) {
+    dataLoader(dir, offset, limit) {
       if (dir != this.query.dir) {
         this.query.dir = dir;
       }
 
+      this.query.offset = offset ? offset : 0;
+      this.query.limit = limit ? limit : 10
       return zfile.listObjects(this.query);
     },
     linkLoader(obj) {
