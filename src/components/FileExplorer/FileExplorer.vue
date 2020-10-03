@@ -61,7 +61,6 @@ export default {
   },
   computed: {
     breadcrumb() {
-      console.log(123, this.currentDir);
       let root = [{ name: this.$t("ft.breadcrumb"), dir: "" }];
       if (!this.currentDir) {
         return root;
@@ -87,16 +86,16 @@ export default {
   },
   methods: {
     onRouteChange(newVal, oldVal) {
-      console.log(111, newVal, oldVal);
-      // 外部路由发生变化时切换目录拉取数据
-      this.currentDir = newVal.query.dir;
+      if (this.currentDir != newVal.query.dir) {
+        this.currentDir = newVal.query.dir; // change the current direction when the route changed
+      }
+
       this.listRefresh();
     },
     onSelectionChange(selection) {
       this.$emit("selection-change", selection);
     },
     onScrollEnd() {
-      console.log(1111111111111)
       if (this.total != 0 && this.rows.length == this.total) {
         console.log("no more")
         return
@@ -116,10 +115,15 @@ export default {
       this.loading = true;
       let dir = this.currentDir ? this.currentDir : "";
       this.dataLoader(dir, offset, limit).then((data) => {
-        console.log("fe-list-refresh", data);
-        this.rows = this.rows.concat(data.list);
+        if (offset == 0) {
+          this.rows = data.list
+          this.offset = limit
+        } else {
+          this.rows = this.rows.concat(data.list);
+          this.offset += this.limit
+        }
+
         this.total = data.total;
-        this.offset += this.limit
         this.loading = false;
       });
     },
@@ -155,9 +159,7 @@ export default {
     },
   },
   mounted() {
-    // 启动时主动拉取数据
     this.currentDir = this.$route.query.dir ? this.$route.query.dir : "";
-    // this.listRefresh();
   },
 };
 </script>

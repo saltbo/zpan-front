@@ -53,7 +53,9 @@ export default {
   },
   data() {
     return {
-      query: {},
+      query: {
+        dir: ""
+      },
       folderBtnShown: false,
       rowButtons: [
         { name: "download", icon: "el-icon-download", action: this.openDownload, shown: (item) => !item.dirtype },
@@ -69,9 +71,8 @@ export default {
   },
   watch: {
     $route(newVal, oldVal) {
-      this.query.type = newVal.query.type;
+      this.query.type = newVal.query.type;  // doc,image,audio,vedio
       this.folderBtnShown = !this.query.type;
-      this.listRefresh();
     },
   },
   methods: {
