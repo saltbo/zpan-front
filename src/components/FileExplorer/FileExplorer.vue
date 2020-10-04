@@ -47,7 +47,7 @@ export default {
       currentDir: "",
       loading: false,
       offset: 0,
-      limit: 10,
+      limit: 100,
       rows: [],
       total: 0,
       selection: Array,
@@ -58,6 +58,11 @@ export default {
   },
   watch: {
     $route: "onRouteChange",
+    layout(nv, ov) {
+      if (nv != ov) {
+        this.listRefresh();
+      }
+    }
   },
   computed: {
     breadcrumb() {
@@ -109,7 +114,7 @@ export default {
       }
 
       if (!limit) {
-        limit = 10
+        limit = this.limit
       }
 
       this.loading = true;
@@ -160,6 +165,8 @@ export default {
   },
   mounted() {
     this.currentDir = this.$route.query.dir ? this.$route.query.dir : "";
+
+    this.listRefresh()
   },
 };
 </script>

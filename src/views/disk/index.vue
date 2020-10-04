@@ -4,10 +4,20 @@
   border-bottom: 1px solid #f2f6fd;
   margin-bottom: 5px;
 }
+
+.search {
+  width: 200px;
+}
+
+.iconfont {
+  font-size: 30px;
+  vertical-align: middle;
+}
 </style>
 
 <template>
   <div style="height: 100%">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2113109_1je0tpphnvr.css">
     <el-row class="toolbar">
       <el-button type="primary" size="medium" icon="el-icon-upload" @click="$refs.uploader.open()">{{ $t("disk.upload") }}</el-button>
       <el-button v-show="folderBtnShown" type="primary" size="medium" icon="el-icon-folder-add" @click="openCreateDiglog" plain>{{ $t("disk.folder") }}</el-button>
@@ -22,11 +32,13 @@
         <el-input class="search" size="small" :placeholder="$t('topbar.search')" v-model="query.kw" @keyup.enter.native="listRefresh">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
+        <i v-if="layout=='list'" class="iconfont icon-grid" @click="layout='grid'"></i>
+        <i v-else class="iconfont icon-list" @click="layout='list'"></i>
       </div>
     </el-row>
 
     <!-- main -->
-    <FileExplorer ref="fexp" style="height: calc(100% - 67px)" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :moreButtons="moreButtons" @selection-change="onSelectionChange" />
+    <FileExplorer :layout="layout" ref="fexp" style="height: calc(100% - 67px)" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :moreButtons="moreButtons" @selection-change="onSelectionChange" />
 
     <!-- dialog -->
     <DialogMove ref="move" @completed="listRefresh"></DialogMove>
@@ -56,6 +68,7 @@ export default {
       query: {
         dir: ""
       },
+      layout: 'list',
       folderBtnShown: false,
       rowButtons: [
         { name: "download", icon: "el-icon-download", action: this.openDownload, shown: (item) => !item.dirtype },
