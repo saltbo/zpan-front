@@ -17,7 +17,6 @@
 
 <template>
   <div style="height: 100%">
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_2113109_1je0tpphnvr.css">
     <el-row class="toolbar">
       <el-button type="primary" size="medium" icon="el-icon-upload" @click="$refs.uploader.open()">{{ $t("disk.upload") }}</el-button>
       <el-button v-show="folderBtnShown" type="primary" size="medium" icon="el-icon-folder-add" @click="openCreateDiglog" plain>{{ $t("disk.folder") }}</el-button>

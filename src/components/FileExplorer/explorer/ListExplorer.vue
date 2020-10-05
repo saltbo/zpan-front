@@ -4,7 +4,7 @@
     <el-table-column prop="name" :label="$t('fth.name')" min-width="200" show-overflow-tooltip sortable>
       <template slot-scope="scope">
         <i v-if="scope.row.dirtype" class="matter-icon el-icon-folder" style="color: #ffc402"></i>
-        <i v-else class="matter-icon el-icon-document"></i>
+        <i v-else :class="`iconfont matter-icon ${type2icon(scope.row.type)}`"></i>
         <el-link :underline="false" class="matter-title" href="Javascript: void(0);">
           <span @click="onNameClick(scope.row)">{{ scope.row.name }}</span>
         </el-link>

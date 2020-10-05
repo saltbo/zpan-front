@@ -2,7 +2,7 @@
   <div class="explorer">
     <div class="explorer-item" v-for="item in data" :key="item.alias" @click="onNameClick(item)">
       <i v-if="item.dirtype" class="matter-icon el-icon-folder" style="color: #ffc402"></i>
-      <i v-else class="matter-icon el-icon-document"></i>
+      <i v-else :class="`iconfont ${type2icon(item.type)}`"></i>
       <p>{{ item.name }}</p>
     </div>
   </div>

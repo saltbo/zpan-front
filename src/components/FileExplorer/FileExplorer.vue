@@ -172,6 +172,8 @@ export default {
 </script>
 
 <style scoped>
+@import url("./iconfont.css");
+
 .header {
   display: flex;
   flex-flow: row;
@@ -180,6 +182,7 @@ export default {
 .bread {
   flex: 1;
 }
+
 .loadtips {
   width: 200px;
   text-align: right;
