@@ -34,8 +34,8 @@ export default {
   },
   methods: {
     listRefresh() {
-      zfile.listObjects({ dir: this.picDir }).then((objects) => {
-        this.fileList = objects.map((obj) => {
+      zfile.listObjects({ dir: this.picDir }).then((data) => {
+        this.fileList = data.list.map((obj) => {
           return { alias: obj.alias, name: obj.name, url: obj.url };
         });
         this.loading = false;
@@ -69,15 +69,11 @@ export default {
         });
     },
     handleRemove(file, fileList) {
-      return this.$confirm(
-        this.$t("tips.remove"),
-        this.$t("delete") + ` ${file.name}`,
-        {
-          type: "warning",
-          confirmButtonText: this.$t("confirm"),
-          cancelButtonText: this.$t("cancel"),
-        }
-      ).then(() => {
+      return this.$confirm(this.$t("tips.remove"), this.$t("delete") + ` ${file.name}`, {
+        type: "warning",
+        confirmButtonText: this.$t("confirm"),
+        cancelButtonText: this.$t("cancel"),
+      }).then(() => {
         zfile.delete(file.alias).then((ret) => {
           this.$message({
             type: "success",

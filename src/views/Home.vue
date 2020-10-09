@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-aside width="200px" style="height: 100%; background-color: #f4f4f5">
-      <el-menu :default-active="active" background-color="#f4f4f5" router>
+      <el-menu :default-active="routeFullPath" background-color="#f4f4f5" router>
         <el-menu-item index="/disk">
           <i class="el-icon-document"></i>
           <span slot="title">{{ $t("leftnav.files") }}</span>
@@ -46,38 +46,23 @@
 
 <script>
 export default {
-  name: "app",
-  components: {},
   data() {
     return {
-      active: "disk",
+      routeFullPath: "disk",
     };
   },
   watch: {
-    $route: "onRouteChange",
-  },
-  methods: {
-    onRouteChange(newVal, oldVal) {
-      this.active = newVal.fullPath;
+    $route(newVal, oldVal) {
+      this.routeFullPath = newVal.fullPath;
     },
   },
   mounted() {
-    this.active = this.$route.fullPath;
+    this.routeFullPath = this.$route.fullPath;
   },
 };
 </script>
 
 <style scoped>
-.el-main {
-  padding: 10px !important;
-}
-.copyright {
-  text-align: center;
-  position: absolute;
-  bottom: 20px;
-  font-size: 10px;
-}
-
 .el-aside .el-menu {
   border-right: solid 1px #fff;
   font-weight: 500;
@@ -91,5 +76,16 @@ export default {
 .el-aside .el-menu-item:hover {
   outline: 0;
   background-color: #eaeaea !important;
+}
+
+.copyright {
+  text-align: center;
+  position: absolute;
+  bottom: 20px;
+  font-size: 10px;
+}
+
+.el-main {
+  padding: 10px !important;
 }
 </style>

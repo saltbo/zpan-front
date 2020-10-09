@@ -31,8 +31,8 @@
         <el-input class="search" size="small" :placeholder="$t('topbar.search')" v-model="query.kw" @keyup.enter.native="listRefresh">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
-        <i v-if="layout=='list'" class="iconfont icon-grid" @click="layout='grid'"></i>
-        <i v-else class="iconfont icon-list" @click="layout='list'"></i>
+        <i v-if="layout == 'list'" class="iconfont icon-grid" @click="layout = 'grid'"></i>
+        <i v-else class="iconfont icon-list" @click="layout = 'list'"></i>
       </div>
     </el-row>
 
@@ -65,9 +65,9 @@ export default {
   data() {
     return {
       query: {
-        dir: ""
+        dir: "",
       },
-      layout: 'list',
+      layout: "list",
       folderBtnShown: false,
       rowButtons: [
         { name: "download", icon: "el-icon-download", action: this.openDownload, shown: (item) => !item.dirtype },
@@ -83,7 +83,7 @@ export default {
   },
   watch: {
     $route(newVal, oldVal) {
-      this.query.type = newVal.query.type;  // doc,image,audio,vedio
+      this.query.type = newVal.query.type; // doc,image,audio,vedio
       this.folderBtnShown = !this.query.type;
     },
   },
@@ -94,7 +94,7 @@ export default {
       }
 
       this.query.offset = offset ? offset : 0;
-      this.query.limit = limit ? limit : 10
+      this.query.limit = limit ? limit : 10;
       return zfile.listObjects(this.query);
     },
     linkLoader(obj) {
