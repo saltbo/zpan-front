@@ -4,7 +4,7 @@
       <el-menu :default-active="routeFullPath" background-color="#f4f4f5" router>
         <el-menu-item index="/admin/users">
           <i class="el-icon-user"></i>
-          <span slot="title">用户管理</span>
+          <span slot="title">配额管理</span>
         </el-menu-item>
         <!-- <el-menu-item index="/admin/storages">
           <i class="el-icon-files"></i>
