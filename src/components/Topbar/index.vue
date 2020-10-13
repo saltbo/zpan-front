@@ -1,11 +1,11 @@
 <template>
   <el-header>
     <div class="logo">
-      <img src="@/assets/logo.png" alt />
+      <img src="@/assets/logo.png" alt="ZPan" @click="$router.push('/')" />
     </div>
-    <el-menu class="navbar" :default-active="routeName" mode="horizontal" style="width: 100%" router>
-      <el-menu-item index="disk">{{ $t("topbar.netdisk") }}</el-menu-item>
-      <el-menu-item index="picture">{{ $t("topbar.imghosting") }}</el-menu-item>
+    <el-menu v-if="showMenu" class="navbar" :default-active="routeName" mode="horizontal" style="width: 100%" router>
+      <el-menu-item index="/disk">{{ $t("topbar.netdisk") }}</el-menu-item>
+      <el-menu-item index="/picture">{{ $t("topbar.imghosting") }}</el-menu-item>
     </el-menu>
 
     <div style="position: absolute; right: 20px">
@@ -29,7 +29,8 @@
             </el-row>
           </div>
 
-          <el-dropdown-item icon="el-icon-setting" command="settings" divided>{{ $t("topbar.settings") }}</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-user" command="profile" divided>{{ $t("topbar.profile") }}</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-setting" command="admin" v-show="showAdmin">{{ $t("topbar.s-platform") }}</el-dropdown-item>
           <el-dropdown-item icon="el-icon-switch-button" command="signout">{{ $t("topbar.signout") }}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -39,8 +40,9 @@
 
 <script>
 import { zUser } from "@/libs/zpan";
-import utils from "@/libs/utils";
 import { setup } from "@/i18n";
+import utils from "@/libs/utils";
+import Cookie from "js-cookie";
 const defaultAvatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
 export default {
   data() {
@@ -65,9 +67,19 @@ export default {
       setup(nv);
     },
   },
+  computed: {
+    showMenu() {
+      let path = this.$route.path;
+      return path == "/" ? false : !path.startsWith("/admin");
+    },
+    showAdmin() {
+      Cookie.set("moreu-role", "admin");
+      return Cookie.get("moreu-role") == "admin";
+    },
+  },
   methods: {
     onRouteChange(newVal, oldVal) {
-      this.routeName = newVal.name;
+      this.routeName = `/${newVal.name}`;
       this.userStorage();
     },
     userInfo() {
@@ -92,7 +104,8 @@ export default {
     },
     onDropdown(index) {
       switch (index) {
-        case "settings":
+        case "admin":
+          this.$router.push({ name: "admin" });
           break;
         case "signout":
           window.location = "/moreu/signout";
@@ -122,6 +135,10 @@ export default {
   font-size: 35px;
   padding: 0 15px;
   vertical-align: middle;
+}
+
+.logo img {
+  cursor: pointer;
 }
 
 .el-header .navbar {
