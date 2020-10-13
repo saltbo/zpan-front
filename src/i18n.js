@@ -16,8 +16,28 @@ function loadLocaleMessages() {
   return messages
 }
 
-export default new VueI18n({
+const i18n = new VueI18n({
   locale: process.env.VUE_APP_I18N_LOCALE || 'en',
   fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
   messages: loadLocaleMessages()
 })
+
+const DEFAULT_LANG = 'en'
+const LOCALE_KEY = 'localeLanguage'
+
+export const setup = lang => {
+  let locale = localStorage.getItem(LOCALE_KEY);
+  if (lang) {
+    locale = lang
+    localStorage.setItem(LOCALE_KEY, locale);
+  } else if (!locale) {
+    locale = locales[navigator.language] ? navigator.language : DEFAULT_LANG;
+  }
+
+  Vue.config.locale = locale
+  i18n.locale = locale
+  window.i18n = i18n
+}
+
+setup()
+export default i18n

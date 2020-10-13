@@ -4,12 +4,12 @@
       <img src="@/assets/logo.png" alt />
     </div>
     <el-menu class="navbar" :default-active="routeName" mode="horizontal" style="width: 100%" router>
-      <el-menu-item index="/disk">网盘</el-menu-item>
-      <el-menu-item index="/picture">图床</el-menu-item>
+      <el-menu-item index="disk">{{ $t("topbar.netdisk") }}</el-menu-item>
+      <el-menu-item index="picture">{{ $t("topbar.imghosting") }}</el-menu-item>
     </el-menu>
 
     <div style="position: absolute; right: 20px">
-      <el-select v-model="$i18n.locale" size="mini" style="width: 100px; margin-right: 20px">
+      <el-select v-model="locale" size="mini" style="width: 100px; margin-right: 20px">
         <el-option v-for="lang in langs" :key="lang.value" :value="lang.value" :label="lang.label">{{ lang.label }}</el-option>
       </el-select>
       <el-dropdown v-show="logined" trigger="click" @command="onDropdown">
@@ -40,11 +40,13 @@
 <script>
 import { zUser } from "@/libs/zpan";
 import utils from "@/libs/utils";
+import { setup } from "@/i18n";
 const defaultAvatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
 export default {
   data() {
     return {
       routeName: "",
+      locale: this.$i18n.locale,
       langs: [
         { label: "中文", value: "zh-CN" },
         { label: "English", value: "en" },
@@ -59,11 +61,13 @@ export default {
   },
   watch: {
     $route: "onRouteChange",
+    locale(nv) {
+      setup(nv);
+    },
   },
   methods: {
     onRouteChange(newVal, oldVal) {
       this.routeName = newVal.name;
-      this.routeFullPath = newVal.fullPath;
       this.userStorage();
     },
     userInfo() {
@@ -100,7 +104,6 @@ export default {
     this.userInfo();
     this.userStorage();
     this.routeName = this.$route.name;
-    this.routeFullPath = this.$route.fullPath;
   },
 };
 </script>

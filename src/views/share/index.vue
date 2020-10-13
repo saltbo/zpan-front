@@ -8,7 +8,7 @@
 <template>
   <div>
     <el-row class="th">
-      <span class="title">链接分享</span>
+      <span class="title">{{ $t("title.share") }}</span>
       <span class="loadtips" style="float: right">{{ loadedtips }}</span>
     </el-row>
 

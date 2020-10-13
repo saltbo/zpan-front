@@ -2,9 +2,9 @@
   <el-container>
     <el-aside width="200px" style="height: 100%; background-color: #f4f4f5">
       <el-menu :default-active="routeFullPath" background-color="#f4f4f5" router>
-        <el-menu-item index="/admin/users">
+        <el-menu-item index="/admin/storage-quota">
           <i class="el-icon-user"></i>
-          <span slot="title">配额管理</span>
+          <span slot="title">{{ $t("title.storage-quota") }}</span>
         </el-menu-item>
         <!-- <el-menu-item index="/admin/storages">
           <i class="el-icon-files"></i>

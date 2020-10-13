@@ -182,7 +182,7 @@ export default {
       }).then(() => {
         const loading = this.$loading({
           lock: true,
-          text: this.$t("loading.deleting"),
+          text: this.$t("tips.deleting"),
           spinner: "el-icon-loading",
           background: "rgba(0, 0, 0, 0.7)",
         });

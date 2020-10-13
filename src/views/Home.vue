@@ -63,21 +63,6 @@ export default {
 </script>
 
 <style scoped>
-.el-aside .el-menu {
-  border-right: solid 1px #fff;
-  font-weight: 500;
-}
-
-.el-aside .el-menu-item {
-  padding-left: 30px !important;
-}
-
-.el-aside .el-menu-item:focus,
-.el-aside .el-menu-item:hover {
-  outline: 0;
-  background-color: #eaeaea !important;
-}
-
 .copyright {
   text-align: center;
   position: absolute;

@@ -11,6 +11,7 @@
   "dialog": {
     "moveto-title": "MoveTo",
     "outlink-title": "Outlink",
+    "share-drawcode": "Draw Code",
     "share-drawcode-switch": "Protect",
     "share-expire-time": "Expire Time",
     "share-link": "Link Address",
@@ -43,19 +44,22 @@
     "doc": "Documents",
     "files": "All Files",
     "image": "Pictures",
-    "imghosting": "Image Hosting",
     "share": "Shares",
     "recyclebin": "Recycle Bin",
     "storage": "Storage",
     "video": "Videos"
   },
-  "moveTo": "MoveTo",
   "msg": {
     "batch-delete-success": "Batch deleted!",
     "create-success": "Created!",
     "delete-success": "Deleted!",
     "move-success": "Moved!",
-    "rename-success": "Renamed!"
+    "copy-success": "Copied!",
+    "copy-failed": "Copy failed",
+    "rename-success": "Renamed!",
+    "save-success": "Saved!",
+    "clean-success": "Cleaned!",
+    "recovery-success": "Recoveried!"
   },
   "rename": "Rename",
   "share": {
@@ -68,17 +72,35 @@
     "link": "ShareLink",
     "name": "Name"
   },
-  "share-drawcode": "Draw code",
+  "recyclebin": {
+    "recovery": "Recover file(s)?",
+    "delete": "Delete forever?",
+    "clean": "Empty the recycle bin"
+  },
   "tips": {
     "batch-delete": "This operation will permanently delete the selected files, do you want to continue?",
     "create-folder": "Please input folder name",
     "remove": "This operation will permanently delete the file, do you want to continue?",
-    "rename": "Please input newly name"
+    "rename": "Please input newly name",
+    "recyclebin": "Tip: The recycle bin also occupies the network disk space, please clean it up in time~",
+    "recovery": "Are you sure you want to recover the selected file(s)?",
+    "delete": "Deleted files cannot be recovered, are you sure you want to permanently delete the selected file(s)?",
+    "clean": "Are you sure to empty the Recycle Bin?",
+    "deleting": "Deleting..."
   },
   "topbar": {
+    "netdisk": "Netdisk",
+    "imghosting": "Image Hosting",
     "search": "Searching...",
     "settings": "Settings",
     "signout": "Sign out"
+  },
+  "title": {
+    "disk": "My Files",
+    "share": "My Shares",
+    "recyclebin": "Recycle Bin",
+    "picture": "Image Hosting",
+    "storage-quota": "Storage Quota"
   },
   "year": "Years"
 }

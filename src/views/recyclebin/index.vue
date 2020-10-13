@@ -1,15 +1,15 @@
 <template>
   <div>
     <el-row class="toolbar">
-      <span class="tips">提示：回收站也占用网盘空间，请及时清理哦~</span>
+      <span class="tips">{{ $t("tips.recyclebin") }}</span>
       <div style="float: right">
-        <el-button type="primary" size="small" icon="el-icon-delete-solid" @click="clean" plain>{{ $t("disk.clean") }}</el-button>
+        <el-button type="primary" size="small" icon="el-icon-delete-solid" @click="clean" plain>{{ $t("recyclebin.clean") }}</el-button>
       </div>
     </el-row>
 
     <el-row>
       <el-row class="th">
-        <span class="title">回收站</span>
+        <span class="title">{{ $t("title.recyclebin") }}</span>
         <span class="loadtips" style="float: right">{{ loadedtips }}</span>
       </el-row>
 
