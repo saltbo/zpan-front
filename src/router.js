@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import i18n from './i18n'
 
 Vue.use(Router)
 
@@ -38,7 +39,7 @@ const setTitle = (title) => {
 }
 
 router.beforeEach((to, from, next) => {
-  setTitle(window.i18n.t(`title.${to.name}`));
+  setTitle(i18n.t(`title.${to.name}`));
 
   next();
 });
