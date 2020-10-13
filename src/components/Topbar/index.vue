@@ -73,7 +73,6 @@ export default {
       return path == "/" ? false : !path.startsWith("/admin");
     },
     showAdmin() {
-      Cookie.set("moreu-role", "admin");
       return Cookie.get("moreu-role") == "admin";
     },
   },
