@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="topbar">
-      <el-input v-model="searchKw" size="medium" placeholder="要查找的用户" prefix-icon="el-icon-search" style="width: 300px"> </el-input>
+      <el-input v-model="query.email" @change="listRefresh" size="medium" placeholder="请输入要查找的用户邮箱" prefix-icon="el-icon-search" style="width: 300px"> </el-input>
       <el-button type="primary" size="medium" style="float: right" disabled>添加新用户</el-button>
     </div>
 
@@ -50,7 +50,11 @@ import { zUser } from "@/libs/zpan";
 export default {
   data() {
     return {
-      searchKw: "",
+      query: {
+        email: "",
+        offset: 0,
+        limit: 20,
+      },
       rows: [],
       total: 0,
       dialogFormVisible: false,
@@ -59,7 +63,7 @@ export default {
   },
   methods: {
     listRefresh() {
-      zUser.list().then((ret) => {
+      zUser.list(this.query).then((ret) => {
         this.rows = ret.data.list;
         this.total = ret.data.total;
       });

@@ -2,8 +2,8 @@
 import '@/plugins/axios'
 
 let user = {
-    list() {
-        return window.axios.get(`/api/users`)
+    list(query) {
+        return window.axios.get(`/api/users`, { params: query })
     },
     myStorage() {
         return window.axios.get(`/api/users/me`)
