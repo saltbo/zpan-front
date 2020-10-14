@@ -26,7 +26,7 @@
       </el-table>
 
       <div style="margin-top: 20px">
-        <el-pagination layout="prev, pager, next" :total="50" style="float: right"> </el-pagination>
+        <el-pagination layout="prev, pager, next" :current-page.sync="pageNo" :page-size="query.limit" :total="total" @current-change="listRefresh" style="float: right"> </el-pagination>
       </div>
     </el-card>
 
@@ -55,6 +55,7 @@ export default {
         offset: 0,
         limit: 20,
       },
+      pageNo: 1,
       rows: [],
       total: 0,
       dialogFormVisible: false,
@@ -63,6 +64,7 @@ export default {
   },
   methods: {
     listRefresh() {
+      this.query.offset = (this.pageNo - 1) * this.query.limit;
       zUser.list(this.query).then((ret) => {
         this.rows = ret.data.list;
         this.total = ret.data.total;
