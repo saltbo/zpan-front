@@ -103,5 +103,18 @@
     "picture": "Image Hosting",
     "storage-quota": "Storage Quota"
   },
-  "year": "Years"
+  "year": "Years",
+  "admin": {
+    "search-placeholder": "Input the email...",
+    "btn-user-add": "Add User",
+    "btn-quota-update": "Change Quota",
+    "label-nickname": "Nickname",
+    "label-email": "Email",
+    "label-role": "Role",
+    "label-status": "Status",
+    "label-storage": "Quota",
+    "label-operation": "Operation",
+    "label-quota": "Storage Quota",
+    "label-quota-change": "Quota Change"
+  }
 }

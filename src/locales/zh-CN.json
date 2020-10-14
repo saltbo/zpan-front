@@ -103,5 +103,18 @@
     "picture": "我的图床",
     "storage-quota": "存储配额"
   },
-  "year": "年"
+  "year": "年",
+  "admin": {
+    "search-placeholder": "请输入要查找的用户邮箱...",
+    "btn-user-add": "添加新用户",
+    "btn-quota-update": "调整配额",
+    "label-nickname": "用户昵称",
+    "label-email": "Email",
+    "label-role": "角色",
+    "label-status": "状态",
+    "label-storage": "配额",
+    "label-operation": "操作",
+    "label-quota": "存储配额",
+    "label-quota-change": "配额调整"
+  }
 }
