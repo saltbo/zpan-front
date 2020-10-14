@@ -65,6 +65,7 @@ export default {
   data() {
     return {
       query: {
+        kw: "",
         dir: "",
       },
       layout: "list",
@@ -95,7 +96,12 @@ export default {
 
       this.query.offset = offset ? offset : 0;
       this.query.limit = limit ? limit : 10;
-      return zfile.listObjects(this.query);
+      return new Promise((resolve, reject) => {
+        zfile.listObjects(this.query).then((ret) => {
+          this.query.kw = "";
+          resolve(ret);
+        });
+      });
     },
     linkLoader(obj) {
       return new Promise((resolve, reject) => {
