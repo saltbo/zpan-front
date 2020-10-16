@@ -62,7 +62,7 @@ export default {
       if (nv != ov) {
         this.listRefresh();
       }
-    }
+    },
   },
   computed: {
     breadcrumb() {
@@ -81,7 +81,7 @@ export default {
       return root;
     },
     loadedtips() {
-      let loadedNum = this.rows.length
+      let loadedNum = this.rows.length;
       if (loadedNum == this.total) {
         return `已全部加载，共${this.total}个`;
       }
@@ -102,30 +102,30 @@ export default {
     },
     onScrollEnd() {
       if (this.total != 0 && this.rows.length == this.total) {
-        console.log("no more")
-        return
+        console.log("no more");
+        return;
       }
 
       this.listRefresh(this.offset, this.limit);
     },
     listRefresh(offset, limit) {
       if (!offset) {
-        offset = 0
+        offset = 0;
       }
 
       if (!limit) {
-        limit = this.limit
+        limit = this.limit;
       }
 
       this.loading = true;
       let dir = this.currentDir ? this.currentDir : "";
       this.dataLoader(dir, offset, limit).then((data) => {
         if (offset == 0) {
-          this.rows = data.list
-          this.offset = limit
+          this.rows = data.list;
+          this.offset = limit;
         } else {
           this.rows = this.rows.concat(data.list);
-          this.offset += this.limit
+          this.offset += this.limit;
         }
 
         this.total = data.total;
@@ -166,7 +166,7 @@ export default {
   mounted() {
     this.currentDir = this.$route.query.dir ? this.$route.query.dir : "";
 
-    this.listRefresh()
+    this.listRefresh();
   },
 };
 </script>

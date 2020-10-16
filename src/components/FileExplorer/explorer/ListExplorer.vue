@@ -1,5 +1,5 @@
 <template>
-  <el-table style="width: 100%" height="100%" tooltip-effect="dark" :data="data" v-loading="loading" v-el-table-infinite-scroll="onScrollEnd" @selection-change="onSelectionChange" highlight-current-row>
+  <el-table style="width: 100%" height="calc(100% - 55px)" tooltip-effect="dark" size="small" :data="data" v-loading="loading" v-el-table-infinite-scroll="onScrollEnd" @selection-change="onSelectionChange" highlight-current-row>
     <el-table-column type="selection" width="30" :selectable="onSelectable"></el-table-column>
     <el-table-column prop="name" :label="$t('fth.name')" min-width="200" show-overflow-tooltip sortable>
       <template slot-scope="scope">
@@ -45,11 +45,11 @@
 
 <script>
 import mixin from "./mixin";
-import elTableInfiniteScroll from 'el-table-infinite-scroll';
+import elTableInfiniteScroll from "el-table-infinite-scroll";
 export default {
   mixins: [mixin],
   directives: {
-    'el-table-infinite-scroll': elTableInfiniteScroll
+    "el-table-infinite-scroll": elTableInfiniteScroll,
   },
   data() {
     return {};
@@ -65,7 +65,7 @@ export default {
       command.action(command.row);
     },
     onScrollEnd() {
-      this.$emit("scroll-end")
+      this.$emit("scroll-end");
     },
   },
 };
