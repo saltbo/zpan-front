@@ -13,16 +13,22 @@
     </el-row>
 
     <el-table :data="rows" @current-change="onCurrentChange" :expand-row-keys="expandRowKeys" row-key="id" highlight-current-row style="width: 100%">
-      <el-table-column type="expand">
+      <el-table-column type="expand" width="40">
         <template slot-scope="props">
           <p>
             <span>{{ $t("share.link") }}：</span>
             <a :href="props.row.link" target="_blank">{{ props.row.link }}</a>
-            <span v-if="props.row.secret" style="margin-left: 20px">{{ $t("share.drawcode") }}：{{ props.row.secret }}</span>
+            <span v-if="props.row.protected" style="margin-left: 20px">{{ $t("share.drawcode") }}：{{ props.row.secret }}</span>
           </p>
         </template>
       </el-table-column>
-      <el-table-column prop="name" :label="$t('share.name')"></el-table-column>
+      <el-table-column prop="name">
+        <template slot-scope="scope">
+          <i v-if="!scope.row.type" class="matter-icon el-icon-folder" style="color: #ffc402"></i>
+          <i v-else class="matter-icon el-icon-document"></i>
+          <span class="matter-title">{{ scope.row.name }}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="created" :label="$t('share.created')">
         <template slot-scope="scope">{{ scope.row.created | moment }}</template>
       </el-table-column>
@@ -80,5 +86,19 @@ export default {
   font-size: 12px;
   color: #333;
   padding-top: 5px;
+}
+
+.matter-icon {
+  font-size: 28px;
+}
+
+.matter-title {
+  display: inline;
+  margin-left: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  top: -4px;
+  position: relative;
 }
 </style>
