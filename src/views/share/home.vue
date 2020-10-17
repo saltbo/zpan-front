@@ -118,11 +118,11 @@ export default {
       zShare.findMatter(alias).then((ret) => {
         this.matter = ret.data;
         this.matter.size = utils.formatBytes(this.matter.size, 1);
-      });
 
-      if (this.$refs.fexp) {
-        this.$refs.fexp.listRefresh();
-      }
+        if (this.$refs.fexp) {
+          this.$refs.fexp.listRefresh();
+        }
+      });
     },
   },
   watch: {
