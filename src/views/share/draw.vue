@@ -28,7 +28,7 @@ export default {
   methods: {
     draw(alias) {
       zShare.draw(alias, this.drawcode).then((ret) => {
-        localStorage.setItem(`zs-${alias}`, 1);
+        localStorage.setItem("zpan-share", alias);
         this.$router.push({ name: "share-info" });
       });
     },

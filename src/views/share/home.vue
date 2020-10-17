@@ -134,7 +134,7 @@ export default {
     let alias = this.$route.params.alias;
     zShare.find(alias).then((ret) => {
       let info = ret.data;
-      if (info.protected && !localStorage.getItem(`zs-${info.alias}`)) {
+      if (info.protected && localStorage.getItem("zpan-share") != alias) {
         this.$router.push({ name: "share-draw" });
         return;
       }
