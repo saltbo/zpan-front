@@ -65,8 +65,7 @@
   "share": {
     "auto-download-tips": "Your file has started downloading, if it has not started, please click here to try again",
     "created": "ShareTime",
-    "drawcode": "DrawCode",
-    "drawcode-placeholder": "Please input your draw code",
+    "drawcode": "Please input your draw code",
     "drawfile": "Draw",
     "expired": "ExpireTime",
     "link": "ShareLink",

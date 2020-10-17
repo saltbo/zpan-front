@@ -115,7 +115,7 @@ export default {
   mounted() {
     this.userInfo();
     this.userStorage();
-    this.routeName = this.$route.name;
+    this.routeName = `/${this.$route.name}`;
   },
 };
 </script>

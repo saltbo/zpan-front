@@ -19,6 +19,7 @@ let router = new Router({
       ]
     },
     { path: '/s/:alias', name: 'share-info', component: () => import('./views/share/home.vue') },
+    { path: '/s/:alias/draw', name: 'share-draw', component: () => import('./views/share/draw.vue') },
     { path: '/admin/', name: 'admin', redirect: '/admin/storage-quota' },
     {
       path: '/admin/',

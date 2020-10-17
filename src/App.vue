@@ -1,20 +1,14 @@
 <template>
-  <div id="app">
-    <Topbar />
-    <router-view style="height: 100%"></router-view>
-  </div>
+  <router-view id="app"></router-view>
 </template>
 
 <script>
-import Topbar from "@/components/Topbar";
 export default {
-  components: {
-    Topbar,
-  },
   data() {
     return {};
   },
   watch: {},
+  computed: {},
   methods: {},
   mounted() {},
 };

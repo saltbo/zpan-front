@@ -1,34 +1,45 @@
 <template>
   <div style="margin: 20px 50px">
-    <!-- for private file -->
-    <el-card v-show="layout == 'draw'" class="box-card" style="width: 500px; margin: 100px auto">
-      <el-form :inline="true" class="demo-form-inline">
-        <el-form-item :label="$t('share.drawcode')">
-          <el-input v-model="drawcode" :placeholder="$t('share.drawcode-placeholder')"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="draw(info.alias)">{{ $t("share.drawfile") }}</el-button>
-        </el-form-item>
-      </el-form>
+    <!-- for file -->
+    <el-card v-if="info.type" class="file-card" shadow="never">
+      <div slot="header" class="header clearfix">
+        <div>
+          <span class="name">{{ matter.name }}</span>
+          <div style="float: right">
+            <!-- <el-button type="primary" size="medium" icon="el-icon-close" plain>取消分享</el-button> -->
+            <el-button type="primary" size="medium" icon="el-icon-download" @click="openDownload(matter)">下载</el-button>
+          </div>
+        </div>
+        <p class="time">
+          <i class="el-icon-time"></i>
+          <span>{{ matter.created | moment("YYYY-MM-DD HH:hh") }}</span>
+          <span>失效时间：{{ expireTime }}</span>
+        </p>
+      </div>
+
+      <div class="content">
+        <div>
+          <i class="el-icon-document"></i>
+          <p>文件大小：{{ matter.size }}</p>
+        </div>
+      </div>
     </el-card>
 
-    <!-- for file -->
-    <div v-show="layout == 'file'" style="width: 800px; margin: 0 auto">
-      <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span>{{ matter.name }}</span>
-        </div>
-        <div class="text item">
-          <a :href="fileURL">{{ $t("share.auto-download-tips") }}</a>
-        </div>
-      </el-card>
-    </div>
-
     <!-- for folder -->
-    <el-card v-show="layout == 'folder'" class="box-card" style="width: 1500px; margin: auto 10px">
-      <div slot="header" class="clearfix">
-        <span>{{ matter.name }}</span>
-        <p>{{ matter.created | moment }}</p>
+    <el-card v-else-if="info.id" class="folder-card" shadow="never">
+      <div slot="header" class="header clearfix">
+        <div>
+          <span class="name">{{ matter.name }}</span>
+          <div style="float: right">
+            <!-- <el-button type="primary" size="medium" icon="el-icon-close" plain>取消分享</el-button> -->
+            <el-button type="primary" size="medium" icon="el-icon-download">下载</el-button>
+          </div>
+        </div>
+        <p class="time">
+          <i class="el-icon-time"></i>
+          <span>{{ matter.created | moment("YYYY-MM-DD HH:hh") }}</span>
+          <span>失效时间：{{ expireTime }}</span>
+        </p>
       </div>
 
       <FileExplorer ref="fexp" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :rootDir="rootDir" />
@@ -44,22 +55,12 @@ export default {
     return {
       rowButtons: [{ name: "download", icon: "el-icon-download", action: this.openDownload, shown: (item) => !item.dirtype }],
 
-      fileURL: "",
       info: {},
-      protected: false,
-      drawcode: "",
       matter: {},
     };
   },
   computed: {
-    shouldDraw() {
-      return this.protected && !localStorage.getItem(`zs-${this.info.alias}`);
-    },
     layout() {
-      if (this.shouldDraw) {
-        return "draw";
-      }
-
       if (!this.info.type) {
         return "folder";
       }
@@ -69,18 +70,16 @@ export default {
     rootDir() {
       return `${this.matter.parent}${this.matter.name}/`; // 以分享的文件夹为根路径
     },
-  },
-  watch: {
-    matter(nv) {
-      if (nv.type) {
-        this.autoDownload(nv.alias);
+    expireTime() {
+      if (this.info.expire_at) {
+        return this.info.expire_at.moment();
       }
     },
   },
   methods: {
     dataLoader(dir) {
       return new Promise((resolve, reject) => {
-        if (!this.info.id || this.info.type || this.shouldDraw) {
+        if (!this.info.id || this.info.type) {
           return;
         }
 
@@ -115,42 +114,76 @@ export default {
         a.click();
       });
     },
-    autoDownload(alias) {
-      zfile.download(alias).then((ret) => {
-        this.fileURL = ret.link;
-      });
-    },
-    draw(alias) {
-      zShare.draw(alias, this.drawcode).then((ret) => {
-        this.protected = false;
-        localStorage.setItem(`zs-${alias}`, 1);
-        this.listRefresh(alias);
-      });
-    },
     listRefresh(alias) {
       zShare.findMatter(alias).then((ret) => {
         this.matter = ret.data;
+        this.matter.size = utils.formatBytes(this.matter.size, 1);
       });
 
-      if (!this.info.type) {
+      if (this.$refs.fexp) {
         this.$refs.fexp.listRefresh();
       }
+    },
+  },
+  watch: {
+    $route(nv) {
+      this.listRefresh(nv.params.alias);
     },
   },
   mounted() {
     let alias = this.$route.params.alias;
     zShare.find(alias).then((ret) => {
-      this.info = ret.data;
-      this.protected = ret.data.protected;
-      if (this.shouldDraw) {
+      let info = ret.data;
+      if (info.protected && !localStorage.getItem(`zs-${info.alias}`)) {
+        this.$router.push({ name: "share-draw" });
         return;
       }
 
+      this.info = info;
       this.listRefresh(alias);
+      document.title = `${info.name} | Zpan`;
     });
   },
 };
 </script>
 
 <style scoped>
+.file-card {
+  width: 800px;
+  margin: 0 auto;
+  height: 600px;
+}
+.folder-card {
+  margin: auto 10px;
+  height: calc(100% - 120px);
+}
+
+.header .name {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.header .time {
+  font-size: 12px;
+  margin: 10px 0;
+}
+.time i {
+  width: 18px;
+}
+.time span {
+  margin-right: 20px;
+}
+
+.content {
+  background: #f6f9fd;
+  height: 600px;
+  text-align: center;
+  padding-top: 120px;
+}
+.content i {
+  font-size: 90px;
+}
+.content p {
+  margin-top: 30px;
+}
 </style>

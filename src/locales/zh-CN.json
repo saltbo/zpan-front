@@ -65,8 +65,7 @@
   "share": {
     "auto-download-tips": "您的文件已经开始下载，如果没有开始请点击此处重试",
     "created": "分享时间",
-    "drawcode": "提取码",
-    "drawcode-placeholder": "请输入提取码",
+    "drawcode": "请输入提取码：",
     "drawfile": "提取文件",
     "expired": "失效时间",
     "link": "链接",
