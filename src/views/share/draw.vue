@@ -7,7 +7,7 @@
       </div>
 
       <el-form class="form" label-position="top" label-width="80px">
-        <el-form-item :label="$t('share.drawcode')">
+        <el-form-item :label="$t('share.drawcode-placeholder')">
           <el-input v-model="drawcode" size="medium" autofocus style="width: 310px; margin-right: 10px"></el-input>
           <el-button type="primary" size="medium" @click="draw(info.alias)">{{ $t("share.drawfile") }}</el-button>
         </el-form-item>
