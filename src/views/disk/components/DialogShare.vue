@@ -2,10 +2,10 @@
   <div>
     <el-dialog :title="$t('dialog.share-title')" :width="shareForm.width" :visible.sync="visible">
       <el-form v-show="!shareForm.done">
-        <el-form-item :label="$t('dialog.share-drawcode-switch')" style="margin-left: 20px;">
+        <el-form-item :label="$t('dialog.share-drawcode-switch')" style="margin-left: 20px">
           <el-switch v-model="shareForm.private"></el-switch>
         </el-form-item>
-        <el-form-item :label="$t('dialog.share-expire-time')" style="margin-left: 20px;">
+        <el-form-item :label="$t('dialog.share-expire-time')" style="margin-left: 20px">
           <el-select v-model="shareForm.expire_sec">
             <el-option :label="`7 ${$t('day')}`" :value="604800"></el-option>
             <el-option :label="`30 ${$t('day')}`" :value="2592000"></el-option>
@@ -14,22 +14,22 @@
         </el-form-item>
       </el-form>
 
-      <div v-show="shareForm.done" style="margin-left: 50px; line-height: 30px;">
+      <div v-show="shareForm.done" style="margin-left: 50px; line-height: 30px">
         <p>
-          {{ $t('dialog.share-link') }}：
-          <a :href="shareForm.link" target="_blank">{{shareForm.link}}</a>
+          {{ $t("dialog.share-link") }}：
+          <a :href="shareForm.link" target="_blank">{{ shareForm.link }}</a>
         </p>
-        <p v-if="shareForm.secret">{{ $t('dialog.share-drawcode') }}：{{shareForm.secret}}</p>
+        <p v-if="shareForm.secret">{{ $t("dialog.share-drawcode") }}：{{ shareForm.secret }}</p>
       </div>
 
       <span slot="footer" class="dialog-footer">
         <div v-if="!shareForm.done">
-          <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
-          <el-button type="primary" @click="share">{{ $t('confirm') }}</el-button>
+          <el-button @click="close">{{ $t("cancel") }}</el-button>
+          <el-button type="primary" @click="share">{{ $t("confirm") }}</el-button>
         </div>
         <div v-else>
-          <el-button type="primary">{{ $t('click-copy-link') }}</el-button>
-          <el-button @click="visible = false">{{ $t('close') }}</el-button>
+          <el-button type="primary" class="copy-link" :data-clipboard-text="shareForm.link" @click="close">{{ $t("click-copy-link") }}</el-button>
+          <el-button @click="close">{{ $t("close") }}</el-button>
         </div>
       </span>
     </el-dialog>
@@ -44,28 +44,27 @@ export default {
   mixins: [mixinDialog],
   data() {
     return {
-      shareForm: {
-        done: false,
-        width: "30%",
-        mid: 0,
-        private: false,
-        expire_sec: 604800,
-      },
+      shareForm: {},
     };
   },
   methods: {
     open(alias) {
-      this.shareForm.matter = alias;
+      this.shareForm = {
+        matter: alias,
+        done: false,
+        width: "30%",
+        private: false,
+        expire_sec: 604800,
+      };
       this.visible = true;
     },
     share(done) {
       zShare.create(this.shareForm).then((data) => {
-        let host = window.location.host;
+        let origin = window.location.origin;
         let alias = data.data.alias;
 
         this.shareForm.done = true;
-        this.shareForm.width = "50%";
-        this.shareForm.link = `http://${host}/s/${alias}`;
+        this.shareForm.link = `${origin}/s/${alias}`;
         this.shareForm.secret = data.data.secret;
       });
     },

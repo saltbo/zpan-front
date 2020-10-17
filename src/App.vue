@@ -10,7 +10,19 @@ export default {
   watch: {},
   computed: {},
   methods: {},
-  mounted() {},
+  mounted() {
+    // setup clipboard
+    this.$clipboard.on("success", (e) => {
+      this.$message.success(this.$t("msg.copy-success"));
+      e.clearSelection();
+    });
+    this.$clipboard.on("error", (e) => {
+      this.$message.error(this.$t("msg.copy-failed"));
+    });
+  },
+  beforeDestroy() {
+    this.$clipboard.destroy();
+  },
 };
 </script>
 
