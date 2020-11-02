@@ -1,22 +1,25 @@
 <template>
-  <el-dialog :title="$t('admin.label-storage-change')" :visible.sync="visible">
-    <el-form :model="form">
-      <el-form-item :label="$t('admin.label-bucket')" label-width="150px">
-        <el-input v-model="form.bucket" size="medium"></el-input>
+  <el-dialog :title="$t('admin.label-storage-manager')" width="30%" :visible.sync="visible">
+    <el-form :model="form" style="padding-right: 50px">
+      <el-form-item :label="$t('admin.label-name')" label-width="120px">
+        <el-input v-model="form.name" size="medium"></el-input>
       </el-form-item>
-      <el-form-item :label="$t('admin.label-intro')" label-width="150px">
+      <el-form-item :label="$t('admin.label-intro')" label-width="120px">
         <el-input v-model="form.intro" size="medium"></el-input>
       </el-form-item>
-      <el-form-item :label="$t('admin.label-endpoint')" label-width="150px">
+      <el-form-item :label="$t('admin.label-bucket')" label-width="120px">
+        <el-input v-model="form.bucket" size="medium"></el-input>
+      </el-form-item>
+      <el-form-item :label="$t('admin.label-endpoint')" label-width="120px">
         <el-input v-model="form.endpoint" size="medium"></el-input>
       </el-form-item>
-      <el-form-item :label="$t('admin.label-custom_host')" label-width="150px">
+      <el-form-item :label="$t('admin.label-custom_host')" label-width="120px">
         <el-input v-model="form.custom_host" size="medium"></el-input>
       </el-form-item>
-      <el-form-item :label="$t('admin.label-access_key')" label-width="150px">
+      <el-form-item :label="$t('admin.label-access_key')" label-width="120px">
         <el-input v-model="form.access_key" size="medium"></el-input>
       </el-form-item>
-      <el-form-item :label="$t('admin.label-secret_key')" label-width="150px">
+      <el-form-item :label="$t('admin.label-secret_key')" label-width="120px">
         <el-input v-model="form.secret_key" size="medium"></el-input>
       </el-form-item>
     </el-form>

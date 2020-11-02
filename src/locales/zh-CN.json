@@ -106,8 +106,11 @@
   "year": "年",
   "admin": {
     "search-placeholder": "请输入要查找的用户邮箱...",
+    "storage-search-placeholder": "请输入要查找的存储空间...",
     "btn-user-add": "添加新用户",
     "btn-quota-update": "调整配额",
+    "btn-storage-add": "创建存储",
+    "btn-edit": "编辑",
     "label-nickname": "用户昵称",
     "label-email": "Email",
     "label-role": "角色",
@@ -115,6 +118,14 @@
     "label-storage": "配额",
     "label-operation": "操作",
     "label-quota": "存储配额",
-    "label-quota-change": "配额调整"
+    "label-quota-change": "配额调整",
+    "label-storage-manager": "存储管理",
+    "label-name": "名称",
+    "label-intro": "描述",
+    "label-bucket": "存储桶",
+    "label-endpoint": "接入点",
+    "label-custom_host": "自有域名",
+    "label-access_key": "AccessKey",
+    "label-secret_key": "SecretKey"
   }
 }
