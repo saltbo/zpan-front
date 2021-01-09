@@ -50,7 +50,10 @@
 
 <script>
 import { zRecyclebin } from "@/libs/zpan";
+import Mixin from "../mixin";
 export default {
+  name: "recyclebin",
+  mixins: [Mixin],
   data() {
     return {
       rows: [],
@@ -69,7 +72,7 @@ export default {
   },
   methods: {
     listRefresh() {
-      zRecyclebin.list().then((data) => {
+      zRecyclebin.list({ sid: this.getSid() }).then((data) => {
         this.rows = data.list;
         this.total = data.total;
       });

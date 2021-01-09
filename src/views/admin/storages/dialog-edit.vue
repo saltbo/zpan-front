@@ -7,6 +7,12 @@
       <el-form-item :label="$t('admin.label-intro')" label-width="120px">
         <el-input v-model="form.intro" size="medium"></el-input>
       </el-form-item>
+      <el-form-item label="类型" label-width="120px">
+        <el-radio-group v-model="form.type">
+          <el-radio label="网盘"></el-radio>
+          <el-radio label="文件床"></el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item :label="$t('admin.label-bucket')" label-width="120px">
         <el-input v-model="form.bucket" size="medium"></el-input>
       </el-form-item>

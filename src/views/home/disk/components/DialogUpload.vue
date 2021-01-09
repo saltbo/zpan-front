@@ -20,6 +20,7 @@ export default {
   name: "Uploader",
   mixins: [mixinDialog],
   props: {
+    sid: Number,
     destDir: String,
   },
   data() {
@@ -39,7 +40,7 @@ export default {
     handleUpload(fileObj) {
       fileObj.filename = fileObj.file.name;
 
-      zfile.upload(fileObj, this.destDir).then(this.finish);
+      zfile.upload(Number(this.sid), fileObj, this.destDir).then(this.finish);
     },
   },
 };

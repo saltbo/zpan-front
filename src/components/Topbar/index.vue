@@ -4,8 +4,12 @@
       <img src="@/assets/logo.png" alt="ZPan" @click="$router.push('/')" />
     </div>
     <el-menu v-if="showMenu" class="navbar" :default-active="routeName" mode="horizontal" style="width: 100%" router>
-      <el-menu-item index="/disk">{{ $t("topbar.netdisk") }}</el-menu-item>
-      <el-menu-item index="/picture">{{ $t("topbar.imghosting") }}</el-menu-item>
+      <el-menu-item v-for="(menu, index) in menus.slice(0, 5)" :key="index" :index="menu.path">{{ menu.title }}</el-menu-item>
+
+      <el-submenu index="more" v-show="menus.length > 5">
+        <template slot="title">更多</template>
+        <el-menu-item v-for="(menu, index) in menus.slice(5)" :key="index" :index="menu.path">{{ menu.title }}</el-menu-item>
+      </el-submenu>
     </el-menu>
 
     <div style="position: absolute; right: 20px">
@@ -45,6 +49,9 @@ import utils from "@/libs/utils";
 import Cookie from "js-cookie";
 const defaultAvatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
 export default {
+  props: {
+    menus: Array,
+  },
   data() {
     return {
       routeName: "",
@@ -70,7 +77,7 @@ export default {
   computed: {
     showMenu() {
       let path = this.$route.path;
-      return path == "/" ? false : !path.startsWith("/admin");
+      return path == "/" ? false : !path.startsWith("/m/admin");
     },
     showAdmin() {
       return Cookie.get("moreu-role") == "admin";

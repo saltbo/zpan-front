@@ -3,12 +3,12 @@ import '@/plugins/axios'
 import utils from '../utils'
 
 let zpan = {
-    upload(fileObj, distDir, publiced) {
+    upload(sid, fileObj, distDir, publiced) {
         if (!publiced) {
             publiced = false
         }
         let file = fileObj.file
-        let body = { name: fileObj.filename, type: file.type, size: file.size, dir: distDir, public: publiced };
+        let body = { sid: sid, name: fileObj.filename, type: file.type, size: file.size, dir: distDir, public: publiced };
         return new Promise((resolve, reject) => {
             window.axios.post('/api/files', body).then(ret => {
                 let data = ret.data

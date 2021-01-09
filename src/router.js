@@ -8,24 +8,31 @@ let router = new Router({
   mode: 'history',
   routes: [
     { path: '/', name: 'home', redirect: '/disk' },
+    { path: '/install', name: 'installer', component: () => import('./views/installer') },
     {
-      path: '/',
-      component: () => import('./views/Home.vue'),
+      path: '/:sname',
+      component: () => import('./views/home'),
       children: [
-        { path: 'disk', name: 'disk', component: () => import('./views/disk') },
-        { path: 'share', name: 'share', component: () => import('./views/share') },
-        { path: 'recyclebin', name: 'recyclebin', component: () => import('./views/recyclebin') },
-        { path: 'picture', name: 'picture', component: () => import('./views/picture') },
+        { path: '/', name: 'disk', component: () => import('./views/home/disk') },
+        { path: 'share', name: 'share', component: () => import('./views/home/share') },
+        { path: 'recyclebin', name: 'recyclebin', component: () => import('./views/home/recyclebin') },
       ]
     },
-    { path: '/s/:alias', name: 'share-info', component: () => import('./views/share/home.vue') },
-    { path: '/s/:alias/draw', name: 'share-draw', component: () => import('./views/share/draw.vue') },
-    { path: '/admin/', name: 'admin', redirect: '/admin/storage-quota' },
+    { path: '/s/:alias', name: 'share-info', component: () => import('./views/home/share/home.vue') },
+    { path: '/s/:alias/draw', name: 'share-draw', component: () => import('./views/home/share/draw.vue') },
+    // {
+    //   path: '/',
+    //   component: () => import('./views/home'),
+    //   children: [
+    //     { path: 'picture', name: 'picture', component: () => import('./views/home/picture') },
+    //   ]
+    // },
     {
-      path: '/admin/',
+      path: '/m/admin/',
       component: () => import('./views/admin/index.vue'),
       children: [
-        { path: 'storage-quota', name: 'storage-quota', component: () => import('./views/admin/users') },
+        { path: '/', name: 'admin', component: () => import('./views/admin/home') },
+        { path: 'users', name: 'users', component: () => import('./views/admin/users') },
         { path: 'storages', name: 'storages', component: () => import('./views/admin/storages') },
         { path: 'settings', name: 'settings', component: () => import('./views/admin/settings') },
       ]

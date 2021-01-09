@@ -166,7 +166,7 @@ export default {
   mounted() {
     this.currentDir = this.$route.query.dir ? this.$route.query.dir : "";
 
-    this.listRefresh();
+    // this.listRefresh();
   },
 };
 </script>

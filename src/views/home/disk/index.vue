@@ -42,7 +42,7 @@
     <!-- dialog -->
     <DialogMove ref="move" @completed="listRefresh"></DialogMove>
     <DialogShare ref="share"></DialogShare>
-    <DialogUpload ref="uploader" :dest-dir="query.dir" @completed="listRefresh"></DialogUpload>
+    <DialogUpload ref="uploader" :sid="getSid()" :dest-dir="query.dir" @completed="listRefresh"></DialogUpload>
     <DialogOutlink ref="outlink"></DialogOutlink>
   </div>
 </template>
@@ -54,8 +54,10 @@ import DialogMove from "./components/DialogMove";
 import DialogShare from "./components/DialogShare";
 import DialogUpload from "./components/DialogUpload";
 import DialogOutlink from "./components/DialogOutlink";
+import Mixin from "../mixin";
 export default {
   name: "home",
+  mixins: [Mixin],
   components: {
     DialogMove,
     DialogShare,
@@ -94,6 +96,7 @@ export default {
         this.query.dir = dir;
       }
 
+      this.query.sid = this.getSid();
       this.query.offset = offset ? offset : 0;
       this.query.limit = limit ? limit : 10;
       return new Promise((resolve, reject) => {
@@ -129,7 +132,7 @@ export default {
         confirmButtonText: this.$t("confirm"),
         cancelButtonText: this.$t("cancel"),
       }).then(({ value }) => {
-        let body = { name: value, dir: this.query.dir };
+        let body = { sid: this.getSid(), name: value, dir: this.query.dir };
         zfolder.create(body).then((ret) => {
           this.$message({
             type: "success",

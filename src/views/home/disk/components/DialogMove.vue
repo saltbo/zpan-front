@@ -11,8 +11,8 @@
       </el-tree>
 
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submit">{{ $t('confirm') }}</el-button>
-        <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
+        <el-button type="primary" @click="submit">{{ $t("confirm") }}</el-button>
+        <el-button @click="visible = false">{{ $t("cancel") }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -20,9 +20,10 @@
 
 <script>
 import { zfile, zfolder } from "@/libs/zpan";
+import Mixin from "../../mixin";
 import mixinDialog from "@/libs/mixin-dialog.js";
 export default {
-  mixins: [mixinDialog],
+  mixins: [Mixin, mixinDialog],
   data() {
     return {
       data: [],
@@ -62,7 +63,7 @@ export default {
       }
 
       // pull the datas
-      zfolder.list({ parent: node.data.fullpath }).then((objects) => {
+      zfolder.list({ sid: this.getSid(), parent: node.data.fullpath }).then((objects) => {
         let folders = objects.filter((ele) => {
           return ele.dirtype && ele.alias != this.alias;
         });
