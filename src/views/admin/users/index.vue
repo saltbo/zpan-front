@@ -14,7 +14,7 @@
         <el-table-column prop="status" :label="$t('admin.label-status')" width="120"> </el-table-column>
         <el-table-column prop="storage" :label="$t('admin.label-storage')" width="220">
           <template slot-scope="scope" width="120">
-            <span>{{ scope.row.storage_used }}/{{ scope.row.storage_max }}</span>
+            <span>{{ scope.row.storage_used }} / {{ scope.row.storage_max }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="operation" :label="$t('admin.label-operation')" width="280">
@@ -31,10 +31,13 @@
     </el-card>
 
     <!-- dialog -->
-    <el-dialog :title="$t('admin.label-quota-change')" :visible.sync="dialogFormVisible" width="25%">
+    <el-dialog :title="$t('admin.label-quota-change')" :visible.sync="dialogFormVisible" width="20%">
       <el-form :model="form">
-        <el-form-item :label="$t('admin.label-quota')" label-width="120px">
-          <el-input-number v-model="form.storage_max" :min="100" size="medium"></el-input-number>
+        <el-form-item :label="$t('admin.label-quota')" label-width="110px">
+          <!-- <el-input-number v-model="form.storage_max" :min="100" size="medium"></el-input-number> -->
+          <el-select v-model="form.storage_max" placeholder="请选择用户配额">
+            <el-option v-for="item in storageQuotas" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -47,8 +50,12 @@
 
 <script>
 import { zUser } from "@/libs/zpan";
+import utils from "@/libs/utils";
 export default {
   data() {
+    const MB = 1024 * 1024;
+    const GB = 1024 * MB;
+    const TB = 1024 * GB;
     return {
       query: {
         email: "",
@@ -59,6 +66,16 @@ export default {
       rows: [],
       total: 0,
       dialogFormVisible: false,
+      storageQuotas: [
+        { label: "100 MB", value: 100 * MB },
+        { label: "512 MB", value: 512 * MB },
+        { label: "1 GB", value: 1 * GB },
+        { label: "10 GB", value: 10 * GB },
+        { label: "50 GB", value: 50 * GB },
+        { label: "100 GB", value: 100 * GB },
+        { label: "1 TB", value: 1 * TB },
+        { label: "10 TB", value: 10 * TB },
+      ],
       form: {},
     };
   },
@@ -67,16 +84,22 @@ export default {
       this.query.offset = (this.pageNo - 1) * this.query.limit;
       zUser.list(this.query).then((ret) => {
         this.rows = ret.data.list;
+        this.rows = this.rows.map((ele) => {
+          ele.storage_used = utils.formatBytes(ele.storage_used);
+          ele.storage_max = utils.formatBytes(ele.storage_max);
+          return ele;
+        });
         this.total = ret.data.total;
       });
     },
     onEdit(index, row) {
       this.dialogFormVisible = true;
-      this.form = row;
+      this.form = Object.assign({}, row);
     },
     onStorageUpdate() {
       zUser.storageUpdate(this.form.id, this.form.storage_max).then((ret) => {
         this.dialogFormVisible = false;
+        this.listRefresh();
         this.$message({
           type: "success",
           message: this.$t("msg.save-success"),
