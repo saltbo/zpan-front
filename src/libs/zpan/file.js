@@ -16,7 +16,7 @@ let zpan = {
                     window.axios.patch(`/api/files/${data.alias}/uploaded`).then((ret) => {
                         resolve(ret)
                     })
-                })
+                }).catch(reject)
             }).catch(reject)
         })
     },

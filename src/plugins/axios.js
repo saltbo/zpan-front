@@ -35,15 +35,17 @@ _axios.interceptors.response.use(
     return response.data;
   },
   function (error) {
-    if (error.response.status == 401) {
+    if (error.response && error.response.status == 401) {
       window.location = "/moreu/signin"
-      return
+      return Promise.reject("invalid login status");
     }
 
+    let msg = error.message
     if (error.response) {
-      Notification.error(error.response.data.msg)
+      msg = error.response.data.msg
     }
 
+    Notification.error(msg)
     return Promise.reject(error);
   }
 );
