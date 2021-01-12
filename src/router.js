@@ -8,7 +8,6 @@ let router = new Router({
   mode: 'history',
   routes: [
     { path: '/', name: 'home', redirect: '/disk' },
-    { path: '/install', name: 'installer', component: () => import('./views/installer') },
     {
       path: '/:sname',
       component: () => import('./views/home'),
