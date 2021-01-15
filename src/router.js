@@ -7,7 +7,7 @@ Vue.use(Router)
 let router = new Router({
   mode: 'history',
   routes: [
-    { path: '/', name: 'home', redirect: '/disk' },
+    { path: '/', name: 'home', component: () => import('./views/home') },
     {
       path: '/:sname',
       component: () => import('./views/home'),

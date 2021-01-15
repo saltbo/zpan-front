@@ -3,8 +3,8 @@
     <div class="logo">
       <img src="@/assets/logo.png" alt="ZPan" @click="$router.push('/')" />
     </div>
-    <el-menu v-if="showMenu" class="navbar" :default-active="routeName" mode="horizontal" style="width: 100%" router>
-      <el-menu-item v-for="(menu, index) in menus.slice(0, 5)" :key="index" :index="menu.path">{{ menu.title }}</el-menu-item>
+    <el-menu v-if="showMenu" class="navbar" :default-active="$route.params.sname" mode="horizontal" style="width: 100%" router>
+      <el-menu-item v-for="(menu, index) in menus.slice(0, 5)" :key="index" :index="menu.name">{{ menu.title }}</el-menu-item>
 
       <el-submenu index="more" v-show="menus.length > 5">
         <template slot="title">更多</template>
@@ -54,7 +54,6 @@ export default {
   },
   data() {
     return {
-      routeName: "",
       locale: this.$i18n.locale,
       langs: [
         { label: "中文", value: "zh-CN" },
@@ -85,7 +84,6 @@ export default {
   },
   methods: {
     onRouteChange(newVal, oldVal) {
-      this.routeName = `/${newVal.name}`;
       this.userStorage();
     },
     userInfo() {
@@ -113,6 +111,9 @@ export default {
         case "admin":
           this.$router.push({ name: "admin" });
           break;
+        case "profile":
+          window.open("/moreu/profile", "_blank");
+          break;
         case "signout":
           window.location = "/moreu/signout";
           break;
@@ -122,7 +123,6 @@ export default {
   mounted() {
     this.userInfo();
     this.userStorage();
-    this.routeName = `/${this.$route.name}`;
   },
 };
 </script>

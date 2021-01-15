@@ -3,7 +3,7 @@
     <Topbar :menus="topMenus" />
     <el-container style="height: 100%">
       <el-aside width="200px" style="height: 100%; background-color: #f4f4f5">
-        <el-menu :default-active="routeFullPath" background-color="#f4f4f5" router>
+        <el-menu :default-active="$route.fullPath" background-color="#f4f4f5" router>
           <el-menu-item v-for="(menu, index) in leftMenus" :key="index" :index="menu.path">
             <i :class="menu.icon"></i>
             <span slot="title">{{ menu.title }}</span>
@@ -32,7 +32,6 @@ export default {
   },
   data() {
     return {
-      routeFullPath: "disk",
       current: {
         bucket: "",
         type: "ns",
@@ -42,6 +41,8 @@ export default {
   },
   computed: {
     leftMenus() {
+      this.current.bucket = this.$route.params.sname;
+
       // todo 根据存储类型切换左侧菜单栏内容
       let diskMenus = [
         { path: `/${this.current.bucket}`, icon: "el-icon-document", title: this.$t("leftnav.files") },
@@ -63,19 +64,24 @@ export default {
   },
   watch: {
     $route(newVal, oldVal) {
-      this.routeFullPath = newVal.fullPath;
-      this.current.bucket = newVal.params.sname;
+      this.loadDefaultStorage();
+    },
+    topMenus(nl, ol) {
+      this.loadDefaultStorage();
+    },
+  },
+  methods: {
+    loadDefaultStorage() {
+      // 只有访问首页的时候且menus数据加载完之后才跳去第一个菜单
+      if (this.$route.fullPath == "/" && this.topMenus.length > 0) {
+        this.$router.push({ path: `/${this.topMenus[0].name}` });
+      }
     },
   },
   mounted() {
-    this.routeFullPath = this.$route.fullPath;
-    this.current.bucket = this.$route.params.sname;
-    // todo load the topMenus from the remote api
-
     this.topMenus = [];
     zStorage.list().then((ret) => {
       this.topMenus = ret.data.list.map((item) => {
-        item.path = `/${item.name}`;
         item.title = item.name;
 
         // cache the sid
