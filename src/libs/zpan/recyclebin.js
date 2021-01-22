@@ -1,24 +1,33 @@
 /* eslint-disable no-console */
-import '@/plugins/axios'
 
-let recyclebin = {
+class zRecyclebin {
+
+    axios
+
+    constructor(_axios) {
+        this.axios = _axios
+    }
+
     list(params) {
         return new Promise((resolve, reject) => {
-            window.axios.get('/api/recycles', { params: params }).then(ret => {
+            this.axios.get('/api/recycles', { params: params }).then(ret => {
                 let data = ret.data;
                 resolve(data);
             }).catch(reject)
         })
-    },
+    }
+
     recovery(alias) {
-        return window.axios.put(`/api/recycles/${alias}`)
-    },
+        return this.axios.put(`/api/recycles/${alias}`)
+    }
+
     delete(alias) {
-        return window.axios.delete(`/api/recycles/${alias}`)
-    },
+        return this.axios.delete(`/api/recycles/${alias}`)
+    }
+
     clean() {
-        return window.axios.delete(`/api/recycles`)
+        return this.axios.delete(`/api/recycles`)
     }
 }
 
-export default recyclebin;
+export default zRecyclebin;

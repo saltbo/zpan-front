@@ -82,7 +82,7 @@ export default {
   methods: {
     listRefresh() {
       this.query.offset = (this.pageNo - 1) * this.query.limit;
-      zUser.list(this.query).then((ret) => {
+      this.$zplat.User.list(this.query).then((ret) => {
         this.rows = ret.data.list;
         this.rows = this.rows.map((ele) => {
           ele.storage_used = utils.formatBytes(ele.storage_used);
@@ -97,7 +97,7 @@ export default {
       this.form = Object.assign({}, row);
     },
     onStorageUpdate() {
-      zUser.storageUpdate(this.form.id, this.form.storage_max).then((ret) => {
+      zUser.Update(this.form.id, this.form.storage_max).then((ret) => {
         this.dialogFormVisible = false;
         this.listRefresh();
         this.$message({

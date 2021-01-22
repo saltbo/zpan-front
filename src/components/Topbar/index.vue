@@ -87,14 +87,13 @@ export default {
       this.userStorage();
     },
     userInfo() {
-      this.$moreu.profile().then((ret) => {
-        this.user = ret.data.user;
-        this.profile = ret.data.profile;
-
-        if (this.profile.avatar == "") {
-          this.profile.avatar = defaultAvatar;
-        }
-      });
+      // this.$moreu.profile().then((ret) => {
+      //   this.user = ret.data.user;
+      //   this.profile = ret.data.profile;
+      //   if (this.profile.avatar == "") {
+      //     this.profile.avatar = defaultAvatar;
+      //   }
+      // });
     },
     userStorage() {
       zUser.myStorage().then((data) => {
@@ -112,10 +111,10 @@ export default {
           this.$router.push({ name: "admin" });
           break;
         case "profile":
-          window.open("/moreu/profile", "_blank");
+          window.open("/zplat/profile", "_blank");
           break;
         case "signout":
-          window.location = "/moreu/signout";
+          window.location = "/zplat/signout";
           break;
       }
     },

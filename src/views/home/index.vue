@@ -67,19 +67,25 @@ export default {
       this.loadDefaultStorage();
     },
     topMenus(nl, ol) {
+      console.log(nl, ol);
       this.loadDefaultStorage();
     },
   },
   methods: {
     loadDefaultStorage() {
+      // 如果没有存储空间则强制跳去添加存储空间
+      if (this.topMenus.length == 0) {
+        this.$router.push({ name: "storages" });
+        return;
+      }
+
       // 只有访问首页的时候且menus数据加载完之后才跳去第一个菜单
-      if (this.$route.fullPath == "/" && this.topMenus.length > 0) {
+      if (this.$route.fullPath == "/") {
         this.$router.push({ path: `/${this.topMenus[0].name}` });
       }
     },
   },
   mounted() {
-    this.topMenus = [];
     zStorage.list().then((ret) => {
       this.topMenus = ret.data.list.map((item) => {
         item.title = item.name;

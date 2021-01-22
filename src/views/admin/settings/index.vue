@@ -4,8 +4,11 @@
       <el-form-item label="站点名称">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="语言">
-        <el-select v-model="form.region" placeholder="请选择系统语言">
+      <el-form-item label="站点描述">
+        <el-input v-model="form.intro" type="textarea"></el-input>
+      </el-form-item>
+      <el-form-item label="默认语言">
+        <el-select v-model="form.region" placeholder="请选择系统默认语言">
           <el-option label="中文" value="shanghai"></el-option>
           <el-option label="英语" value="beijing"></el-option>
         </el-select>

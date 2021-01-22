@@ -3,13 +3,13 @@ import App from './App'
 import i18n from './i18n'
 import router from './router'
 import './plugins/axios'
-import './plugins/moreu'
 import './plugins/moment'
 import './plugins/element'
 import './plugins/fileexplorer'
 import './plugins/clipboard'
 import './plugins/photoswipe'
 import './plugins/plyr'
+import './plugins/zplat'
 
 Vue.config.productionTip = false
 

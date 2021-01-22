@@ -92,7 +92,7 @@ module.exports = {
         hotOnly: false,
         disableHostCheck: true,
         proxy: {
-            '^/moreu|^/api': {
+            '^/api': {
                 target: 'http://localhost:8222',
                 ws: true,
                 changeOrigin: true
@@ -102,19 +102,19 @@ module.exports = {
 
     // options for 3rd party plugins
     pluginOptions: {
-      gitDescribe: {
-        variableName: 'GIT_DESCRIBE'
-      },
-      moment: {
-        locales: [
-          'en'
-        ]
-      },
-      i18n: {
-        locale: 'en',
-        fallbackLocale: 'en',
-        localeDir: 'locales',
-        enableInSFC: true
-      }
+        gitDescribe: {
+            variableName: 'GIT_DESCRIBE'
+        },
+        moment: {
+            locales: [
+                'en'
+            ]
+        },
+        i18n: {
+            locale: 'en',
+            fallbackLocale: 'en',
+            localeDir: 'locales',
+            enableInSFC: true
+        }
     }
 }

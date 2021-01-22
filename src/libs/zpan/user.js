@@ -1,16 +1,24 @@
 /* eslint-disable no-console */
-import '@/plugins/axios'
 
-let user = {
+class User {
+    axios
+
+    constructor(_axios) {
+        this.axios = _axios
+    }
+
     list(query) {
-        return window.axios.get(`/api/users`, { params: query })
-    },
+        return this.axios.get(`/api/users`, { params: query })
+    }
+
     myStorage() {
-        return window.axios.get(`/api/users/me`)
-    },
-    storageUpdate(uid, max) {
-        return window.axios.patch(`/api/users/${uid}/storage`, { max: max })
-    },
+        return this.axios.get(`/api/user/storage`)
+    }
+
+    update(id, max) {
+        return this.axios.patch(`/api/users/${id}/storage`, { max: max })
+    }
+
 }
 
-export default user;
+export default User;

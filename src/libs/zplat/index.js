@@ -12,7 +12,7 @@ let config = {
     // baseURL: process.env.baseURL || process.env.apiUrl || ""
     // timeout: 60 * 1000, // Timeout
     // withCredentials: true, // Check cross-site Access-Control
-    headers: { "X-Zplat-Subsystem": "zpan" }
+    // headers: { "X-Zplat-Subsystem": "zpan" }
 };
 
 const _axios = axios.create(config);
@@ -24,7 +24,7 @@ _axios.interceptors.response.use(
     },
     function (error) {
         if (error.response && error.response.status == 401) {
-            this.location = "/zplat/signin"
+            window.location = "/zplat/signin"
             return Promise.reject("invalid login status");
         }
 
@@ -39,26 +39,8 @@ _axios.interceptors.response.use(
 );
 
 
-import User from './user'
-import Storage from './storage'
-import File from './file'
-import Folder from './folder'
-import Share from './share'
-import Recyclebin from './recyclebin'
+import zUser from './user'
 
-const zUser = new User(_axios);
-const zStorage = new Storage(_axios);
-const zfile = new File(_axios);
-const zfolder = new Folder(_axios);
-const zShare = new Share(_axios);
-const zRecyclebin = new Recyclebin(_axios);
+const User = new zUser(_axios);
 
-
-export {
-    zUser,
-    zStorage,
-    zfile,
-    zfolder,
-    zShare,
-    zRecyclebin
-}
+export default { User }

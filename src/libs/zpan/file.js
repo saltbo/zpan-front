@@ -1,8 +1,14 @@
 /* eslint-disable no-console */
-import '@/plugins/axios'
 import utils from '../utils'
 
-let zpan = {
+class zFile {
+
+    axios
+
+    constructor(_axios) {
+        this.axios = _axios
+    }
+
     upload(sid, fileObj, distDir, publiced) {
         if (!publiced) {
             publiced = false
@@ -10,23 +16,25 @@ let zpan = {
         let file = fileObj.file
         let body = { sid: sid, name: fileObj.filename, type: file.type, size: file.size, dir: distDir, public: publiced };
         return new Promise((resolve, reject) => {
-            window.axios.post('/api/files', body).then(ret => {
+            this.axios.post('/api/files', body).then(ret => {
                 let data = ret.data
                 utils.upload(fileObj, data.link, data.headers).then(() => {
-                    window.axios.patch(`/api/files/${data.alias}/uploaded`).then((ret) => {
+                    this.axios.patch(`/api/files/${data.alias}/uploaded`).then((ret) => {
                         resolve(ret)
                     })
                 }).catch(reject)
             }).catch(reject)
         })
-    },
+    }
+
     findLink(alias) {
         return new Promise((resolve, reject) => {
-            window.axios.get(`/api/files/${alias}`).then(ret => {
+            this.axios.get(`/api/files/${alias}`).then(ret => {
                 resolve(ret.data)
             }).catch(reject)
         })
-    },
+    }
+
     download(alias) {
         return new Promise((resolve, reject) => {
             this.findLink(alias).then(ret => {
@@ -35,10 +43,11 @@ let zpan = {
                 }).catch(reject)
             })
         })
-    },
+    }
+
     listObjects(params) {
         return new Promise((resolve, reject) => {
-            window.axios.get('/api/files', { params: params }).then(ret => {
+            this.axios.get('/api/files', { params: params }).then(ret => {
                 let data = ret.data
                 data.list = data.list.map(item => {
                     item.size = utils.formatBytes(item.size, 1);
@@ -49,19 +58,23 @@ let zpan = {
                 resolve(data);
             }).catch(reject)
         })
-    },
+    }
+
     rename(alias, name) {
-        return window.axios.patch(`/api/files/${alias}/name`, { name: name })
-    },
+        return this.axios.patch(`/api/files/${alias}/name`, { name: name })
+    }
+
     move(alias, newDir) {
-        return window.axios.patch(`/api/files/${alias}/location`, { dir: newDir })
-    },
+        return this.axios.patch(`/api/files/${alias}/location`, { dir: newDir })
+    }
+
     copy(alias, newPath) {
-        return window.axios.patch(`/api/files/${alias}/duplicate`, { path: newPath })
-    },
+        return this.axios.patch(`/api/files/${alias}/duplicate`, { path: newPath })
+    }
+
     delete(alias) {
-        return window.axios.delete(`/api/files/${alias}`)
+        return this.axios.delete(`/api/files/${alias}`)
     }
 }
 
-export default zpan;
+export default zFile;
