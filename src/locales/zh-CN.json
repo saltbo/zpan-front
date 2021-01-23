@@ -121,6 +121,7 @@
     "label-quota-change": "配额调整",
     "label-storage-manager": "存储管理",
     "label-name": "名称",
+    "label-title": "标题",
     "label-intro": "描述",
     "label-bucket": "存储桶",
     "label-endpoint": "接入点",

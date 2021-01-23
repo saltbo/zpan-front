@@ -40,9 +40,14 @@ let router = new Router({
 })
 
 const setTitle = (title) => {
-  let defaultTitle = "ZPan"
-  title = title ? `${defaultTitle} - ${title}` : defaultTitle;
-  window.document.title = title;
+  Vue.zpan.System.optGet("system").then(ret => {
+    let sOpt = ret.data
+    let fullTitle = sOpt.name
+    if (title) {
+      fullTitle += `- ${title}`
+    }
+    window.document.title = fullTitle;
+  })
 }
 
 router.beforeEach((to, from, next) => {

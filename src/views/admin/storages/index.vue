@@ -7,12 +7,11 @@
 
     <el-card shadow="never" style="margin-top: 10px; padding-bottom: 20px">
       <el-table :data="rows" size="medium" style="width: 100%">
-        <el-table-column prop="id" label="ID" width="80"> </el-table-column>
-        <el-table-column prop="name" :label="$t('admin.label-name')"> </el-table-column>
-        <el-table-column prop="intro" :label="$t('admin.label-intro')"> </el-table-column>
-        <el-table-column prop="bucket" :label="$t('admin.label-bucket')" width="150"> </el-table-column>
-        <el-table-column prop="endpoint" :label="$t('admin.label-endpoint')" width="320"> </el-table-column>
-        <el-table-column prop="custom_host" :label="$t('admin.label-custom_host')" width="220"> </el-table-column>
+        <el-table-column prop="id" label="ID" width="60"> </el-table-column>
+        <el-table-column prop="name" :label="$t('admin.label-name')" width="100"> </el-table-column>
+        <el-table-column prop="title" :label="$t('admin.label-title')" width="100"> </el-table-column>
+        <el-table-column prop="bucket" :label="$t('admin.label-bucket')" width="250"> </el-table-column>
+        <el-table-column prop="endpoint" :label="$t('admin.label-endpoint')"> </el-table-column>
         <el-table-column prop="operation" :label="$t('admin.label-operation')" width="280">
           <template slot-scope="scope">
             <el-button size="mini" @click="onEdit(scope.$index, scope.row)">{{ $t("admin.btn-edit") }}</el-button>
@@ -39,7 +38,6 @@ export default {
   data() {
     return {
       query: {
-        name: "",
         offset: 0,
         limit: 20,
       },

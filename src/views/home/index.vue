@@ -87,8 +87,6 @@ export default {
   mounted() {
     this.$zpan.Storage.list().then((ret) => {
       this.topMenus = ret.data.list.map((item) => {
-        item.title = item.name;
-
         // cache the sid
         localStorage.setItem(`bucket-${item.name}`, item.id);
         return item;

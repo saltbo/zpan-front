@@ -1,5 +1,9 @@
 <template>
   <el-card shadow="never">
+    <div slot="header" class="clearfix">
+      <span>系统设置</span>
+    </div>
+
     <el-form ref="form" :model="form" label-width="80px" style="width: 500px">
       <el-form-item label="站点名称">
         <el-input v-model="form.name"></el-input>
@@ -8,9 +12,9 @@
         <el-input v-model="form.intro" type="textarea"></el-input>
       </el-form-item>
       <el-form-item label="默认语言">
-        <el-select v-model="form.region" placeholder="请选择系统默认语言">
-          <el-option label="中文" value="shanghai"></el-option>
-          <el-option label="英语" value="beijing"></el-option>
+        <el-select v-model="form.lang" placeholder="请选择系统默认语言">
+          <el-option label="中文" value="zh-CN"></el-option>
+          <el-option label="英语" value="en"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -24,22 +28,26 @@
 export default {
   data() {
     return {
-      form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
-      },
+      form: {},
     };
   },
   methods: {
     onSubmit() {
-      console.log("submit!");
+      this.$zpan.System.optSave("system", this.form).then((ret) => {
+        this.$message({
+          type: "success",
+          message: this.$t("msg.save-success"),
+        });
+      });
     },
+  },
+  mounted() {
+    this.$zpan.Options.optGet("system").then((ret) => {
+      console.log(ret.data);
+      if (ret.data) {
+        this.form = ret.data;
+      }
+    });
   },
 };
 </script>

@@ -115,6 +115,15 @@
     "label-storage": "Quota",
     "label-operation": "Operation",
     "label-quota": "Storage Quota",
-    "label-quota-change": "Quota Change"
+    "label-quota-change": "Quota Change",
+    "label-storage-manager": "Storage",
+    "label-name": "Name",
+    "label-title": "Label",
+    "label-intro": "Intro",
+    "label-bucket": "Bucket",
+    "label-endpoint": "Endpoint",
+    "label-custom_host": "CustomHost",
+    "label-access_key": "AccessKey",
+    "label-secret_key": "SecretKey"
   }
 }
