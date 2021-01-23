@@ -6,15 +6,14 @@
       </div>
 
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary">{{ $t('click-copy-link') }}</el-button>
-        <el-button @click="visible = false">{{ $t('close') }}</el-button>
+        <el-button type="primary">{{ $t("click-copy-link") }}</el-button>
+        <el-button @click="visible = false">{{ $t("close") }}</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { zfile } from "@/libs/zpan";
 import mixinDialog from "@/libs/mixin-dialog.js";
 export default {
   mixins: [mixinDialog],
@@ -27,7 +26,7 @@ export default {
     open(items) {
       Promise.all(
         items.map((obj) => {
-          return zfile.findLink(obj.alias);
+          return this.$zpan.File.findLink(obj.alias);
         })
       ).then((rets) => {
         rets.forEach((ret) => {

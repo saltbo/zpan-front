@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import { zStorage } from "@/libs/zpan";
 import EditDialog from "./dialog-edit";
 export default {
   components: {
@@ -52,7 +51,7 @@ export default {
   methods: {
     listRefresh() {
       this.query.offset = (this.pageNo - 1) * this.query.limit;
-      zStorage.list(this.query).then((ret) => {
+      this.$zpan.Storage.list(this.query).then((ret) => {
         this.rows = ret.data.list;
         this.total = ret.data.total;
       });
@@ -69,7 +68,7 @@ export default {
         confirmButtonText: this.$t("confirm"),
         cancelButtonText: this.$t("cancel"),
       }).then(() => {
-        zStorage.delete(row.id).then((ret) => {
+        this.$zpan.Storage.delete(row.id).then((ret) => {
           this.$message({
             type: "success",
             message: this.$t("msg.delete-success"),

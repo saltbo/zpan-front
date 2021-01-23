@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import { zfile } from "@/libs/zpan";
 import utils from "@/libs/utils.js";
 export default {
   data() {
@@ -34,7 +33,7 @@ export default {
   },
   methods: {
     listRefresh() {
-      zfile.listObjects({ dir: this.picDir }).then((data) => {
+      this.$zpan.File.listObjects({ dir: this.picDir }).then((data) => {
         this.fileList = data.list.map((obj) => {
           return { alias: obj.alias, name: obj.name, url: obj.url };
         });
@@ -52,8 +51,7 @@ export default {
       var timestamp = new Date().getTime();
       fileObj.filename = fileObj.file.name.replace("image", timestamp);
 
-      zfile
-        .upload(fileObj, this.picDir, true)
+      this.$zpan.File.upload(fileObj, this.picDir, true)
         .then((ret) => {
           let file = {
             name: fileObj.filename,
@@ -74,7 +72,7 @@ export default {
         confirmButtonText: this.$t("confirm"),
         cancelButtonText: this.$t("cancel"),
       }).then(() => {
-        zfile.delete(file.alias).then((ret) => {
+        this.$zpan.File.delete(file.alias).then((ret) => {
           this.$message({
             type: "success",
             message: this.$t("msg.delete-success"),

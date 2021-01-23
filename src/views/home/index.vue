@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import { zStorage } from "@/libs/zpan";
 import Topbar from "@/components/Topbar";
 export default {
   components: {
@@ -86,7 +85,7 @@ export default {
     },
   },
   mounted() {
-    zStorage.list().then((ret) => {
+    this.$zpan.Storage.list().then((ret) => {
       this.topMenus = ret.data.list.map((item) => {
         item.title = item.name;
 

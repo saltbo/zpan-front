@@ -49,7 +49,6 @@
 
 <script>
 // @ is an alias to /src
-import { zfile, zfolder } from "@/libs/zpan";
 import DialogMove from "./components/DialogMove";
 import DialogShare from "./components/DialogShare";
 import DialogUpload from "./components/DialogUpload";
@@ -100,7 +99,7 @@ export default {
       this.query.offset = offset ? offset : 0;
       this.query.limit = limit ? limit : 10;
       return new Promise((resolve, reject) => {
-        zfile.listObjects(this.query).then((ret) => {
+        this.$zpan.File.listObjects(this.query).then((ret) => {
           this.query.kw = "";
           resolve(ret);
         });
@@ -108,8 +107,7 @@ export default {
     },
     linkLoader(obj) {
       return new Promise((resolve, reject) => {
-        zfile
-          .findLink(obj.alias)
+        this.$zpan.File.findLink(obj.alias)
           .then((ret) => {
             resolve(ret.link);
           })
@@ -133,7 +131,7 @@ export default {
         cancelButtonText: this.$t("cancel"),
       }).then(({ value }) => {
         let body = { sid: this.getSid(), name: value, dir: this.query.dir };
-        zfolder.create(body).then((ret) => {
+        this.$zpan.Folder.create(body).then((ret) => {
           this.$message({
             type: "success",
             message: this.$t("msg.create-success"),
@@ -154,7 +152,7 @@ export default {
         confirmButtonText: this.$t("confirm"),
         cancelButtonText: this.$t("cancel"),
       }).then(({ value }) => {
-        let rename = obj.dirtype > 0 ? zfolder.rename : zfile.rename;
+        let rename = obj.dirtype > 0 ? this.$zpan.Folder.rename : this.$zpan.File.rename;
         rename(obj.alias, value).then((ret) => {
           this.$message({
             type: "success",
@@ -170,7 +168,7 @@ export default {
         confirmButtonText: this.$t("confirm"),
         cancelButtonText: this.$t("cancel"),
       }).then(() => {
-        let remove = obj.dirtype ? zfolder.delete : zfile.delete;
+        let remove = obj.dirtype ? this.$zpan.Folder.delete : this.$zpan.File.delete;
         remove(obj.alias).then((ret) => {
           this.$message({
             type: "success",

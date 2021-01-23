@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import { zUser } from "@/libs/zpan";
 import { setup } from "@/i18n";
 import utils from "@/libs/utils";
 import Cookie from "js-cookie";
@@ -96,7 +95,7 @@ export default {
       // });
     },
     userStorage() {
-      zUser.myStorage().then((data) => {
+      this.$zpan.User.myStorage().then((data) => {
         let user = data.data;
         this.storage = {
           used: utils.formatBytes(user.storage_used, 0),

@@ -1,34 +1,30 @@
 /* eslint-disable no-console */
+import axios from './axios'
+
 class zShare {
 
-    axios
-
-    constructor(_axios) {
-        this.axios = _axios
-    }
-
     list(query) {
-        return this.axios.get(`/api/shares`, { params: query })
+        return axios.get(`/api/shares`, { params: query })
     }
 
     find(alias) {
-        return this.axios.get(`/api/shares/${alias}`)
+        return axios.get(`/api/shares/${alias}`)
     }
 
     create(body) {
-        return this.axios.post(`/api/shares`, body)
+        return axios.post(`/api/shares`, body)
     }
 
     draw(alias, drawcode) {
-        return this.axios.post(`/api/shares/${alias}/token`, { secret: drawcode })
+        return axios.post(`/api/shares/${alias}/token`, { secret: drawcode })
     }
 
     findMatter(alias) {
-        return this.axios.get(`/api/shares/${alias}/matter`)
+        return axios.get(`/api/shares/${alias}/matter`)
     }
 
     listMatters(alias, query) {
-        return this.axios.get(`/api/shares/${alias}/matters`, { params: query })
+        return axios.get(`/api/shares/${alias}/matters`, { params: query })
     }
 }
 

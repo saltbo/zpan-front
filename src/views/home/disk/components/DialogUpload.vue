@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import { zfile } from "@/libs/zpan";
 import mixinDialog from "@/libs/mixin-dialog.js";
 export default {
   name: "Uploader",
@@ -40,7 +39,7 @@ export default {
     handleUpload(fileObj) {
       fileObj.filename = fileObj.file.name;
 
-      zfile.upload(Number(this.sid), fileObj, this.destDir).then(this.finish);
+      this.$zpan.File.upload(Number(this.sid), fileObj, this.destDir).then(this.finish);
     },
   },
 };

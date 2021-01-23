@@ -38,7 +38,6 @@
 
 <script>
 import mixinDialog from "@/libs/mixin-dialog.js";
-import { zShare } from "@/libs/zpan";
 export default {
   name: "Share",
   mixins: [mixinDialog],
@@ -59,7 +58,7 @@ export default {
       this.visible = true;
     },
     share(done) {
-      zShare.create(this.shareForm).then((data) => {
+      this.$zpan.Share.create(this.shareForm).then((data) => {
         let origin = window.location.origin;
         let alias = data.data.alias;
 

@@ -1,30 +1,26 @@
 /* eslint-disable no-console */
+import axios from './axios'
+
 class zStorage {
 
-    axios
-
-    constructor(_axios) {
-        this.axios = _axios
-    }
-
     list(query) {
-        return this.axios.get(`/api/storages`, { params: query })
+        return axios.get(`/api/storages`, { params: query })
     }
 
     find(alias) {
-        return this.axios.get(`/api/storages/${alias}`)
+        return axios.get(`/api/storages/${alias}`)
     }
 
     create(form) {
-        return this.axios.post(`/api/storages`, form)
+        return axios.post(`/api/storages`, form)
     }
 
     update(form) {
-        return this.axios.put(`/api/storages/${form.id}`, form)
+        return axios.put(`/api/storages/${form.id}`, form)
     }
 
     delete(id) {
-        return this.axios.delete(`/api/storages/${id}`)
+        return axios.delete(`/api/storages/${id}`)
     }
 }
 

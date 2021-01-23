@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { zfile, zfolder } from "@/libs/zpan";
 import Mixin from "../../mixin";
 import mixinDialog from "@/libs/mixin-dialog.js";
 export default {
@@ -63,7 +62,7 @@ export default {
       }
 
       // pull the datas
-      zfolder.list({ sid: this.getSid(), parent: node.data.fullpath }).then((objects) => {
+      this.$zpan.Folder.list({ sid: this.getSid(), parent: node.data.fullpath }).then((objects) => {
         let folders = objects.filter((ele) => {
           return ele.dirtype && ele.alias != this.alias;
         });
@@ -71,7 +70,7 @@ export default {
       });
     },
     submit() {
-      let move = this.isDir ? zfolder.move : zfile.move;
+      let move = this.isDir ? this.$zpan.Folder.move : this.$zpan.File.move;
       move(this.alias, this.current.fullpath).then((ret) => {
         this.$message({
           type: "success",

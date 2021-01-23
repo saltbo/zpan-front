@@ -49,7 +49,6 @@
 </template>
 
 <script>
-import { zRecyclebin } from "@/libs/zpan";
 import Mixin from "../mixin";
 export default {
   name: "recyclebin",
@@ -72,7 +71,7 @@ export default {
   },
   methods: {
     listRefresh() {
-      zRecyclebin.list({ sid: this.getSid() }).then((data) => {
+      this.$zpan.Recyclebin.list({ sid: this.getSid() }).then((data) => {
         this.rows = data.list;
         this.total = data.total;
       });
@@ -83,7 +82,7 @@ export default {
         confirmButtonText: this.$t("confirm"),
         cancelButtonText: this.$t("cancel"),
       }).then(() => {
-        zRecyclebin.recovery(obj.alias).then((ret) => {
+        this.$zpan.Recyclebin.recovery(obj.alias).then((ret) => {
           this.$message({
             type: "success",
             message: this.$t("msg.recovery-success"),
@@ -98,7 +97,7 @@ export default {
         confirmButtonText: this.$t("confirm"),
         cancelButtonText: this.$t("cancel"),
       }).then(() => {
-        zRecyclebin.delete(obj.alias).then((ret) => {
+        this.$zpan.Recyclebin.delete(obj.alias).then((ret) => {
           this.$message({
             type: "success",
             message: this.$t("msg.delete-success"),
@@ -113,7 +112,7 @@ export default {
         confirmButtonText: this.$t("confirm"),
         cancelButtonText: this.$t("cancel"),
       }).then(() => {
-        zRecyclebin.clean().then((ret) => {
+        this.$zpan.Recyclebin.clean().then((ret) => {
           this.$message({
             type: "success",
             message: this.$t("msg.clean-success"),

@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import { zfile, zShare } from "@/libs/zpan";
 import utils from "@/libs/utils.js";
 export default {
   data() {
@@ -84,7 +83,7 @@ export default {
         }
 
         let alias = this.$route.params.alias;
-        zShare.listMatters(alias, { dir: dir }).then((ret) => {
+        this.$zpan.Share.listMatters(alias, { dir: dir }).then((ret) => {
           let data = ret.data;
           data.list = data.list.map((item) => {
             item.size = utils.formatBytes(item.size, 1);
@@ -98,8 +97,7 @@ export default {
     },
     linkLoader(obj) {
       return new Promise((resolve, reject) => {
-        zfile
-          .findLink(obj.alias)
+        this.$zpan.File.findLink(obj.alias)
           .then((ret) => {
             resolve(ret.link);
           })
@@ -115,7 +113,7 @@ export default {
       });
     },
     listRefresh(alias) {
-      zShare.findMatter(alias).then((ret) => {
+      this.$zpan.Share.findMatter(alias).then((ret) => {
         this.matter = ret.data;
         this.matter.size = utils.formatBytes(this.matter.size, 1);
 
@@ -132,7 +130,7 @@ export default {
   },
   mounted() {
     let alias = this.$route.params.alias;
-    zShare.find(alias).then((ret) => {
+    this.$zpan.Share.find(alias).then((ret) => {
       let info = ret.data;
       if (info.protected && localStorage.getItem("zpan-share") != alias) {
         this.$router.push({ name: "share-draw" });

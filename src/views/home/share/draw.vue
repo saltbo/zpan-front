@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { zShare } from "@/libs/zpan";
 export default {
   data() {
     return {
@@ -27,14 +26,14 @@ export default {
   },
   methods: {
     draw(alias) {
-      zShare.draw(alias, this.drawcode).then((ret) => {
+      this.$zpan.Share.draw(alias, this.drawcode).then((ret) => {
         localStorage.setItem("zpan-share", alias);
         this.$router.push({ name: "share-info" });
       });
     },
   },
   mounted() {
-    zShare.find(this.$route.params.alias).then((ret) => {
+    this.$zpan.Share.find(this.$route.params.alias).then((ret) => {
       this.info = ret.data;
       document.title = `${this.info.name} | Zpan`;
     });

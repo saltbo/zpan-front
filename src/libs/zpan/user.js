@@ -1,22 +1,24 @@
 /* eslint-disable no-console */
+import axios from './axios'
+import Qs from "qs";
 
 class User {
-    axios
-
-    constructor(_axios) {
-        this.axios = _axios
-    }
 
     list(query) {
-        return this.axios.get(`/api/users`, { params: query })
+        return axios.get(`/api/users`, {
+            params: query,
+            paramsSerializer: function (params) {
+                return Qs.stringify(params, { arrayFormat: 'repeat' })
+            },
+        })
     }
 
     myStorage() {
-        return this.axios.get(`/api/user/storage`)
+        return axios.get(`/api/user/storage`)
     }
 
-    update(id, max) {
-        return this.axios.patch(`/api/users/${id}/storage`, { max: max })
+    storageUpdate(id, max) {
+        return axios.patch(`/api/users/${id}/storage`, { max: max })
     }
 
 }

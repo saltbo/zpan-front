@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import { zShare } from "@/libs/zpan";
 export default {
   data() {
     return {
@@ -62,7 +61,7 @@ export default {
   methods: {
     listRefresh() {
       let host = window.location.host;
-      zShare.list().then((ret) => {
+      this.$zpan.Share.list().then((ret) => {
         let data = ret.data;
         this.rows = data.list.map((item) => {
           item.link = `http://${host}/s/${item.alias}`;

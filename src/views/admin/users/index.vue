@@ -49,7 +49,6 @@
 </template>
 
 <script>
-import { zUser } from "@/libs/zpan";
 import utils from "@/libs/utils";
 export default {
   data() {
@@ -84,12 +83,31 @@ export default {
       this.query.offset = (this.pageNo - 1) * this.query.limit;
       this.$zplat.User.list(this.query).then((ret) => {
         this.rows = ret.data.list;
-        this.rows = this.rows.map((ele) => {
-          ele.storage_used = utils.formatBytes(ele.storage_used);
-          ele.storage_max = utils.formatBytes(ele.storage_max);
-          return ele;
-        });
         this.total = ret.data.total;
+        if (this.rows.length == 0) {
+          return;
+        }
+
+        let query = { ux: this.rows.map((ele) => ele.ux) };
+        this.$zpan.User.list(query).then((ret) => {
+          let newArr = ret.data.list.reduce((result, item, index, array) => {
+            result[item.ux] = item;
+            return result;
+          }, {});
+
+          console.log(newArr);
+          this.rows = this.rows.map((ele) => {
+            ele.storage_used = 0;
+            ele.storage_max = 0;
+
+            let zUser = newArr[ele.ux];
+            if (zUser) {
+              ele.storage_used = utils.formatBytes(zUser.storage_used);
+              ele.storage_max = utils.formatBytes(zUser.storage_max);
+            }
+            return ele;
+          });
+        });
       });
     },
     onEdit(index, row) {
@@ -97,7 +115,7 @@ export default {
       this.form = Object.assign({}, row);
     },
     onStorageUpdate() {
-      zUser.Update(this.form.id, this.form.storage_max).then((ret) => {
+      this.$zpan.User.storageUpdate(this.form.id, this.form.storage_max).then((ret) => {
         this.dialogFormVisible = false;
         this.listRefresh();
         this.$message({

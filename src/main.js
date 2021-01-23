@@ -10,6 +10,7 @@ import './plugins/clipboard'
 import './plugins/photoswipe'
 import './plugins/plyr'
 import './plugins/zplat'
+import './plugins/zpan'
 
 Vue.config.productionTip = false
 

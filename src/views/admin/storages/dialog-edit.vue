@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import { zStorage } from "@/libs/zpan";
 import mixinDialog from "@/libs/mixin-dialog.js";
 export default {
   mixins: [mixinDialog],
@@ -52,14 +51,18 @@ export default {
       this.form = v ? Object.assign({}, v) : {};
     },
     onSubmit() {
-      let submit = zStorage.create;
+      let submit = this.$zpan.Storage.create;
       if (this.form.id) {
-        submit = zStorage.update;
+        submit = this.$zpan.Storage.update;
       }
 
       submit(this.form).then((ret) => {
         this.close();
         this.finish();
+        this.$message({
+          type: "success",
+          message: this.$t("msg.save-success"),
+        });
       });
     },
   },
