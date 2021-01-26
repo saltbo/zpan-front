@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$zpan.System.optSave("system", this.form).then((ret) => {
+      this.$zpan.System.optSave("website", this.form).then((ret) => {
         this.$message({
           type: "success",
           message: this.$t("msg.save-success"),
@@ -42,7 +42,7 @@ export default {
     },
   },
   mounted() {
-    this.$zpan.Options.optGet("system").then((ret) => {
+    this.$zpan.System.optGet("website").then((ret) => {
       console.log(ret.data);
       if (ret.data) {
         this.form = ret.data;
