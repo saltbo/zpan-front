@@ -3,7 +3,7 @@
     <div class="logo">
       <img src="@/assets/logo.png" alt="ZPan" @click="$router.push('/')" />
     </div>
-    <el-menu v-if="showMenu" class="navbar" :default-active="$route.params.sname" mode="horizontal" style="width: 100%" router>
+    <el-menu v-if="showMenu" class="navbar" :default-active="$route.path" mode="horizontal" style="width: 100%" router>
       <el-menu-item v-for="(menu, index) in menus.slice(0, 5)" :key="index" :index="`/${menu.name}`">{{ menu.title }}</el-menu-item>
 
       <el-submenu index="more" v-show="menus.length > 5">

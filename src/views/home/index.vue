@@ -3,8 +3,8 @@
     <Topbar :menus="storages" />
     <el-container style="height: 100%">
       <el-aside width="200px" style="height: 100%; background-color: #f4f4f5">
-        <el-menu :default-active="$route.fullPath" background-color="#f4f4f5" router>
-          <el-menu-item v-for="(menu, index) in leftMenus" :key="index" :index="menu.path">
+        <el-menu :default-active="leftMenuActive" background-color="#f4f4f5" router>
+          <el-menu-item v-for="menu in leftMenus" :key="menu.path" :index="menu.path">
             <i :class="menu.icon"></i>
             <span slot="title">{{ menu.title }}</span>
           </el-menu-item>
@@ -30,9 +30,7 @@ export default {
     Topbar,
   },
   data() {
-    return {
-      leftMenus: [],
-    };
+    return {};
   },
   computed: {
     storages() {
@@ -44,15 +42,11 @@ export default {
     currentBucket() {
       return this.$route.params.sname;
     },
-  },
-  watch: {
-    $route(newVal, oldVal) {
-      this.createLeftMenus(this.cs.mode); // fixme: 不知道为什么重建后的菜单想点击的时候没有高亮了
+    leftMenuActive() {
+      console.log(this.$route.fullPath, 111);
+      return this.$route.fullPath;
     },
-  },
-  methods: {
-    createLeftMenus(mode) {
-      // todo 根据存储类型切换左侧菜单栏内容
+    leftMenus() {
       let diskMenus = [
         { path: `/${this.currentBucket}`, icon: "el-icon-document", title: this.$t("leftnav.files") },
         { path: `/${this.currentBucket}?type=doc`, icon: "el-icon-xx", title: this.$t("leftnav.doc") },
@@ -71,12 +65,14 @@ export default {
         // { path: `/${this.currentBucket}?type=label`, icon: "el-icon-xx", title: "标签" },
       ];
 
-      this.leftMenus = mode == 1 ? diskMenus : browserMenus;
+      return this.cs.mode == 1 ? diskMenus : browserMenus;
     },
   },
-  mounted() {
-    this.createLeftMenus(this.cs.mode);
+  watch: {
+    $route(newVal, oldVal) {},
   },
+  methods: {},
+  mounted() {},
 };
 </script>
 
