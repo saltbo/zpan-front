@@ -6,8 +6,7 @@
           <el-form-item label="类型" label-width="120px">
             <el-radio-group v-model="form.mode" :disabled="editMode">
               <el-radio :label="1">网盘</el-radio>
-              <el-radio :label="2">图床</el-radio>
-              <el-radio :label="3">文件库</el-radio>
+              <el-radio :label="2">外链盘</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item prop="name" :label="$t('admin.label-name')" label-width="120px">
@@ -48,9 +47,6 @@
           </el-form-item>
           <el-form-item prop="file_path" label="文件路径" label-width="120px">
             <el-input v-model="form.file_path" placeholder="默认为YYYYMMDD/UUID.ext"></el-input>
-          </el-form-item>
-          <el-form-item prop="public_read" label="公共读" label-width="120px">
-            <el-switch v-model="form.public_read"></el-switch>
           </el-form-item>
         </el-tab-pane>
       </el-tabs>

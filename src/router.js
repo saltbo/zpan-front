@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import i18n from './i18n'
+import store from './store'
 
 Vue.use(Router)
 
@@ -50,10 +51,40 @@ const setTitle = (title) => {
   })
 }
 
+const loadStorages = (to, next) => {
+  Vue.zpan.Storage.list().then((ret) => {
+    let storages = ret.data.list
+    // 如果没有存储空间则强制跳去添加存储空间
+    if (storages.length == 0) {
+      next({ name: "storages" });
+      return
+    }
+
+    // 如果访问的是首页则自动跳去第一个存储空间
+    if (to.fullPath == "/") {
+      router.push({ path: `/${storages[0].name}` })
+      return
+    }
+
+    store.commit("storages", storages);
+    storages.forEach((ele) => {
+      if (ele.name == to.params.sname) {
+        store.commit("cs", ele);
+      }
+    });
+    next()
+  });
+}
+
 router.beforeEach((to, from, next) => {
   setTitle(i18n.t(`title.${to.name}`));
 
-  next();
+  if (!from.params.sname || (to.params.sname != from.params.sname)) {
+    loadStorages(to, next)
+    return
+  }
+
+  next()
 });
 
 router.afterEach(() => {

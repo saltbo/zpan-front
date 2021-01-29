@@ -31,23 +31,23 @@ export default {
   },
   data() {
     return {
-      storages: [],
-      modes: [],
       leftMenus: [],
     };
   },
   computed: {
+    storages() {
+      return this.$store.state.storages;
+    },
+    cs() {
+      return this.$store.state.cs;
+    },
     currentBucket() {
       return this.$route.params.sname;
     },
   },
   watch: {
     $route(newVal, oldVal) {
-      this.loadDefaultStorage();
-      this.createLeftMenus(); // fixme: 不知道为什么重建后的菜单想点击的时候没有高亮了
-    },
-    storages(nl, ol) {
-      this.loadDefaultStorage();
+      this.createLeftMenus(this.cs.mode); // fixme: 不知道为什么重建后的菜单想点击的时候没有高亮了
     },
   },
   methods: {
@@ -63,40 +63,19 @@ export default {
       ];
       let browserMenus = [
         { path: `/${this.currentBucket}`, icon: "el-icon-document", title: this.$t("leftnav.files") },
-        { path: `/${this.currentBucket}/latest`, icon: "el-icon-xx", title: "最近" },
-        { path: `/${this.currentBucket}?type=sc`, icon: "el-icon-xx", title: "收藏" },
-        { path: `/${this.currentBucket}?type=label`, icon: "el-icon-xx", title: "标签" },
+        { path: `/${this.currentBucket}?type=doc`, icon: "el-icon-xx", title: this.$t("leftnav.doc") },
+        { path: `/${this.currentBucket}?type=audio`, icon: "el-icon-xx", title: this.$t("leftnav.audio") },
+        { path: `/${this.currentBucket}?type=video`, icon: "el-icon-xx", title: this.$t("leftnav.video") },
+        // { path: `/${this.currentBucket}?dir=image`, icon: "el-icon-picture-outline", title: "全部图片" },
+        // { path: `/${this.currentBucket}?type=sc`, icon: "el-icon-xx", title: "收藏" },
+        // { path: `/${this.currentBucket}?type=label`, icon: "el-icon-xx", title: "标签" },
       ];
 
-      this.leftMenus = this.modes[this.currentBucket] == 1 ? diskMenus : browserMenus;
-    },
-    loadStorages() {
-      this.$zpan.Storage.list().then((ret) => {
-        this.storages = ret.data.list;
-
-        // cache the sid
-        this.storages.forEach((ele) => {
-          this.modes[ele.name] = ele.mode;
-          localStorage.setItem(`bucket-${ele.name}`, ele.id);
-        });
-        this.createLeftMenus();
-      });
-    },
-    loadDefaultStorage() {
-      // 如果没有存储空间则强制跳去添加存储空间
-      if (this.storages.length == 0) {
-        this.$router.push({ name: "storages" });
-        return;
-      }
-
-      // 只有访问首页的时候且menus数据加载完之后才跳去第一个菜单
-      if (this.$route.fullPath == "/") {
-        this.$router.push({ path: `/${this.storages[0].name}` });
-      }
+      this.leftMenus = mode == 1 ? diskMenus : browserMenus;
     },
   },
   mounted() {
-    this.loadStorages();
+    this.createLeftMenus(this.cs.mode);
   },
 };
 </script>

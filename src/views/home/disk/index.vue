@@ -71,10 +71,10 @@ export default {
       },
       layout: "list",
       folderBtnShown: false,
-      rowButtons: [
-        { name: "download", icon: "el-icon-download", action: this.openDownload, shown: (item) => !item.dirtype },
-        { name: "share", icon: "el-icon-share", action: this.share },
-      ],
+      // rowButtons: [
+      //   { name: "download", icon: "el-icon-download", action: this.openDownload, shown: (item) => !item.dirtype },
+      //   { name: "share", icon: "el-icon-share", action: this.share },
+      // ],
       moreButtons: [
         { name: "move", title: this.$t("ftb.move"), action: this.move },
         { name: "rename", title: this.$t("ftb.rename"), action: this.rename },
@@ -87,6 +87,21 @@ export default {
     $route(newVal, oldVal) {
       this.query.type = newVal.query.type; // doc,image,audio,vedio
       this.folderBtnShown = !this.query.type;
+    },
+  },
+  computed: {
+    rowButtons() {
+      if (this.cs.mode == 1) {
+        return [
+          { name: "download", icon: "el-icon-download", action: this.openDownload, shown: (item) => !item.dirtype },
+          { name: "share", icon: "el-icon-share", action: this.share },
+        ];
+      }
+
+      return [
+        { name: "download", icon: "el-icon-download", action: this.openDownload, shown: (item) => !item.dirtype },
+        { name: "viewlink", icon: "el-icon-view", action: this.viewlink },
+      ];
     },
   },
   methods: {
@@ -142,6 +157,16 @@ export default {
     },
     share(obj) {
       this.$refs.share.open(obj.alias);
+    },
+    viewlink(obj) {
+      this.linkLoader(obj).then((link) => {
+        const h = this.$createElement;
+        this.$msgbox({
+          title: "获取外链",
+          message: h("p", null, link),
+          confirmButtonText: "确定",
+        });
+      });
     },
     move(obj) {
       this.$refs.move.open(obj);

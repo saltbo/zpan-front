@@ -1,12 +1,22 @@
-import Vue from "vue";
+import Vue from 'vue'
+import Vuex from 'vuex'
 
-let object = {
-    storage: {}
-}
+Vue.use(Vuex)
 
-export const store = Vue.observable(object);
-export const mutations = {
-    setStorage(storage) {
-        store.storage = storage;
+export default new Vuex.Store({
+  state: {
+    storages: [],
+    cs: {}
+  },
+  mutations: {
+    storages(state, storages) {
+      state.storages = storages
+    },
+    cs(state, cs) {
+      state.cs = cs
     }
-}
+  },
+  actions: {
+
+  }
+})

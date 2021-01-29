@@ -1,21 +1,23 @@
+
 const Mixin = {
     data() {
         return {
-            sid: ""
         }
     },
     watch: {
-        $route(newVal, oldVal) {
-            this.sid = localStorage.getItem(`bucket-${newVal.params.sname}`);
-        },
+        $route(newVal, oldVal) { },
+    },
+    computed: {
+        cs() {
+            return this.$store.state.cs
+        }
     },
     methods: {
         getSid() {
-            return Number(this.sid)
+            return this.cs.id
         },
     },
     mounted() {
-        this.sid = localStorage.getItem(`bucket-${this.$route.params.sname}`);
     },
 }
 
