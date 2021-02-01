@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="20">
     <el-col :span="18">
-      <el-card class="box-card">
+      <el-card shadow="never" class="box-card">
         <div slot="header" class="clearfix">
           <span>欢迎</span>
         </div>
@@ -33,7 +33,7 @@
       </el-card>
     </el-col>
     <el-col :span="6">
-      <el-card class="box-card">
+      <el-card shadow="never" class="box-card">
         <div slot="header" class="clearfix">
           <span>产品动态</span>
         </div>

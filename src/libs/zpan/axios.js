@@ -10,9 +10,10 @@ import { Notification } from 'element-ui';
 
 let config = {
     // baseURL: process.env.baseURL || process.env.apiUrl || ""
+    baseURL: "/api"
     // timeout: 60 * 1000, // Timeout
     // withCredentials: true, // Check cross-site Access-Control
-    headers: { "X-Zplat-Subsystem": "zpan" }
+    // headers: { "X-Zplat-Subsystem": "zpan" }
 };
 
 const _axios = axios.create(config);
@@ -23,10 +24,10 @@ _axios.interceptors.response.use(
         return response.data;
     },
     function (error) {
-        if (error.response && error.response.status == 401) {
-            this.location = "/zplat/signin"
-            return Promise.reject("invalid login status");
-        }
+        // if (error.response && error.response.status == 401) {
+        //     window.location = "/u/signin"
+        //     return Promise.reject("invalid login status");
+        // }
 
         let msg = error.message
         if (error.response) {

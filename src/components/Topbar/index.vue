@@ -3,7 +3,7 @@
     <div class="logo">
       <img src="@/assets/logo.png" alt="ZPan" @click="$router.push('/')" />
     </div>
-    <el-menu v-if="showMenu" class="navbar" :default-active="$route.path" mode="horizontal" style="width: 100%" router>
+    <el-menu v-if="showMenu" class="navbar" :default-active="menuActive" mode="horizontal" style="width: 100%" router>
       <el-menu-item v-for="(menu, index) in menus.slice(0, 5)" :key="index" :index="`/${menu.name}`">{{ menu.title }}</el-menu-item>
 
       <el-submenu index="more" v-show="menus.length > 5">
@@ -50,6 +50,7 @@ const defaultAvatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726
 export default {
   props: {
     menus: Array,
+    logined: Boolean,
   },
   data() {
     return {
@@ -58,7 +59,6 @@ export default {
         { label: "中文", value: "zh-CN" },
         { label: "English", value: "en" },
       ],
-      logined: true,
       storage: {
         percentage: 0,
       },
@@ -74,33 +74,33 @@ export default {
   },
   computed: {
     showMenu() {
-      let path = this.$route.path;
-      return path == "/" ? false : !path.startsWith("/m/admin");
+      return this.menus && this.menus.length > 0;
     },
     showAdmin() {
-      return Cookie.get("moreu-role") == "admin";
+      return Cookie.get("z-role") == "admin";
+    },
+    menuActive() {
+      return `/${this.$route.params.sname}`;
     },
   },
   methods: {
     onRouteChange(newVal, oldVal) {
-      this.userStorage();
+      if (this.logined) {
+        this.userInfo();
+      }
     },
     userInfo() {
-      // this.$moreu.profile().then((ret) => {
-      //   this.user = ret.data.user;
-      //   this.profile = ret.data.profile;
-      //   if (this.profile.avatar == "") {
-      //     this.profile.avatar = defaultAvatar;
-      //   }
-      // });
-    },
-    userStorage() {
-      this.$zpan.User.myStorage().then((data) => {
-        let user = data.data;
+      this.$zpan.User.profileGet().then((ret) => {
+        this.user = ret.data;
+        this.profile = this.user.profile;
+        if (this.profile.avatar == "") {
+          this.profile.avatar = defaultAvatar;
+        }
+
         this.storage = {
-          used: utils.formatBytes(user.storage_used, 0),
-          max: utils.formatBytes(user.storage_max, 0),
-          percentage: Math.round((user.storage_used / user.storage_max) * 10000) / 100,
+          used: utils.formatBytes(this.user.storage.used, 0),
+          max: utils.formatBytes(this.user.storage.max, 0),
+          percentage: Math.round((this.user.storage.used / this.user.storage.max) * 10000) / 100,
         };
       });
     },
@@ -110,17 +110,18 @@ export default {
           this.$router.push({ name: "admin" });
           break;
         case "profile":
-          window.open("/zplat/profile", "_blank");
+          this.$router.push({ name: "profile" });
           break;
         case "signout":
-          window.location = "/zplat/signout";
+          this.$router.push({ name: "signout" });
           break;
       }
     },
   },
   mounted() {
-    this.userInfo();
-    this.userStorage();
+    if (this.logined) {
+      this.userInfo();
+    }
   },
 };
 </script>

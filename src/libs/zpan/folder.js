@@ -5,7 +5,7 @@ class zFolder {
 
     list(params) {
         return new Promise((resolve, reject) => {
-            axios.get('/api/folders', { params: params }).then(data => {
+            axios.get('/folders', { params: params }).then(data => {
                 resolve(data.data.list.map(item => {
                     item.fullpath = `${item.parent}${item.name}`
                     if (item.dirtype) item.fullpath += '/'
@@ -16,19 +16,19 @@ class zFolder {
     }
 
     create(body) {
-        return axios.post(`/api/folders`, body)
+        return axios.post(`/folders`, body)
     }
 
     rename(alias, name) {
-        return axios.patch(`/api/folders/${alias}/name`, { name: name })
+        return axios.patch(`/folders/${alias}/name`, { name: name })
     }
 
     move(alias, newDir) {
-        return axios.patch(`/api/folders/${alias}/dir`, { dir: newDir })
+        return axios.patch(`/folders/${alias}/dir`, { dir: newDir })
     }
 
     delete(alias) {
-        return axios.delete(`/api/folders/${alias}`)
+        return axios.delete(`/folders/${alias}`)
     }
 }
 

@@ -36,33 +36,14 @@ export default {
     storages() {
       return this.$store.state.storages;
     },
-    cs() {
-      return this.$store.state.cs;
-    },
-    currentBucket() {
-      return this.$route.params.sname;
-    },
     leftMenuActive() {
       return this.$route.fullPath;
     },
     leftMenus() {
-      let menus = [
-        { path: `/${this.currentBucket}`, icon: "el-icon-document", title: this.$t("leftnav.files") },
-        { path: `/${this.currentBucket}?type=doc`, icon: "el-icon-xx", title: this.$t("leftnav.doc") },
-        { path: `/${this.currentBucket}?type=image`, icon: "el-icon-xx", title: this.$t("leftnav.image") },
-        { path: `/${this.currentBucket}?type=audio`, icon: "el-icon-xx", title: this.$t("leftnav.audio") },
-        { path: `/${this.currentBucket}?type=video`, icon: "el-icon-xx", title: this.$t("leftnav.video") },
+      return [
+        { path: `/settings/profile`, icon: "el-icon-share", title: "个人设置" },
+        { path: `/settings/security`, icon: "el-icon-delete", title: "密码修改" },
       ];
-
-      if (this.cs.mode == 1) {
-        let netdiskMenus = [
-          { path: `/${this.currentBucket}/share`, icon: "el-icon-share", title: this.$t("leftnav.share") },
-          { path: `/${this.currentBucket}/recyclebin`, icon: "el-icon-delete", title: this.$t("leftnav.recyclebin") },
-        ];
-        menus.push(...netdiskMenus);
-      }
-
-      return menus;
     },
   },
   watch: {

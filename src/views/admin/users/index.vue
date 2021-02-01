@@ -8,7 +8,7 @@
     <el-card shadow="never" style="margin-top: 10px; padding-bottom: 20px">
       <el-table :data="rows" size="medium" style="width: 100%">
         <el-table-column prop="id" label="ID" width="80"> </el-table-column>
-        <el-table-column prop="nickname" :label="$t('admin.label-nickname')" width="120"> </el-table-column>
+        <el-table-column prop="profile.nickname" :label="$t('admin.label-nickname')" width="120"> </el-table-column>
         <el-table-column prop="email" :label="$t('admin.label-email')"> </el-table-column>
         <el-table-column prop="role" :label="$t('admin.label-role')" width="120"> </el-table-column>
         <el-table-column prop="status" :label="$t('admin.label-status')" width="120"> </el-table-column>
@@ -81,33 +81,13 @@ export default {
   methods: {
     listRefresh() {
       this.query.offset = (this.pageNo - 1) * this.query.limit;
-      this.$zplat.User.list(this.query).then((ret) => {
-        this.rows = ret.data.list;
-        this.total = ret.data.total;
-        if (this.rows.length == 0) {
-          return;
-        }
-
-        let query = { ux: this.rows.map((ele) => ele.ux) };
-        this.$zpan.User.list(query).then((ret) => {
-          let newArr = ret.data.list.reduce((result, item, index, array) => {
-            result[item.ux] = item;
-            return result;
-          }, {});
-
-          console.log(newArr);
-          this.rows = this.rows.map((ele) => {
-            ele.storage_used = 0;
-            ele.storage_max = 0;
-
-            let zUser = newArr[ele.ux];
-            if (zUser) {
-              ele.storage_used = utils.formatBytes(zUser.storage_used);
-              ele.storage_max = utils.formatBytes(zUser.storage_max);
-            }
-            return ele;
-          });
+      this.$zpan.User.list(this.query).then((ret) => {
+        this.rows = ret.data.list.map((ele) => {
+          ele.storage_used = utils.formatBytes(ele.storage.used);
+          ele.storage_max = utils.formatBytes(ele.storage.max);
+          return ele;
         });
+        this.total = ret.data.total;
       });
     },
     onEdit(index, row) {
@@ -115,14 +95,14 @@ export default {
       this.form = Object.assign({}, row);
     },
     onStorageUpdate() {
-      this.$zpan.User.storageUpdate(this.form.id, this.form.storage_max).then((ret) => {
-        this.dialogFormVisible = false;
-        this.listRefresh();
-        this.$message({
-          type: "success",
-          message: this.$t("msg.save-success"),
-        });
-      });
+      // this.$zpan.StorageQuota.storageUpdate(this.form.id, this.form.storage_max).then((ret) => {
+      //   this.dialogFormVisible = false;
+      //   this.listRefresh();
+      //   this.$message({
+      //     type: "success",
+      //     message: this.$t("msg.save-success"),
+      //   });
+      // });
     },
     onDisable(index, row) {},
   },

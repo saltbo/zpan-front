@@ -3,16 +3,24 @@ import axios from './axios'
 
 class zSystem {
 
-    providers() {
-        return axios.get(`/api/system/providers`)
+    installDatabase(database) {
+        return axios.put(`/system/database`, database)
+    }
+
+    createAdministrator(user) {
+        return axios.put(`/system/account`, user)
     }
 
     optGet(name) {
-        return axios.get(`/api/system/options/${name}`)
+        return axios.get(`/system/options/${name}`)
     }
 
     optSave(name, form) {
-        return axios.put(`/api/system/options/${name}`, form)
+        return axios.put(`/system/options/${name}`, form)
+    }
+
+    providers() {
+        return axios.get(`/system/providers`)
     }
 }
 
