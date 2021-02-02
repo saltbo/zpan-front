@@ -32,6 +32,9 @@ class User {
     updatePassword(body) {
         return axios.put('/user/password', body)
     }
+    updateStorage(username, body) {
+        return axios.put(`/users/${username}/storage`, body)
+    }
     find(username) {
         return axios.get(`/users/${username}`)
     }

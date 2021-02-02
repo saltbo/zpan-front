@@ -14,7 +14,7 @@
         <el-table-column prop="status" :label="$t('admin.label-status')" width="120"> </el-table-column>
         <el-table-column prop="storage" :label="$t('admin.label-storage')" width="220">
           <template slot-scope="scope" width="120">
-            <span>{{ scope.row.storage_used }} / {{ scope.row.storage_max }}</span>
+            <span>{{ scope.row.storage.used }} / {{ scope.row.storage.max }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="operation" :label="$t('admin.label-operation')" width="280">
@@ -34,8 +34,7 @@
     <el-dialog :title="$t('admin.label-quota-change')" :visible.sync="dialogFormVisible" width="20%">
       <el-form :model="form">
         <el-form-item :label="$t('admin.label-quota')" label-width="110px">
-          <!-- <el-input-number v-model="form.storage_max" :min="100" size="medium"></el-input-number> -->
-          <el-select v-model="form.storage_max" placeholder="请选择用户配额">
+          <el-select v-model="form.max" placeholder="请选择用户配额">
             <el-option v-for="item in storageQuotas" :key="item.value" :label="item.label" :value="item.value"> </el-option>
           </el-select>
         </el-form-item>
@@ -83,8 +82,8 @@ export default {
       this.query.offset = (this.pageNo - 1) * this.query.limit;
       this.$zpan.User.list(this.query).then((ret) => {
         this.rows = ret.data.list.map((ele) => {
-          ele.storage_used = utils.formatBytes(ele.storage.used);
-          ele.storage_max = utils.formatBytes(ele.storage.max);
+          ele.storage.used = utils.formatBytes(ele.storage.used);
+          ele.storage.max = utils.formatBytes(ele.storage.max);
           return ele;
         });
         this.total = ret.data.total;
@@ -92,17 +91,18 @@ export default {
     },
     onEdit(index, row) {
       this.dialogFormVisible = true;
-      this.form = Object.assign({}, row);
+      this.username = row.username;
+      this.form = Object.assign({}, row.storage);
     },
     onStorageUpdate() {
-      // this.$zpan.StorageQuota.storageUpdate(this.form.id, this.form.storage_max).then((ret) => {
-      //   this.dialogFormVisible = false;
-      //   this.listRefresh();
-      //   this.$message({
-      //     type: "success",
-      //     message: this.$t("msg.save-success"),
-      //   });
-      // });
+      this.$zpan.User.updateStorage(this.username, this.form).then((ret) => {
+        this.dialogFormVisible = false;
+        this.listRefresh();
+        this.$message({
+          type: "success",
+          message: this.$t("msg.save-success"),
+        });
+      });
     },
     onDisable(index, row) {},
   },
