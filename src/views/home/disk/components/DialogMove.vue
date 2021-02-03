@@ -20,9 +20,13 @@
 
 <script>
 import Mixin from "../../mixin";
-import mixinDialog from "@/libs/mixin-dialog.js";
+import { DialogMixin } from "@/libs/mixin";
 export default {
-  mixins: [Mixin, mixinDialog],
+  mixins: [Mixin, DialogMixin],
+  props: {
+    alias: String,
+    isDir: Boolean,
+  },
   data() {
     return {
       data: [],
@@ -31,21 +35,11 @@ export default {
         children: "folders",
         isLeaf: "leaf",
       },
-      alias: "",
       current: {},
       treectx: {},
     };
   },
   methods: {
-    open(obj) {
-      this.alias = obj.alias;
-      this.isDir = obj.dirtype > 0;
-
-      if (this.treectx.node) {
-        this.loadNode(this.treectx.node, this.treectx.resolve);
-      }
-      this.visible = true;
-    },
     onCurrentChange(item, node) {
       this.current = item;
     },

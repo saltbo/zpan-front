@@ -53,6 +53,49 @@ let utils = {
                 fileCallback({ file: file, filename: filename })
             }
         });
+    },
+
+    bytesUnits() {
+        const KB = 1024;
+        const MB = 1024 * KB;
+        const GB = 1024 * MB;
+        const TB = 1024 * GB;
+        const PB = 1024 * TB;
+        const units = [
+            { label: "KB", value: KB },
+            { label: "MB", value: MB },
+            { label: "GB", value: GB },
+            { label: "TB", value: TB },
+            { label: "PB", value: PB },
+        ]
+        return units
+    },
+
+    formatBytes2(bytes, decimals) {
+        let object = {
+            num: 0,
+            unitLabel: "Bytes",
+            unitValue: 0,
+
+            format() {
+                return `${object.num} ${object.unitLabel}`
+            }
+        };
+        if (!bytes) {
+            return object
+        }
+
+        let v = bytes;
+        let idx = 0;
+        for (; v >= 1024; idx++) {
+            v = v / 1024;
+        }
+
+        let dm = decimals + 1 || 3
+        object.num = parseFloat(v).toFixed(dm)
+        object.unitLabel = this.bytesUnits()[idx - 1].label
+        object.unitValue = this.bytesUnits()[idx - 1].value
+        return Object.assign({}, object)
     }
 }
 

@@ -24,17 +24,13 @@
         <el-pagination layout="prev, pager, next" :current-page.sync="pageNo" :page-size="query.limit" :total="total" @current-change="listRefresh" style="float: right"> </el-pagination>
       </div>
     </el-card>
-
-    <EditDialog ref="editDialog" @completed="listRefresh" />
   </div>
 </template>
 
 <script>
+import { transfer } from "@/helper";
 import EditDialog from "./dialog-edit";
 export default {
-  components: {
-    EditDialog,
-  },
   data() {
     return {
       query: {
@@ -55,10 +51,15 @@ export default {
       });
     },
     onCreate() {
-      this.$refs.editDialog.open();
+      transfer(EditDialog)({}).then(() => {
+        this.listRefresh();
+      });
     },
     onEdit(index, row) {
-      this.$refs.editDialog.open(row);
+      let props = { form: Object.assign({}, row) };
+      transfer(EditDialog)(props).then(() => {
+        this.listRefresh();
+      });
     },
     onDelete(index, row) {
       this.$confirm(this.$t("tips.remove"), this.$t("delete") + ` ${row.name}`, {

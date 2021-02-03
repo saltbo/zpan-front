@@ -59,13 +59,22 @@
 </template>
 
 <script>
-import mixinDialog from "@/libs/mixin-dialog.js";
+import { DialogMixin } from "@/libs/mixin";
 export default {
-  mixins: [mixinDialog],
+  mixins: [DialogMixin],
+  props: {
+    form: {
+      type: Object,
+      default: () => {
+        return {
+          mode: 1,
+        };
+      },
+    },
+  },
   data() {
     return {
       providers: [],
-      form: {},
       rules: {
         name: [
           { required: true, message: "请输入存储名称", trigger: "blur" },
@@ -93,15 +102,6 @@ export default {
     },
   },
   methods: {
-    open(v) {
-      this.$zpan.System.providers().then((ret) => {
-        this.providers = ret.data;
-      });
-
-      this.visible = true;
-      this.form = v ? Object.assign({}, v) : { mode: 1, idirs: ["aaa"] };
-      this.form.internal_dirs = this.form.idirs.split(",");
-    },
     onSubmit() {
       this.$refs.form.validate((valid) => {
         if (!valid) {
@@ -124,6 +124,11 @@ export default {
         });
       });
     },
+  },
+  mounted() {
+    this.$zpan.System.providers().then((ret) => {
+      this.providers = ret.data;
+    });
   },
 };
 </script>

@@ -14,18 +14,21 @@
 </template>
 
 <script>
-import mixinDialog from "@/libs/mixin-dialog.js";
+import { DialogMixin } from "@/libs/mixin";
 export default {
-  mixins: [mixinDialog],
+  mixins: [DialogMixin],
+  props: {
+    items: Array,
+  },
   data() {
     return {
       links: "",
     };
   },
   methods: {
-    open(items) {
+    loadLinks() {
       Promise.all(
-        items.map((obj) => {
+        this.items.map((obj) => {
           return this.$zpan.File.findLink(obj.alias);
         })
       ).then((rets) => {
@@ -33,8 +36,10 @@ export default {
           this.links += ret.link + "\r\n";
         });
       });
-      this.visible = true;
     },
+  },
+  mounted() {
+    this.loadLinks();
   },
 };
 </script>

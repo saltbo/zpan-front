@@ -18,10 +18,10 @@
 <template>
   <div style="height: 100%">
     <el-row class="toolbar">
-      <el-button type="primary" size="medium" icon="el-icon-upload" @click="$refs.uploader.open()">{{ $t("disk.upload") }}</el-button>
+      <el-button type="primary" size="medium" icon="el-icon-upload" @click="onUploadClick">{{ $t("disk.upload") }}</el-button>
       <el-button v-show="folderBtnShown" type="primary" size="medium" icon="el-icon-folder-add" @click="openCreateDiglog" plain>{{ $t("disk.folder") }}</el-button>
       <el-button-group v-show="selectedItems.length > 0" style="margin-left: 10px">
-        <el-button type="primary" icon="el-icon-download" size="medium" plain @click="$refs.outlink.open(selectedItems)">{{ $t("disk.download") }}</el-button>
+        <el-button type="primary" icon="el-icon-download" size="medium" plain @click="onOutlinkClick">{{ $t("disk.download") }}</el-button>
         <!-- <el-button type="primary" icon="el-icon-share" size="medium" @click="share" plain>分享</el-button> -->
         <el-button type="primary" icon="el-icon-delete" size="medium" plain @click="deleteSelection">{{ $t("disk.delete") }}</el-button>
         <!-- <el-button type="primary" size="medium" plain>移动到</el-button> -->
@@ -40,15 +40,16 @@
     <FileExplorer :layout="layout" ref="fexp" style="height: calc(100% - 67px)" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :moreButtons="moreButtons" @selection-change="onSelectionChange" />
 
     <!-- dialog -->
-    <DialogMove ref="move" @completed="listRefresh"></DialogMove>
+    <!-- <DialogMove ref="move" @completed="listRefresh"></DialogMove>
     <DialogShare ref="share"></DialogShare>
     <DialogUpload ref="uploader" :sid="getSid()" :dest-dir="query.dir" @completed="listRefresh"></DialogUpload>
-    <DialogOutlink ref="outlink"></DialogOutlink>
+    <DialogOutlink ref="outlink"></DialogOutlink> -->
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import { transfer } from "@/helper";
 import DialogMove from "./components/DialogMove";
 import DialogShare from "./components/DialogShare";
 import DialogUpload from "./components/DialogUpload";
@@ -57,12 +58,6 @@ import Mixin from "../mixin";
 export default {
   name: "home",
   mixins: [Mixin],
-  components: {
-    DialogMove,
-    DialogShare,
-    DialogUpload,
-    DialogOutlink,
-  },
   data() {
     return {
       query: {
@@ -155,8 +150,16 @@ export default {
         });
       });
     },
+    onUploadClick() {
+      transfer(DialogUpload)({ sid: this.getSid(), destDir: this.query.dir }).then(() => {
+        this.listRefresh();
+      });
+    },
+    onOutlinkClick() {
+      transfer(DialogOutlink)({ items: this.selectedItems });
+    },
     share(obj) {
-      this.$refs.share.open(obj.alias);
+      transfer(DialogShare)({ alias: obj.alias });
     },
     viewlink(obj) {
       this.linkLoader(obj).then((link) => {
@@ -169,7 +172,9 @@ export default {
       });
     },
     move(obj) {
-      this.$refs.move.open(obj);
+      transfer(DialogMove)({ alias: obj.alias, isDir: obj.dirtype > 0 }).then(() => {
+        this.listRefresh();
+      });
     },
     rename(obj) {
       this.$prompt(this.$t("tips.rename"), this.$t("rename"), {

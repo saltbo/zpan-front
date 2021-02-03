@@ -14,10 +14,9 @@
 </template>
 
 <script>
-import mixinDialog from "@/libs/mixin-dialog.js";
+import { DialogMixin } from "@/libs/mixin";
 export default {
-  name: "Uploader",
-  mixins: [mixinDialog],
+  mixins: [DialogMixin],
   props: {
     sid: Number,
     destDir: String,

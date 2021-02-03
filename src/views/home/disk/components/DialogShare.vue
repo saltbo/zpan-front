@@ -37,26 +37,23 @@
 </template>
 
 <script>
-import mixinDialog from "@/libs/mixin-dialog.js";
+import { DialogMixin } from "@/libs/mixin";
 export default {
-  name: "Share",
-  mixins: [mixinDialog],
+  mixins: [DialogMixin],
+  props: {
+    alias: String,
+  },
   data() {
     return {
-      shareForm: {},
-    };
-  },
-  methods: {
-    open(alias) {
-      this.shareForm = {
-        matter: alias,
+      shareForm: {
         done: false,
         width: "30%",
         private: false,
         expire_sec: 604800,
-      };
-      this.visible = true;
-    },
+      },
+    };
+  },
+  methods: {
     share(done) {
       this.$zpan.Share.create(this.shareForm).then((data) => {
         let origin = window.location.origin;
@@ -67,6 +64,9 @@ export default {
         this.shareForm.secret = data.data.secret;
       });
     },
+  },
+  mounted() {
+    this.shareForm.matter = this.alias;
   },
 };
 </script>

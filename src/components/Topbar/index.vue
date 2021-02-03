@@ -33,8 +33,8 @@
             </el-row>
           </div>
 
-          <el-dropdown-item icon="el-icon-user" command="profile" divided>{{ $t("topbar.profile") }}</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-setting" command="admin" v-show="showAdmin">{{ $t("topbar.s-platform") }}</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-setting" command="profile" divided>{{ $t("topbar.settings") }}</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-set-up" command="admin" v-show="showAdmin">{{ $t("topbar.s-platform") }}</el-dropdown-item>
           <el-dropdown-item icon="el-icon-switch-button" command="signout">{{ $t("topbar.signout") }}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -105,17 +105,7 @@ export default {
       });
     },
     onDropdown(index) {
-      switch (index) {
-        case "admin":
-          this.$router.push({ name: "admin" });
-          break;
-        case "profile":
-          this.$router.push({ name: "profile" });
-          break;
-        case "signout":
-          this.$router.push({ name: "signout" });
-          break;
-      }
+      this.$router.push({ name: index });
     },
   },
   mounted() {
