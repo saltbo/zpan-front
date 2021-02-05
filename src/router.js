@@ -37,6 +37,7 @@ let router = new Router({
         { path: 'users', name: 'users', component: () => import('./views/admin/users') },
         { path: 'storages', name: 'storages', component: () => import('./views/admin/storages') },
         { path: 'settings', name: 'settings', component: () => import('./views/admin/settings') },
+        { path: 'settings/email', name: 'settings-email', component: () => import('./views/admin/settings/email.vue') },
       ]
     },
     {

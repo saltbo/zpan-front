@@ -16,10 +16,14 @@
             <i class="el-icon-user"></i>
             <span slot="title">用户管理</span>
           </el-menu-item>
-          <el-menu-item index="/admin/settings">
-            <i class="el-icon-setting"></i>
-            <span slot="title">系统设置</span>
-          </el-menu-item>
+          <el-submenu index="/admin/settings">
+            <template slot="title">
+              <i class="el-icon-files"></i>
+              <span>系统设置</span>
+            </template>
+            <el-menu-item index="/admin/settings">站点信息</el-menu-item>
+            <el-menu-item index="/admin/settings/email">发信邮箱</el-menu-item>
+          </el-submenu>
         </el-menu>
       </el-aside>
 
@@ -52,5 +56,16 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+/* 右侧边栏样式 */
+.el-aside .el-menu {
+  border-right: solid 1px #fff;
+  font-weight: 500;
+}
+
+.el-aside .el-menu-item:focus,
+.el-aside .el-menu-item:hover {
+  outline: 0;
+  background-color: #eaeaea !important;
+}
 </style>

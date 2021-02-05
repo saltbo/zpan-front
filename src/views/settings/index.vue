@@ -65,4 +65,16 @@ export default {
 .el-main {
   padding: 10px !important;
 }
+
+/* 右侧边栏样式 */
+.el-aside .el-menu {
+  border-right: solid 1px #fff;
+  font-weight: 500;
+}
+
+.el-aside .el-menu-item:focus,
+.el-aside .el-menu-item:hover {
+  outline: 0;
+  background-color: #eaeaea !important;
+}
 </style>
