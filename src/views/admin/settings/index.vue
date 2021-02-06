@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never">
     <div slot="header" class="clearfix">
-      <span>系统设置</span>
+      <span>站点设置</span>
     </div>
 
     <el-form ref="form" :model="form" label-width="100px" style="width: 500px">
@@ -36,8 +36,16 @@ export default {
     };
   },
   methods: {
+    refresh() {
+      this.$zpan.System.optGet("website").then((ret) => {
+        if (ret.data) {
+          this.form = ret.data;
+        }
+      });
+    },
     onSubmit() {
       this.$zpan.System.optSave("website", this.form).then((ret) => {
+        this.refresh();
         this.$message({
           type: "success",
           message: this.$t("msg.save-success"),
@@ -46,12 +54,7 @@ export default {
     },
   },
   mounted() {
-    this.$zpan.System.optGet("website").then((ret) => {
-      console.log(ret.data);
-      if (ret.data) {
-        this.form = ret.data;
-      }
-    });
+    this.refresh();
   },
 };
 </script>

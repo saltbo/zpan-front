@@ -5,11 +5,8 @@
     </div>
 
     <el-form ref="form" :model="form" label-width="100px" style="width: 520px">
-      <el-form-item label="Host">
-        <el-input v-model="form.host"></el-input>
-      </el-form-item>
-      <el-form-item label="Sender">
-        <el-input v-model="form.sender"></el-input>
+      <el-form-item label="SMTP地址">
+        <el-input v-model="form.address"></el-input>
       </el-form-item>
       <el-form-item label="用户名">
         <el-input v-model="form.username"></el-input>
@@ -17,9 +14,12 @@
       <el-form-item label="密码">
         <el-input v-model="form.password" type="password"></el-input>
       </el-form-item>
+      <el-form-item label="发信人">
+        <el-input v-model="form.sender"></el-input>
+      </el-form-item>
       <el-form-item label="启用">
         <el-switch v-model="form.enabled"></el-switch>
-        <span class="tips"><i class="el-icon-warning"></i>开启后可以使用完整账户流程（注册激活，找回密码）</span>
+        <span class="tips"><i class="el-icon-warning"></i>开启后可以使用完整账户流程（邮箱验证，找回密码）</span>
       </el-form-item>
 
       <el-form-item>

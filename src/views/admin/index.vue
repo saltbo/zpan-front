@@ -21,7 +21,7 @@
               <i class="el-icon-files"></i>
               <span>系统设置</span>
             </template>
-            <el-menu-item index="/admin/settings">站点信息</el-menu-item>
+            <el-menu-item index="/admin/settings">站点设置</el-menu-item>
             <el-menu-item index="/admin/settings/email">发信邮箱</el-menu-item>
           </el-submenu>
         </el-menu>
