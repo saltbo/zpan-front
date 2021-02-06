@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="$t('admin.label-storage-manager')" width="30%" :visible.sync="visible">
+  <el-drawer :title="$t('admin.label-storage-manager')" :visible.sync="visible" size="50%">
     <el-form :model="form" :rules="rules" ref="form" style="padding-right: 50px" size="small">
       <el-tabs value="basic" type="card" style="margin-left: 20px">
         <el-tab-pane label="基础配置" name="basic">
@@ -43,19 +43,29 @@
             <el-input v-model="form.custom_host"></el-input>
           </el-form-item>
           <el-form-item prop="root_path" label="根路径" label-width="120px">
-            <el-input v-model="form.root_path" placeholder="默认为Bucket根路径"></el-input>
+            <el-input v-model="form.root_path" placeholder="请设置文件存储规则，不填则默认为Bucket根路径"></el-input>
           </el-form-item>
           <el-form-item prop="file_path" label="文件路径" label-width="120px">
-            <el-input v-model="form.file_path" placeholder="默认为YYYYMMDD/UUID.ext"></el-input>
+            <el-input v-model="form.file_path" placeholder="请设置文件存储规则，不填则使用系统默认规则"></el-input>
+            <span class="tips" @click="openEnvs"><i class="el-icon-warning"></i>支持的系统变量</span>
           </el-form-item>
         </el-tab-pane>
       </el-tabs>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="visible = false">{{ $t("cancel") }}</el-button>
+    <div class="footer">
       <el-button type="primary" @click="onSubmit">{{ $t("confirm") }}</el-button>
+      <el-button @click="visible = false">{{ $t("cancel") }}</el-button>
     </div>
-  </el-dialog>
+
+    <!-- 系统变量提示 -->
+    <el-drawer title="支持的系统变量" :append-to-body="true" :visible.sync="envDrawerVisible">
+      <el-table :data="support_envs" style="padding: 10px 20px">
+        <el-table-column property="name" label="变量" width="150"></el-table-column>
+        <el-table-column property="intro" label="介绍" width="200"></el-table-column>
+        <el-table-column property="example" label="例子"></el-table-column>
+      </el-table>
+    </el-drawer>
+  </el-drawer>
 </template>
 
 <script>
@@ -75,6 +85,8 @@ export default {
   data() {
     return {
       providers: [],
+      envDrawerVisible: false,
+      support_envs: [],
       rules: {
         name: [
           { required: true, message: "请输入存储名称", trigger: "blur" },
@@ -102,6 +114,12 @@ export default {
     },
   },
   methods: {
+    openEnvs() {
+      this.envDrawerVisible = true;
+      this.$zpan.System.matterPathEnvs().then((ret) => {
+        this.support_envs = ret.data;
+      });
+    },
     onSubmit() {
       this.$refs.form.validate((valid) => {
         if (!valid) {
@@ -133,5 +151,11 @@ export default {
 };
 </script>
 
-<style>
+<style lang="stylus" >
+.el-drawer__body
+  overflow: auto;
+
+.footer
+  margin-left: 142px;
+  margin-top: 25px;
 </style>

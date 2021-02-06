@@ -19,6 +19,10 @@ class zSystem {
         return axios.put(`/system/options/${name}`, form)
     }
 
+    matterPathEnvs() {
+        return axios.get(`/system/matter-path-envs`)
+    }
+
     providers() {
         return axios.get(`/system/providers`)
     }

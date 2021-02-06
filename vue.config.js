@@ -115,6 +115,10 @@ module.exports = {
             fallbackLocale: 'en',
             localeDir: 'locales',
             enableInSFC: true
+        },
+        'style-resources-loader': {
+            preProcessor: 'stylus',
+            patterns: []
         }
     }
 }
