@@ -42,13 +42,12 @@ export default {
         email: [{ required: true, message: "请输入邮箱地址", trigger: "blur" }],
       },
       redirect: "/",
-      formItem: {},
+      formItem: {
+        email: "",
+      },
     };
   },
   methods: {
-    goto(name) {
-      this.$router.push({ name: name });
-    },
     signIn(name) {
       this.$refs[name].validate((valid) => {
         if (!valid) {
@@ -69,6 +68,9 @@ export default {
   mounted() {
     if (this.$route.query.redirect) {
       this.redirect = this.$route.query.redirect;
+    }
+    if (this.$route.params.email) {
+      this.formItem.email = this.$route.params.email;
     }
   },
 };

@@ -10,7 +10,7 @@ export default {
         type: "success",
         message: "激活成功，请输入密码登录。",
       });
-      this.$router.push({ name: "signin" });
+      this.$router.push({ name: "signin", params: { email: email } });
     });
   },
 };
