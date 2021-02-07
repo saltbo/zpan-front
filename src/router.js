@@ -15,6 +15,7 @@ let router = new Router({
       component: () => import('./views/home'),
       children: [
         { path: '/', name: 'disk', component: () => import('./views/home/disk') },
+        { path: 'pic', name: 'pic', component: () => import('./views/home/picture') },
         { path: 'share', name: 'share', component: () => import('./views/home/share') },
         { path: 'recyclebin', name: 'recyclebin', component: () => import('./views/home/recyclebin') },
       ]

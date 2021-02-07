@@ -58,10 +58,10 @@
     </div>
 
     <!-- 系统变量提示 -->
-    <el-drawer title="支持的系统变量" :append-to-body="true" :visible.sync="envDrawerVisible">
-      <el-table :data="support_envs" style="padding: 10px 20px">
+    <el-drawer title="支持的系统变量" :append-to-body="true" :visible.sync="envDrawerVisible" size="35%">
+      <el-table :data="support_envs" size="small" style="padding: 10px 20px">
         <el-table-column property="name" label="变量" width="150"></el-table-column>
-        <el-table-column property="intro" label="介绍" width="200"></el-table-column>
+        <el-table-column property="intro" label="介绍" width="150"></el-table-column>
         <el-table-column property="example" label="例子"></el-table-column>
       </el-table>
     </el-drawer>

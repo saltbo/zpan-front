@@ -4,12 +4,9 @@ import axios from './axios'
 
 class zFile {
 
-    upload(sid, fileObj, distDir, publiced) {
-        if (!publiced) {
-            publiced = false
-        }
+    upload(sid, fileObj, distDir) {
         let file = fileObj.file
-        let body = { sid: sid, name: fileObj.filename, type: file.type, size: file.size, dir: distDir, public: publiced };
+        let body = { sid: sid, name: fileObj.filename, type: file.type, size: file.size, dir: distDir };
         return new Promise((resolve, reject) => {
             axios.post('/files', body).then(ret => {
                 let data = ret.data

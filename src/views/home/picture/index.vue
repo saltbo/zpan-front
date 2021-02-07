@@ -17,10 +17,11 @@
 
 <script>
 import utils from "@/libs/utils.js";
+import Mixin from "../mixin";
 export default {
+  mixins: [Mixin],
   data() {
     return {
-      picDir: ".pics/",
       picHost: "",
       acceptImgs: "image/jpeg,image/png,image/gif",
       fileList: [],
@@ -32,10 +33,22 @@ export default {
     };
   },
   methods: {
+    getLink(alias) {
+      return new Promise((resolve, reject) => {
+        this.$zpan.File.findLink(alias).then((ret) => {
+          resolve(ret.link);
+        });
+      });
+    },
     listRefresh() {
-      this.$zpan.File.listObjects({ dir: this.picDir }).then((data) => {
+      this.$zpan.File.listObjects({ sid: this.getSid(), type: "image" }).then((data) => {
         this.fileList = data.list.map((obj) => {
           return { alias: obj.alias, name: obj.name, url: obj.url };
+        });
+        this.fileList.forEach((ele) => {
+          this.getLink(ele.alias).then((link) => {
+            ele.url = link;
+          });
         });
         this.loading = false;
       });
@@ -51,7 +64,7 @@ export default {
       var timestamp = new Date().getTime();
       fileObj.filename = fileObj.file.name.replace("image", timestamp);
 
-      this.$zpan.File.upload(fileObj, this.picDir, true)
+      this.$zpan.File.upload(this.getSid(), fileObj)
         .then((ret) => {
           let file = {
             name: fileObj.filename,
