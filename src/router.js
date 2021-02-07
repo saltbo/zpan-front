@@ -64,6 +64,7 @@ const setTitle = (title, next) => {
       fullTitle += `- ${title}`
     }
     window.document.title = fullTitle;
+    i18n.locale = sOpt.locale
   }).catch(error => {
     if (error.response && error.response.status == 520) {
       next({ name: "installer" })

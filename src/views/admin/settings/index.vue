@@ -12,7 +12,7 @@
         <el-input v-model="form.intro" type="textarea"></el-input>
       </el-form-item>
       <el-form-item label="默认语言">
-        <el-select v-model="form.lang" placeholder="请选择系统默认语言">
+        <el-select v-model="form.locale" placeholder="请选择系统默认语言">
           <el-option label="中文" value="zh-CN"></el-option>
           <el-option label="英语" value="en"></el-option>
         </el-select>
