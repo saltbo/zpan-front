@@ -19,10 +19,9 @@
 </template>
 
 <script>
-import Mixin from "../../mixin";
-import { DialogMixin } from "@/libs/mixin";
+import { CSMixin, DialogMixin } from "@/libs/mixin";
 export default {
-  mixins: [Mixin, DialogMixin],
+  mixins: [CSMixin, DialogMixin],
   props: {
     alias: String,
     isDir: Boolean,

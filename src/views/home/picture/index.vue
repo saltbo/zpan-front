@@ -17,9 +17,9 @@
 
 <script>
 import utils from "@/libs/utils.js";
-import Mixin from "../mixin";
+import { CSMixin } from "@/libs/mixin";
 export default {
-  mixins: [Mixin],
+  mixins: [CSMixin],
   data() {
     return {
       picHost: "",

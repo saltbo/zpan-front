@@ -1,4 +1,5 @@
 
+import CSMixin from './cs'
 import DialogMixin from './dialog'
 
-export { DialogMixin }
+export { CSMixin, DialogMixin }

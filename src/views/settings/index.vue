@@ -1,6 +1,6 @@
 <template>
   <section>
-    <Topbar :menus="storages" logined />
+    <Topbar :menus="$store.state.storages" logined />
     <el-container style="height: 100%">
       <el-aside width="200px" style="height: 100%; background-color: #f4f4f5">
         <el-menu :default-active="leftMenuActive" background-color="#f4f4f5" router>
@@ -24,18 +24,24 @@
 </template>
 
 <script>
+import Vue from "vue";
+import store from "@/store";
 import Topbar from "@/components/Topbar";
 export default {
   components: {
     Topbar,
   },
+  beforeRouteEnter(to, from, next) {
+    Vue.zpan.Storage.list().then((ret) => {
+      let storages = ret.data.list;
+      store.commit("storages", storages);
+      next();
+    });
+  },
   data() {
     return {};
   },
   computed: {
-    storages() {
-      return this.$store.state.storages;
-    },
     leftMenuActive() {
       return this.$route.fullPath;
     },
@@ -46,9 +52,7 @@ export default {
       ];
     },
   },
-  watch: {
-    $route(newVal, oldVal) {},
-  },
+  watch: {},
   methods: {},
   mounted() {},
 };

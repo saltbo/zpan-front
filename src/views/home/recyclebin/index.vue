@@ -49,10 +49,9 @@
 </template>
 
 <script>
-import Mixin from "../mixin";
+import { CSMixin } from "@/libs/mixin";
 export default {
-  name: "recyclebin",
-  mixins: [Mixin],
+  mixins: [CSMixin],
   data() {
     return {
       rows: [],

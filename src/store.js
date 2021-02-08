@@ -16,7 +16,5 @@ export default new Vuex.Store({
       state.cs = cs
     }
   },
-  actions: {
-
-  }
+  actions: {}
 })

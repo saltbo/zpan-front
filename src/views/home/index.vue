@@ -1,6 +1,6 @@
 <template>
   <section>
-    <Topbar :menus="storages" logined />
+    <Topbar :menus="$store.state.storages" logined />
     <el-container style="height: 100%">
       <el-aside width="200px" style="height: 100%; background-color: #f4f4f5">
         <el-menu :default-active="leftMenuActive" background-color="#f4f4f5" router>
@@ -24,21 +24,32 @@
 </template>
 
 <script>
+import Vue from "vue";
+import store from "@/store";
+import router from "@/router";
 import Topbar from "@/components/Topbar";
+import { CSMixin } from "@/libs/mixin";
 export default {
+  mixins: [CSMixin],
   components: {
     Topbar,
+  },
+  beforeRouteEnter(to, from, next) {
+    Vue.zpan.Storage.list().then((ret) => {
+      let storages = ret.data.list;
+      if (to.path == "/") {
+        router.push({ path: `/${storages[0].name}` });
+        return;
+      }
+
+      store.commit("storages", storages);
+      next();
+    });
   },
   data() {
     return {};
   },
   computed: {
-    storages() {
-      return this.$store.state.storages;
-    },
-    cs() {
-      return this.$store.state.cs;
-    },
     currentBucket() {
       return this.$route.params.sname;
     },

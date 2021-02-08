@@ -54,10 +54,9 @@ import DialogMove from "./components/DialogMove";
 import DialogShare from "./components/DialogShare";
 import DialogUpload from "./components/DialogUpload";
 import DialogOutlink from "./components/DialogOutlink";
-import Mixin from "../mixin";
+import { CSMixin } from "@/libs/mixin";
 export default {
-  name: "home",
-  mixins: [Mixin],
+  mixins: [CSMixin],
   data() {
     return {
       query: {
