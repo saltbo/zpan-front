@@ -58,18 +58,18 @@ export default {
     return {
       step: 0,
       dsns: {
-        sqlite3: "zplat.db",
-        mysql: "user:pass@tcp(127.0.0.1:3306)/zplat?charset=utf8mb4&parseTime=True&loc=Local",
-        postgres: "host=localhost user=admin password=admin dbname=zplat port=9920 sslmode=disable TimeZone=Asia/Shanghai",
-        mssql: "sqlserver://zplat:LoremIpsum86@localhost:9930?database=zplat",
+        sqlite3: "zpan.db",
+        mysql: "user:pass@tcp(127.0.0.1:3306)/zpan?charset=utf8mb4&parseTime=True&loc=Local",
+        postgres: "host=localhost user=admin password=admin dbname=zpan port=9920 sslmode=disable TimeZone=Asia/Shanghai",
+        mssql: "sqlserver://zpan:LoremIpsum86@localhost:9930?database=zpan",
       },
       form: {
         database: {
           driver: "sqlite3",
-          dsn: "zplat.db",
+          dsn: "zpan.db",
         },
         administrator: {
-          email: "admin@zplat.io",
+          email: "admin@zpan.space",
         },
       },
       rules: {
@@ -105,9 +105,11 @@ export default {
 
         console.log(this.form);
         this.$zpan.System.installDatabase(this.form.database).then((ret) => {
-          this.$zpan.System.createAdministrator(this.form.administrator).then(() => {
-            this.$router.push({ name: "signin" });
-          });
+          setTimeout(() => {
+            this.$zpan.System.createAdministrator(this.form.administrator).then(() => {
+              this.$router.push({ name: "signin" });
+            });
+          }, 1000);
         });
       });
     },

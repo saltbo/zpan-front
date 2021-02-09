@@ -24,10 +24,12 @@ _axios.interceptors.response.use(
         return response.data;
     },
     function (error) {
-        // if (error.response && error.response.status == 401) {
-        //     window.location = "/u/signin"
-        //     return Promise.reject("invalid login status");
-        // }
+        if (error.response && error.response.status == 401) {
+            window.location = "/u/signin"
+            return Promise.reject("invalid login status");
+        } else if (error.response && error.response.status == 520) {
+            return Promise.reject(error)
+        }
 
         let msg = error.message
         if (error.response) {

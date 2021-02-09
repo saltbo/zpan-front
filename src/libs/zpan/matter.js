@@ -8,10 +8,10 @@ class zFile {
         let file = fileObj.file
         let body = { sid: sid, name: fileObj.filename, type: file.type, size: file.size, dir: distDir };
         return new Promise((resolve, reject) => {
-            axios.post('/files', body).then(ret => {
+            axios.post('/matters', body).then(ret => {
                 let data = ret.data
                 utils.upload(fileObj, data.link, data.headers).then(() => {
-                    axios.patch(`/files/${data.alias}/uploaded`).then((ret) => {
+                    axios.patch(`/matters/${data.alias}/uploaded`).then((ret) => {
                         resolve(ret)
                     })
                 }).catch(reject)
@@ -21,7 +21,7 @@ class zFile {
 
     findLink(alias) {
         return new Promise((resolve, reject) => {
-            axios.get(`/files/${alias}`).then(ret => {
+            axios.get(`/matters/${alias}`).then(ret => {
                 resolve(ret.data)
             }).catch(reject)
         })
@@ -39,7 +39,7 @@ class zFile {
 
     listObjects(params) {
         return new Promise((resolve, reject) => {
-            axios.get('/files', { params: params }).then(ret => {
+            axios.get('/matters', { params: params }).then(ret => {
                 let data = ret.data
                 data.list = data.list.map(item => {
                     item.size = utils.formatBytes(item.size, 1);
@@ -53,19 +53,19 @@ class zFile {
     }
 
     rename(alias, name) {
-        return axios.patch(`/files/${alias}/name`, { name: name })
+        return axios.patch(`/matters/${alias}/name`, { name: name })
     }
 
     move(alias, newDir) {
-        return axios.patch(`/files/${alias}/location`, { dir: newDir })
+        return axios.patch(`/matters/${alias}/location`, { dir: newDir })
     }
 
     copy(alias, newPath) {
-        return axios.patch(`/files/${alias}/duplicate`, { path: newPath })
+        return axios.patch(`/matters/${alias}/duplicate`, { path: newPath })
     }
 
     delete(alias) {
-        return axios.delete(`/files/${alias}`)
+        return axios.delete(`/matters/${alias}`)
     }
 }
 

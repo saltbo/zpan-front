@@ -140,7 +140,7 @@ export default {
         cancelButtonText: this.$t("cancel"),
       }).then(({ value }) => {
         let body = { sid: this.getSid(), name: value, dir: this.query.dir };
-        this.$zpan.Folder.create(body).then((ret) => {
+        this.$zpan.File.create(body).then((ret) => {
           this.$message({
             type: "success",
             message: this.$t("msg.create-success"),
@@ -181,8 +181,7 @@ export default {
         confirmButtonText: this.$t("confirm"),
         cancelButtonText: this.$t("cancel"),
       }).then(({ value }) => {
-        let rename = obj.dirtype > 0 ? this.$zpan.Folder.rename : this.$zpan.File.rename;
-        rename(obj.alias, value).then((ret) => {
+        this.$zpan.File.rename(obj.alias, value).then((ret) => {
           this.$message({
             type: "success",
             message: this.$t("msg.rename-success"),
@@ -197,8 +196,7 @@ export default {
         confirmButtonText: this.$t("confirm"),
         cancelButtonText: this.$t("cancel"),
       }).then(() => {
-        let remove = obj.dirtype ? this.$zpan.Folder.delete : this.$zpan.File.delete;
-        remove(obj.alias).then((ret) => {
+        this.$zpan.File.delete(obj.alias).then((ret) => {
           this.$message({
             type: "success",
             message: this.$t("msg.delete-success"),

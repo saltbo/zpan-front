@@ -37,6 +37,13 @@ export default {
   beforeRouteEnter(to, from, next) {
     Vue.zpan.Storage.list().then((ret) => {
       let storages = ret.data.list;
+      // 如果没有存储空间则强制跳去添加存储空间
+      if (storages.length == 0) {
+        next({ name: "storages" });
+        return;
+      }
+
+      // 如果访问的是首页则自动跳去第一个存储空间
       if (to.path == "/") {
         router.push({ path: `/${storages[0].name}` });
         return;

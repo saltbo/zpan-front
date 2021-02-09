@@ -55,16 +55,15 @@ export default {
       }
 
       // pull the datas
-      this.$zpan.Folder.list({ sid: this.getSid(), parent: node.data.fullpath }).then((objects) => {
-        let folders = objects.filter((ele) => {
+      this.$zpan.File.listObjects({ sid: this.getSid(), dir: node.data.fullpath }).then((ret) => {
+        let folders = ret.list.filter((ele) => {
           return ele.dirtype && ele.alias != this.alias;
         });
         resolve(folders);
       });
     },
     submit() {
-      let move = this.isDir ? this.$zpan.Folder.move : this.$zpan.File.move;
-      move(this.alias, this.current.fullpath).then((ret) => {
+      this.$zpan.File.move(this.alias, this.current.fullpath).then((ret) => {
         this.$message({
           type: "success",
           message: this.$t("msg.move-success"),
