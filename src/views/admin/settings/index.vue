@@ -37,14 +37,14 @@ export default {
   },
   methods: {
     refresh() {
-      this.$zpan.System.optGet("website").then((ret) => {
+      this.$zpan.System.optGet("core.site").then((ret) => {
         if (ret.data) {
           this.form = ret.data;
         }
       });
     },
     onSubmit() {
-      this.$zpan.System.optSave("website", this.form).then((ret) => {
+      this.$zpan.System.optSave("core.site", this.form).then((ret) => {
         this.refresh();
         this.$message({
           type: "success",

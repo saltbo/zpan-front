@@ -5,6 +5,12 @@
     </div>
 
     <el-form ref="form" :model="profile" :rules="rules" label-width="100px" class="profile">
+      <el-form-item label="邮箱" prop="email">
+        <el-input v-model="user.email" disabled></el-input>
+      </el-form-item>
+      <el-form-item label="邀请码" prop="ticket">
+        <el-input v-model="user.ticket" disabled></el-input>
+      </el-form-item>
       <el-form-item label="昵称" prop="nickname">
         <el-input v-model="profile.nickname"></el-input>
       </el-form-item>
@@ -37,6 +43,7 @@
 export default {
   data() {
     return {
+      user: {},
       profile: {},
       rules: {},
       langs: [
@@ -48,6 +55,7 @@ export default {
   methods: {
     loadInfo() {
       this.$zpan.User.profileGet().then((ret) => {
+        this.user = ret.data;
         this.profile = ret.data.profile;
       });
     },

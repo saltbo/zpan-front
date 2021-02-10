@@ -28,7 +28,7 @@
         </el-form>
 
         <!-- step-2 -->
-        <el-form v-show="stepShown(1)" :model="form.administrator" ref="ruleForm" label-width="100px" class="form">
+        <el-form v-show="stepShown(1)" :model="form.administrator" :rules="rules" ref="form" label-width="100px" class="form">
           <el-form-item label="管理员账号" prop="email">
             <el-input v-model="form.administrator.email"></el-input>
           </el-form-item>
@@ -40,9 +40,14 @@
           </el-form-item>
           <el-form-item>
             <el-button @click="step--">上一步</el-button>
-            <el-button type="primary" @click="submitForm('ruleForm')">开始安装</el-button>
+            <el-button type="primary" @click="submitForm('form')">开始安装</el-button>
           </el-form-item>
         </el-form>
+
+        <div v-show="stepShown(3)" style="text-align: center">
+          <h3 style="margin-bottom: 50px;">恭喜！ZPan安装成功啦~</h3>
+          <el-button type="primary" @click="toSignin">去登录</el-button>
+        </div>
       </el-card>
     </div>
   </section>
@@ -55,6 +60,25 @@ export default {
     Topbar,
   },
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error("请输入密码"));
+      } else {
+        if (this.form.administrator.passwordr !== "") {
+          this.$refs.form.validateField("passwordr");
+        }
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.form.administrator.password) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
     return {
       step: 0,
       dsns: {
@@ -73,16 +97,12 @@ export default {
         },
       },
       rules: {
-        // name: [
-        //   { required: true, message: "请输入活动名称", trigger: "blur" },
-        //   { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
-        // ],
-        // region: [{ required: true, message: "请选择活动区域", trigger: "change" }],
-        // date1: [{ type: "date", required: true, message: "请选择日期", trigger: "change" }],
-        // date2: [{ type: "date", required: true, message: "请选择时间", trigger: "change" }],
-        // type: [{ type: "array", required: true, message: "请至少选择一个活动性质", trigger: "change" }],
-        // resource: [{ required: true, message: "请选择活动资源", trigger: "change" }],
-        // desc: [{ required: true, message: "请填写活动形式", trigger: "blur" }],
+        email: [
+          { required: true, message: "请输入邮箱地址", trigger: "blur" },
+          { type: "email", message: "请输入正确的邮箱地址", trigger: ["blur", "change"] },
+        ],
+        password: [{ validator: validatePass, trigger: "blur", required: true }],
+        passwordr: [{ validator: validatePass2, trigger: "blur", required: true }],
       },
     };
   },
@@ -98,6 +118,7 @@ export default {
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
+        console.log(valid)
         if (!valid) {
           console.log("error submit!!");
           return;
@@ -107,12 +128,20 @@ export default {
         this.$zpan.System.installDatabase(this.form.database).then((ret) => {
           setTimeout(() => {
             this.$zpan.System.createAdministrator(this.form.administrator).then(() => {
-              this.$router.push({ name: "signin" });
+              this.$message({
+                type: "success",
+                message: "安装成功",
+              });
+              this.step++
+              this.step++
             });
           }, 1000);
         });
       });
     },
+    toSignin() {
+      this.$router.push({ name: "signin", params: { email: this.form.administrator.email } });
+    }
   },
 };
 </script>

@@ -57,7 +57,7 @@ let router = new Router({
 })
 
 const setTitle = (title, next) => {
-  Vue.zpan.System.optGet("website").then(ret => {
+  Vue.zpan.System.optGet("core.site").then(ret => {
     let sOpt = ret.data
     let fullTitle = sOpt.name
     if (title) {

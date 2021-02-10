@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$zpan.System.optSave("email", this.form).then((ret) => {
+      this.$zpan.System.optSave("core.email", this.form).then((ret) => {
         this.$message({
           type: "success",
           message: this.$t("msg.save-success"),
@@ -47,7 +47,7 @@ export default {
     },
   },
   mounted() {
-    this.$zpan.System.optGet("email").then((ret) => {
+    this.$zpan.System.optGet("core.email").then((ret) => {
       console.log(ret.data);
       if (ret.data) {
         this.form = ret.data;
