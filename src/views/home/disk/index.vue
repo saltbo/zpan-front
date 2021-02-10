@@ -108,7 +108,7 @@ export default {
       this.query.offset = offset ? offset : 0;
       this.query.limit = limit ? limit : 10;
       return new Promise((resolve, reject) => {
-        this.$zpan.File.listObjects(this.query).then((ret) => {
+        this.$zpan.File.list(this.query).then((ret) => {
           this.query.kw = "";
           resolve(ret);
         });
@@ -139,7 +139,7 @@ export default {
         confirmButtonText: this.$t("confirm"),
         cancelButtonText: this.$t("cancel"),
       }).then(({ value }) => {
-        let body = { sid: this.getSid(), name: value, dir: this.query.dir };
+        let body = { sid: this.getSid(), name: value, dir: this.query.dir, is_dir: true };
         this.$zpan.File.create(body).then((ret) => {
           this.$message({
             type: "success",

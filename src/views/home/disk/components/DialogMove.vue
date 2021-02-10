@@ -55,7 +55,7 @@ export default {
       }
 
       // pull the datas
-      this.$zpan.File.listObjects({ sid: this.getSid(), dir: node.data.fullpath }).then((ret) => {
+      this.$zpan.File.list({ sid: this.getSid(), dir: node.data.fullpath }).then((ret) => {
         let folders = ret.list.filter((ele) => {
           return ele.dirtype && ele.alias != this.alias;
         });

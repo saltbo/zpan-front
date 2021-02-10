@@ -1,17 +1,18 @@
 /* eslint-disable no-console */
+import { resolve } from 'core-js/fn/promise';
 import utils from '../utils'
 import axios from './axios'
 
-class zFile {
+class zMatter {
 
     upload(sid, fileObj, distDir) {
         let file = fileObj.file
         let body = { sid: sid, name: fileObj.filename, type: file.type, size: file.size, dir: distDir };
         return new Promise((resolve, reject) => {
-            axios.post('/matters', body).then(ret => {
+            this.create(body).then(ret => {
                 let data = ret.data
                 utils.upload(fileObj, data.link, data.headers).then(() => {
-                    axios.patch(`/matters/${data.alias}/uploaded`).then((ret) => {
+                    axios.patch(`/matters/${data.alias}/done`).then((ret) => {
                         resolve(ret)
                     })
                 }).catch(reject)
@@ -21,7 +22,7 @@ class zFile {
 
     findLink(alias) {
         return new Promise((resolve, reject) => {
-            axios.get(`/matters/${alias}`).then(ret => {
+            axios.get(`/matters/${alias}/link`).then(ret => {
                 resolve(ret.data)
             }).catch(reject)
         })
@@ -37,7 +38,11 @@ class zFile {
         })
     }
 
-    listObjects(params) {
+    create(body) {
+        return axios.post('/matters', body)
+    }
+
+    list(params) {
         return new Promise((resolve, reject) => {
             axios.get('/matters', { params: params }).then(ret => {
                 let data = ret.data
@@ -69,4 +74,4 @@ class zFile {
     }
 }
 
-export default zFile;
+export default zMatter;

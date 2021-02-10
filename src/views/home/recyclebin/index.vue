@@ -111,7 +111,7 @@ export default {
         confirmButtonText: this.$t("confirm"),
         cancelButtonText: this.$t("cancel"),
       }).then(() => {
-        this.$zpan.Recyclebin.clean().then((ret) => {
+        this.$zpan.Recyclebin.clean(this.getSid()).then((ret) => {
           this.$message({
             type: "success",
             message: this.$t("msg.clean-success"),

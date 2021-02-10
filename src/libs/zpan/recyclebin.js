@@ -20,8 +20,8 @@ class zRecyclebin {
         return axios.delete(`/recycles/${alias}`)
     }
 
-    clean() {
-        return axios.delete(`/recycles`)
+    clean(sid) {
+        return axios.delete(`/recycles`, { params: { sid: sid } })
     }
 }
 
