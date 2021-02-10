@@ -96,7 +96,14 @@ export default {
         confirmButtonText: this.$t("confirm"),
         cancelButtonText: this.$t("cancel"),
       }).then(() => {
+        const loading = this.$loading({
+          lock: true,
+          text: "Deleting",
+          spinner: "el-icon-loading",
+          background: "rgba(0, 0, 0, 0.7)",
+        });
         this.$zpan.Recyclebin.delete(obj.alias).then((ret) => {
+          loading.close()
           this.$message({
             type: "success",
             message: this.$t("msg.delete-success"),
