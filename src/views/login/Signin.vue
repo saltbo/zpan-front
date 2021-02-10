@@ -48,6 +48,9 @@ export default {
     };
   },
   methods: {
+    goto(name) {
+      this.$router.push({ name: name });
+    },
     signIn(name) {
       this.$refs[name].validate((valid) => {
         if (!valid) {
