@@ -111,7 +111,14 @@ export default {
         confirmButtonText: this.$t("confirm"),
         cancelButtonText: this.$t("cancel"),
       }).then(() => {
+        const loading = this.$loading({
+          lock: true,
+          text: "Cleaning",
+          spinner: "el-icon-loading",
+          background: "rgba(0, 0, 0, 0.7)",
+        });
         this.$zpan.Recyclebin.clean(this.getSid()).then((ret) => {
+          loading.close()
           this.$message({
             type: "success",
             message: this.$t("msg.clean-success"),

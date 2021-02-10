@@ -223,7 +223,7 @@ export default {
 
         Promise.all(
           this.selectedItems.map((obj) => {
-            return zfile.delete(obj.alias);
+            return this.$zpan.File.delete(obj.alias);
           })
         )
           .then((ret) => {
