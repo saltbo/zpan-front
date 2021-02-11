@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="添加用户" :visible.sync="visible" width="25%">
+  <el-dialog title="添加用户" :visible.sync="visible" width="35%">
     <el-form :model="form" :rules="rules" ref="form" style="width: 85%">
       <el-form-item prop="email" label="邮箱" label-width="100px">
         <el-input v-model="form.email" placeholder="电子邮箱" autofocus></el-input>
@@ -95,7 +95,7 @@ export default {
       });
     },
   },
-  mounted() {},
+  mounted() { },
 };
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="$t('admin.label-quota-change')" :visible.sync="visible" width="20%">
+  <el-dialog :title="$t('admin.label-quota-change')" :visible.sync="visible" width="25%">
     <el-form :model="form">
       <el-form-item :label="$t('admin.label-quota')" label-width="110px">
         <el-input placeholder="请输入内容" v-model="form.max.num" style="width: 80%">
@@ -46,7 +46,7 @@ export default {
       });
     },
   },
-  mounted() {},
+  mounted() { },
 };
 </script>
 

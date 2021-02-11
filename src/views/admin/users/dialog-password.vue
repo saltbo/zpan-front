@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="$t('admin.label-password-change')" :visible.sync="visible" width="20%">
+  <el-dialog :title="$t('admin.label-password-change')" :visible.sync="visible" width="30%">
     <el-form ref="form" :model="form" :rules="rules" size="medium" label-width="100px" class="profile" style="width: 85%">
       <el-form-item label="旧密码" prop="old_password">
         <el-input v-model="form.old_password" type="password"></el-input>
