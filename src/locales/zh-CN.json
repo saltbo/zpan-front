@@ -102,7 +102,12 @@
     "share": "我的分享",
     "recyclebin": "回收站",
     "picture": "我的图床",
-    "storage-quota": "存储配额"
+    "storage-quota": "存储配额",
+    "admin": "管理后台",
+    "storages": "存储管理",
+    "users": "用户管理",
+    "settings": "站点设置",
+    "settings-email": "发信邮箱"
   },
   "year": "年",
   "admin": {
@@ -120,6 +125,7 @@
     "label-operation": "操作",
     "label-quota": "存储配额",
     "label-quota-change": "配额调整",
+    "label-password-change": "密码重置",
     "label-storage-manager": "存储管理",
     "label-name": "名称",
     "label-title": "标题",
