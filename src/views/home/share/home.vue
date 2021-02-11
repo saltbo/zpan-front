@@ -26,7 +26,7 @@
     </el-card>
 
     <!-- for folder -->
-    <el-card v-else-if="info.id" class="folder-card" shadow="never">
+    <el-card v-else-if="info.id" class="folder-card" shadow="never" body-style="height: 100%">
       <div slot="header" class="header clearfix">
         <div>
           <span class="name">{{ matter.name }}</span>
@@ -42,7 +42,7 @@
         </p>
       </div>
 
-      <FileExplorer ref="fexp" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :rootDir="rootDir" />
+      <FileExplorer ref="fexp" style="height: calc(100% - 80px)" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :rootDir="rootDir" />
     </el-card>
   </div>
 </template>
