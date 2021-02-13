@@ -12,43 +12,43 @@
           <el-form-item prop="name" :label="$t('admin.label-name')" label-width="120px">
             <el-input v-model="form.name" placeholder="请输入一个名字" autofocus></el-input>
           </el-form-item>
-          <el-form-item prop="title" :label="$t('admin.label-title')" label-width="120px">
-            <el-input v-model="form.title" placeholder="请设置一个标题，会显示在导航栏"></el-input>
-          </el-form-item>
-          <el-form-item prop="idirs" label="系统目录" label-width="120px">
-            <el-select v-model="form.internal_dirs" multiple filterable allow-create default-first-option style="width: 100%" placeholder="设置系统内置目录，这些目录不允许用户删除">
-              <el-option v-for="item in form.internal_dirs" :key="item" :label="item" :value="item"> </el-option>
-            </el-select>
-          </el-form-item>
-        </el-tab-pane>
-        <el-tab-pane label="云平台配置" name="storage">
           <el-form-item prop="provider" label="云平台" label-width="120px">
-            <el-select v-model="form.provider" placeholder="请选择您的云平台" :disabled="editMode">
+            <el-select v-model="form.provider" placeholder="请选择您的云平台" :disabled="editMode" style="width: 100%">
               <el-option v-for="item in providers" :key="item" :label="item" :value="item"> </el-option>
             </el-select>
           </el-form-item>
           <el-form-item prop="bucket" :label="$t('admin.label-bucket')" label-width="120px">
-            <el-input v-model="form.bucket" :disabled="editMode"></el-input>
+            <el-input v-model="form.bucket" placeholder="请输入您在云平台的存储桶名称" :disabled="editMode"></el-input>
           </el-form-item>
           <el-form-item prop="endpoint" :label="$t('admin.label-endpoint')" label-width="120px">
-            <el-input v-model="form.endpoint" :disabled="editMode"></el-input>
+            <el-input v-model="form.endpoint" placeholder="请输入存储桶的接入域名，不包含存储桶名称" :disabled="editMode"></el-input>
           </el-form-item>
           <el-form-item prop="access_key" :label="$t('admin.label-access_key')" label-width="120px">
-            <el-input v-model="form.access_key"></el-input>
+            <el-input v-model="form.access_key" placeholder="请输入用来操作存储桶的AK"></el-input>
           </el-form-item>
           <el-form-item prop="secret_key" :label="$t('admin.label-secret_key')" label-width="120px">
-            <el-input v-model="form.secret_key" type="password"></el-input>
+            <el-input v-model="form.secret_key" placeholder="请输入用来操作存储桶的SK" type="password"></el-input>
+          </el-form-item>
+        </el-tab-pane>
+        <el-tab-pane label="高级配置" name="storage">
+          <el-form-item prop="title" :label="$t('admin.label-title')" label-width="120px">
+            <el-input v-model="form.title" placeholder="设置导航栏标题，默认使用存储名称"></el-input>
           </el-form-item>
           <el-form-item prop="custom_host" :label="$t('admin.label-custom_host')" label-width="120px">
-            <el-input v-model="form.custom_host"></el-input>
+            <el-input v-model="form.custom_host" placeholder="设置存储桶绑定的自定义域名，默认使用Endpoint"></el-input>
           </el-form-item>
-          <el-form-item prop="root_path" label="根路径" label-width="120px">
-            <el-input v-model="form.root_path" placeholder="请设置文件存储规则，不填则默认为Bucket根路径"></el-input>
+          <el-form-item prop="root_path" label="存储根路径" label-width="120px">
+            <el-input v-model="form.root_path" placeholder="设置文件存储规则，不填则默认为Bucket根路径"></el-input>
           </el-form-item>
-          <el-form-item prop="file_path" label="文件路径" label-width="120px">
-            <el-input v-model="form.file_path" placeholder="请设置文件存储规则，不填则使用系统默认规则"></el-input>
+          <el-form-item prop="file_path" label="文件存储路径" label-width="120px">
+            <el-input v-model="form.file_path" placeholder="设置文件存储规则，不填则使用系统默认规则"></el-input>
             <span class="tips" @click="openEnvs"><i class="el-icon-warning"></i>支持的系统变量</span>
           </el-form-item>
+          <!-- <el-form-item prop="idirs" label="系统目录" label-width="120px">
+            <el-select v-model="form.internal_dirs" multiple filterable allow-create default-first-option style="width: 100%" placeholder="设置系统内置目录，这些目录不允许用户删除">
+              <el-option v-for="item in form.internal_dirs" :key="item" :label="item" :value="item"> </el-option>
+            </el-select>
+          </el-form-item> -->
         </el-tab-pane>
       </el-tabs>
     </el-form>
@@ -91,10 +91,6 @@ export default {
         name: [
           { required: true, message: "请输入存储名称", trigger: "blur" },
           { pattern: /^[A-Za-z]+$/, message: "仅允许使用英文单词", trigger: "blur" },
-        ],
-        title: [
-          { required: true, message: "请输入标题", trigger: "blur" },
-          { max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
         ],
         provider: [{ required: true, message: "请选择云平台", trigger: "change" }],
         bucket: [{ required: true, message: "请填写存储桶名称", trigger: "blur" }],
@@ -152,10 +148,12 @@ export default {
 </script>
 
 <style lang="stylus" >
-.el-drawer__body
+.el-drawer__body {
   overflow: auto;
+}
 
-.footer
+.footer {
   margin-left: 142px;
   margin-top: 25px;
+}
 </style>
