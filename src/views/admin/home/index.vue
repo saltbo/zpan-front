@@ -7,22 +7,22 @@
         </div>
         <div>
           <el-row :gutter="12">
-            <el-col :span="3">
+            <el-col :span="3" :sm="5">
               <el-card shadow="always">
                 <el-link type="primary" icon="el-icon-document" href="https://zpan.space" target="_blank">文档</el-link>
               </el-card>
             </el-col>
-            <el-col :span="3">
+            <el-col :span="3" :sm="5">
               <el-card shadow="always">
                 <el-link type="primary" icon="el-icon-files" href="https://github.com/saltbo/zpan" target="_blank">源码</el-link>
               </el-card>
             </el-col>
-            <el-col :span="3">
+            <el-col :span="3" :sm="5">
               <el-card shadow="always">
                 <el-link type="primary" icon="el-icon-s-comment" href="https://github.com/saltbo/zpan/issues" target="_blank">社区</el-link>
               </el-card>
             </el-col>
-            <el-col :span="3">
+            <el-col :span="3" :sm="5">
               <el-card shadow="always">
                 <el-link type="primary" icon="el-icon-coffee-cup" href="https://github.com/sponsors/saltbo" target="_blank">捐赠</el-link>
               </el-card>
