@@ -127,7 +127,7 @@ export default {
           submit = this.$zpan.Storage.update;
         }
 
-        this.form.idirs = this.form.internal_dirs.join(",");
+        // this.form.idirs = this.form.internal_dirs.join(",");
         submit(this.form).then((ret) => {
           this.close();
           this.finish();
