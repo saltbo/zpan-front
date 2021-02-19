@@ -1,11 +1,11 @@
 <template>
-  <el-dialog title="添加用户" :visible.sync="visible" width="35%">
+  <el-dialog :title="title" :visible.sync="visible" width="35%">
     <el-form :model="form" :rules="rules" ref="form" style="width: 85%">
       <el-form-item prop="email" label="邮箱" label-width="100px">
         <el-input v-model="form.email" placeholder="电子邮箱" autofocus></el-input>
       </el-form-item>
       <el-form-item prop="role" label="角色" label-width="100px">
-        <el-select v-model="form.role" placeholder="请选择用户角色" style="width: 100%">
+        <el-select v-model="form.roles" placeholder="请选择用户角色" style="width: 100%">
           <el-option v-for="item in roles" :key="item.value" :label="item.label" :value="item.value"> </el-option>
         </el-select>
       </el-form-item>
@@ -74,7 +74,8 @@ export default {
       },
       unitValue: utils.bytesUnits()[2].value,
       form: {
-        role: "member",
+        roles: "member",
+        storage: 100,
       },
     };
   },
@@ -95,7 +96,7 @@ export default {
       });
     },
   },
-  mounted() { },
+  mounted() {},
 };
 </script>
 

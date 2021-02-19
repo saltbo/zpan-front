@@ -64,8 +64,8 @@ export default {
       });
     },
     createUser() {
-      transfer(DialogCreate)({ title: "表单异步" }).then((data) => {
-        console.log("拿到数据", data);
+      transfer(DialogCreate)({ title: "添加用户" }).then((data) => {
+        this.listRefresh();
       });
     },
     onEditStorage(index, row) {
