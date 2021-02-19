@@ -90,7 +90,7 @@ export default {
       rules: {
         name: [
           { required: true, message: "请输入存储名称", trigger: "blur" },
-          { pattern: /^[A-Za-z]+$/, message: "仅允许使用英文单词", trigger: "blur" },
+          { pattern: /^[A-Za-z0-9\-]+$/, message: "仅允许使用字母数字和中线(-)", trigger: "blur" },
         ],
         provider: [{ required: true, message: "请选择云平台", trigger: "change" }],
         bucket: [{ required: true, message: "请填写存储桶名称", trigger: "blur" }],
@@ -148,12 +148,10 @@ export default {
 </script>
 
 <style lang="stylus" >
-.el-drawer__body {
+.el-drawer__body
   overflow: auto;
-}
 
-.footer {
+.footer
   margin-left: 142px;
   margin-top: 25px;
-}
 </style>
