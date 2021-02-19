@@ -96,8 +96,7 @@ export default {
         bucket: [{ required: true, message: "请填写存储桶名称", trigger: "blur" }],
         endpoint: [
           { required: true, message: "请填写Endpoint", trigger: "blur" },
-          // fixme: 这个规则不完美，漏掉了ip，应该是不允许使用IP的
-          { pattern: /^(?=^.{3,255}$)[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+$/, message: "Endpoint只包含域名", trigger: "blur" },
+          { pattern: /^((?!\d+\.\d+\.\d+\.\d).)+$/, message: "Endpoint不支持使用IP", trigger: "blur" },
         ],
         access_key: [{ required: true, message: "请填写AccessKey", trigger: "blur" }],
         secret_key: [{ required: true, message: "请填写SecretKey", trigger: "blur" }],
