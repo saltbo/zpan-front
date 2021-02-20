@@ -41,7 +41,7 @@ export default {
       });
     },
     listRefresh() {
-      this.$zpan.File.listObjects({ sid: this.getSid(), type: "image" }).then((data) => {
+      this.$zpan.File.list({ sid: this.getSid(), type: "image" }).then((data) => {
         this.fileList = data.list.map((obj) => {
           return { alias: obj.alias, name: obj.name, url: obj.url };
         });
