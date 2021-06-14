@@ -7729,7 +7729,7 @@ stylus-loader@3.0.2:
 
 stylus@^0.54.8:
   version "0.54.8"
-  resolved "https://registry.yarnpkg.com/stylus/-/stylus-0.54.8.tgz#3da3e65966bc567a7b044bfe0eece653e099d147"
+  resolved "https://mirrors.saltbo.cn/stylus/-/stylus-0.54.8.tgz#3da3e65966bc567a7b044bfe0eece653e099d147"
   integrity sha512-vr54Or4BZ7pJafo2mpf0ZcwA74rpuYCZbxrHBsH8kbcXOwSfvBFwsRfpGO5OD5fhG5HDCFW737PKaawI7OqEAg==
   dependencies:
     css-parse "~2.0.0"

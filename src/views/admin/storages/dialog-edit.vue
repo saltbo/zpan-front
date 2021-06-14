@@ -1,5 +1,5 @@
 <template>
-  <el-drawer :title="$t('admin.label-storage-manager')" :visible.sync="visible" size="50%">
+  <el-drawer :title="$t('admin.label-storage-manager')" :visible.sync="visible" :wrapperClosable="false" size="50%">
     <el-form :model="form" :rules="rules" ref="form" style="padding-right: 50px" size="small">
       <el-tabs value="basic" type="card" style="margin-left: 20px">
         <el-tab-pane label="基础配置" name="basic">
