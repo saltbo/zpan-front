@@ -13,15 +13,18 @@
             <el-input v-model="form.name" placeholder="请输入一个名字" autofocus></el-input>
           </el-form-item>
           <el-form-item prop="provider" label="云平台" label-width="120px">
-            <el-select v-model="form.provider" placeholder="请选择您的云平台" :disabled="editMode" style="width: 100%">
+            <el-select v-model="form.provider" placeholder="请选择您的云平台" :disabled="editMode" @change="refreshEplist" style="width: 100%">
               <el-option v-for="item in providers" :key="item" :label="item" :value="item"> </el-option>
             </el-select>
           </el-form-item>
           <el-form-item prop="bucket" :label="$t('admin.label-bucket')" label-width="120px">
-            <el-input v-model="form.bucket" placeholder="请输入您在云平台的存储桶名称" :disabled="editMode"></el-input>
+            <el-input v-model="form.bucket" placeholder="请输入存储桶名称" :disabled="editMode"></el-input>
           </el-form-item>
           <el-form-item prop="endpoint" :label="$t('admin.label-endpoint')" label-width="120px">
-            <el-input v-model="form.endpoint" placeholder="请输入存储桶的接入域名，不包含存储桶名称" :disabled="editMode"></el-input>
+            <el-autocomplete v-model="form.endpoint" :fetch-suggestions="endpointSearch" @select="endpointSelect" placeholder="请输入接入点" style="width: 100%"></el-autocomplete>
+          </el-form-item>
+          <el-form-item prop="region" :label="$t('admin.label-region')" v-show="form.provider == 'MINIO'" label-width="120px">
+            <el-input v-model="form.region" placeholder="请输入接入点对应的区域名称"></el-input>
           </el-form-item>
           <el-form-item prop="access_key" :label="$t('admin.label-access_key')" label-width="120px">
             <el-input v-model="form.access_key" placeholder="请输入用来操作存储桶的AK"></el-input>
@@ -69,6 +72,7 @@
 </template>
 
 <script>
+import yamlLoader from "js-yaml";
 import { DialogMixin } from "@/libs/mixin";
 export default {
   mixins: [DialogMixin],
@@ -78,6 +82,8 @@ export default {
       default: () => {
         return {
           mode: 1,
+          endpoint: "",
+          region: "auto",
         };
       },
     },
@@ -85,6 +91,7 @@ export default {
   data() {
     return {
       providers: [],
+      endpoints: [],
       envDrawerVisible: false,
       support_envs: [],
       rules: {
@@ -96,7 +103,7 @@ export default {
         bucket: [{ required: true, message: "请填写存储桶名称", trigger: "blur" }],
         endpoint: [
           { required: true, message: "请填写Endpoint", trigger: "blur" },
-          { pattern: /^((?!\d+\.\d+\.\d+\.\d).)+$/, message: "Endpoint不支持使用IP", trigger: "blur" },
+          { pattern: /^((?!\d+\.\d+\.\d+\.\d).)+$/, message: "Endpoint不支持使用IP", trigger: "change" },
         ],
         access_key: [{ required: true, message: "请填写AccessKey", trigger: "blur" }],
         secret_key: [{ required: true, message: "请填写SecretKey", trigger: "blur" }],
@@ -114,6 +121,41 @@ export default {
       this.$zpan.System.matterPathEnvs().then((ret) => {
         this.support_envs = ret.data;
       });
+    },
+    refreshEplist(provider) {
+      this.form.endpoint = ""; // reset the endpoint
+      this.form.region = ""; // reset the region
+
+      provider = provider.toLowerCase();
+      this.$axios
+        .get(`https://raw.githubusercontent.com/eplist/eplist/main/${provider}.yml`)
+        .then((data) => {
+          let eplist = yamlLoader.load(data);
+          this.endpoints = eplist.endpoints;
+        })
+        .catch((err) => {
+          this.endpoints = [];
+        });
+    },
+    endpointSearch(queryString, cb) {
+      if (queryString != "" && this.form.provider.toLowerCase() == "minio") {
+        cb([{ value: queryString, region: "auto" }]);
+        return;
+      }
+
+      var endpoints = this.endpoints.map((item) => {
+        return { value: item.endpoint, region: item.region };
+      });
+      var results = queryString ? endpoints.filter(this.createEndpointFilter(queryString)) : endpoints;
+      cb(results);
+    },
+    createEndpointFilter(queryString) {
+      return (ep) => {
+        return ep.value.toLowerCase().indexOf(queryString.toLowerCase()) != -1;
+      };
+    },
+    endpointSelect(ep) {
+      this.form.region = ep.region;
     },
     onSubmit() {
       this.$refs.form.validate((valid) => {

@@ -132,6 +132,7 @@
     "label-intro": "描述",
     "label-bucket": "存储桶",
     "label-endpoint": "接入点",
+    "label-region": "区域名称",
     "label-custom_host": "自有域名",
     "label-access_key": "AccessKey",
     "label-secret_key": "SecretKey"

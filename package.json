@@ -31,6 +31,7 @@
     "el-table-infinite-scroll": "^1.0.10",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "js-yaml": "^4.1.0",
     "plyr": "^3.6.2",
     "qs": "^6.9.6",
     "style-resources-loader": "^1.2.1",

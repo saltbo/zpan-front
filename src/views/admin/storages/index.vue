@@ -56,6 +56,7 @@ export default {
       });
     },
     onEdit(index, row) {
+      if (!row.region) row.region = "auto";
       let props = { form: Object.assign({}, row) };
       transfer(EditDialog)(props).then(() => {
         this.listRefresh();
