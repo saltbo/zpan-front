@@ -59,8 +59,8 @@
       </el-tabs>
     </el-form>
     <div class="footer">
-      <el-button type="primary" @click="onSubmit">{{ $t("confirm") }}</el-button>
-      <el-button @click="visible = false">{{ $t("cancel") }}</el-button>
+      <el-button type="primary" @click="onSubmit">{{ $t("op.confirm") }}</el-button>
+      <el-button @click="visible = false">{{ $t("op.cancel") }}</el-button>
     </div>
 
     <!-- 系统变量提示 -->

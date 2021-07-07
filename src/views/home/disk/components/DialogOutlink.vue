@@ -7,7 +7,7 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button type="primary">{{ $t("click-copy-link") }}</el-button>
-        <el-button @click="visible = false">{{ $t("close") }}</el-button>
+        <el-button @click="visible = false">{{ $t("op.close") }}</el-button>
       </span>
     </el-dialog>
   </div>

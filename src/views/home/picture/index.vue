@@ -80,10 +80,10 @@ export default {
         });
     },
     handleRemove(file, fileList) {
-      return this.$confirm(this.$t("tips.remove"), this.$t("delete") + ` ${file.name}`, {
+      return this.$confirm(this.$t("tips.remove"), this.$t("op.delete") + ` ${file.name}`, {
         type: "warning",
-        confirmButtonText: this.$t("confirm"),
-        cancelButtonText: this.$t("cancel"),
+        confirmButtonText: this.$t("op.confirm"),
+        cancelButtonText: this.$t("op.cancel"),
       }).then(() => {
         this.$zpan.File.delete(file.alias).then((ret) => {
           this.$message({

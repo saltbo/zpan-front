@@ -1,13 +1,33 @@
 {
-  "batch-delete": "批量删除",
-  "cancel": "取消",
   "click-copy-link": "点击复制链接",
-  "close": "关闭",
-  "confirm": "确认",
   "copy-link": "复制链接",
   "create-folder": "新建文件夹",
   "day": "天",
-  "delete": "删除",
+  "op": {
+    "close": "关闭",
+    "confirm": "确认",
+    "cancel": "取消",
+    "enable": "启用",
+    "disable": "禁用",
+    "rename": "重命名",
+    "delete": "删除",
+    "batch-delete": "批量删除"
+  },
+  "msg": {
+    "success": "成功",
+    "failed": "失败",
+    "batch-delete-success": "批量删除成功",
+    "create-success": "创建成功",
+    "delete-success": "删除成功",
+    "move-success": "移动成功",
+    "copy-success": "复制成功",
+    "copy-failed": "复制失败",
+    "rename-success": "重命名成功",
+    "save-success": "保存成功",
+    "clean-success": "清理成功",
+    "recovery-success": "恢复成功",
+    "cancel-success": "取消成功"
+  },
   "dialog": {
     "moveto-title": "移动到",
     "outlink-title": "下载外链",
@@ -49,20 +69,6 @@
     "storage": "存储空间",
     "video": "视频"
   },
-  "msg": {
-    "batch-delete-success": "批量删除成功",
-    "create-success": "创建成功",
-    "delete-success": "删除成功",
-    "move-success": "移动成功",
-    "copy-success": "复制成功",
-    "copy-failed": "复制失败",
-    "rename-success": "重命名成功",
-    "save-success": "保存成功",
-    "clean-success": "清理成功",
-    "recovery-success": "恢复成功",
-    "cancel-success": "取消成功"
-  },
-  "rename": "重命名",
   "share": {
     "auto-download-tips": "您的文件已经开始下载，如果没有开始请点击此处重试",
     "created": "分享时间",
@@ -89,7 +95,9 @@
     "recovery": "确认还原选中的文件？",
     "delete": "此操作将彻底删除该文件, 是否继续?",
     "clean": "确认清空回收站？",
-    "deleting": "正在删除..."
+    "deleting": "正在删除...",
+    "disable": "禁用后将不可用，是否继续？",
+    "enable": "确认启用该云存储？"
   },
   "topbar": {
     "netdisk": "网盘",

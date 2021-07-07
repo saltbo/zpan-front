@@ -78,8 +78,8 @@ export default {
     onRecovery(obj) {
       this.$confirm(this.$t("tips.recovery"), this.$t("recyclebin.recovery"), {
         type: "warning",
-        confirmButtonText: this.$t("confirm"),
-        cancelButtonText: this.$t("cancel"),
+        confirmButtonText: this.$t("op.confirm"),
+        cancelButtonText: this.$t("op.cancel"),
       }).then(() => {
         this.$zpan.Recyclebin.recovery(obj.alias).then((ret) => {
           this.$message({
@@ -93,8 +93,8 @@ export default {
     onTrash(obj) {
       this.$confirm(this.$t("tips.delete"), this.$t("recyclebin.delete"), {
         type: "warning",
-        confirmButtonText: this.$t("confirm"),
-        cancelButtonText: this.$t("cancel"),
+        confirmButtonText: this.$t("op.confirm"),
+        cancelButtonText: this.$t("op.cancel"),
       }).then(() => {
         const loading = this.$loading({
           lock: true,
@@ -103,7 +103,7 @@ export default {
           background: "rgba(0, 0, 0, 0.7)",
         });
         this.$zpan.Recyclebin.delete(obj.alias).then((ret) => {
-          loading.close()
+          loading.close();
           this.$message({
             type: "success",
             message: this.$t("msg.delete-success"),
@@ -115,8 +115,8 @@ export default {
     clean() {
       this.$confirm(this.$t("tips.clean"), this.$t("recyclebin.clean"), {
         type: "warning",
-        confirmButtonText: this.$t("confirm"),
-        cancelButtonText: this.$t("cancel"),
+        confirmButtonText: this.$t("op.confirm"),
+        cancelButtonText: this.$t("op.cancel"),
       }).then(() => {
         const loading = this.$loading({
           lock: true,
@@ -125,7 +125,7 @@ export default {
           background: "rgba(0, 0, 0, 0.7)",
         });
         this.$zpan.Recyclebin.clean(this.getSid()).then((ret) => {
-          loading.close()
+          loading.close();
           this.$message({
             type: "success",
             message: this.$t("msg.clean-success"),

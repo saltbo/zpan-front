@@ -11,8 +11,8 @@
       </el-tree>
 
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submit">{{ $t("confirm") }}</el-button>
-        <el-button @click="visible = false">{{ $t("cancel") }}</el-button>
+        <el-button type="primary" @click="submit">{{ $t("op.confirm") }}</el-button>
+        <el-button @click="visible = false">{{ $t("op.cancel") }}</el-button>
       </span>
     </el-dialog>
   </div>

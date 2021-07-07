@@ -11,8 +11,8 @@
     </el-form>
 
     <div slot="footer" class="dialog-footer">
-      <el-button size="medium" @click="close">{{ $t("cancel") }}</el-button>
-      <el-button size="medium" type="primary" @click="onSubmit">{{ $t("confirm") }}</el-button>
+      <el-button size="medium" @click="close">{{ $t("op.cancel") }}</el-button>
+      <el-button size="medium" type="primary" @click="onSubmit">{{ $t("op.confirm") }}</el-button>
     </div>
   </el-dialog>
 </template>
@@ -46,7 +46,7 @@ export default {
       });
     },
   },
-  mounted() { },
+  mounted() {},
 };
 </script>
 

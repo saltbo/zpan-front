@@ -24,12 +24,12 @@
 
       <span slot="footer" class="dialog-footer">
         <div v-if="!shareForm.done">
-          <el-button @click="close">{{ $t("cancel") }}</el-button>
-          <el-button type="primary" @click="share">{{ $t("confirm") }}</el-button>
+          <el-button @click="close">{{ $t("op.cancel") }}</el-button>
+          <el-button type="primary" @click="share">{{ $t("op.confirm") }}</el-button>
         </div>
         <div v-else>
           <el-button type="primary" class="copy-link" :data-clipboard-text="shareForm.link" @click="close">{{ $t("click-copy-link") }}</el-button>
-          <el-button @click="close">{{ $t("close") }}</el-button>
+          <el-button @click="close">{{ $t("op.close") }}</el-button>
         </div>
       </span>
     </el-dialog>

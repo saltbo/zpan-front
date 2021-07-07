@@ -78,8 +78,8 @@ export default {
     onDelete(index, row) {
       this.$confirm(this.$t("tips.share-cancel"), this.$t("share.cancel"), {
         type: "warning",
-        confirmButtonText: this.$t("confirm"),
-        cancelButtonText: this.$t("cancel"),
+        confirmButtonText: this.$t("op.confirm"),
+        cancelButtonText: this.$t("op.cancel"),
       }).then(() => {
         this.$zpan.Share.remove(row.alias).then((ret) => {
           this.$message({

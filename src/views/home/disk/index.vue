@@ -136,8 +136,8 @@ export default {
     },
     openCreateDiglog() {
       this.$prompt(this.$t("tips.create-folder"), this.$t("create-folder"), {
-        confirmButtonText: this.$t("confirm"),
-        cancelButtonText: this.$t("cancel"),
+        confirmButtonText: this.$t("op.confirm"),
+        cancelButtonText: this.$t("op.cancel"),
       }).then(({ value }) => {
         let body = { sid: this.getSid(), name: value, dir: this.query.dir, is_dir: true };
         this.$zpan.File.create(body).then((ret) => {
@@ -176,10 +176,10 @@ export default {
       });
     },
     rename(obj) {
-      this.$prompt(this.$t("tips.rename"), this.$t("rename"), {
+      this.$prompt(this.$t("tips.rename"), this.$t("op.rename"), {
         inputValue: obj.name,
-        confirmButtonText: this.$t("confirm"),
-        cancelButtonText: this.$t("cancel"),
+        confirmButtonText: this.$t("op.confirm"),
+        cancelButtonText: this.$t("op.cancel"),
       }).then(({ value }) => {
         this.$zpan.File.rename(obj.alias, value).then((ret) => {
           this.$message({
@@ -191,10 +191,10 @@ export default {
       });
     },
     remove(obj) {
-      this.$confirm(this.$t("tips.remove"), this.$t("delete") + ` ${obj.name}`, {
+      this.$confirm(this.$t("tips.remove"), this.$t("op.delete") + ` ${obj.name}`, {
         type: "warning",
-        confirmButtonText: this.$t("confirm"),
-        cancelButtonText: this.$t("cancel"),
+        confirmButtonText: this.$t("op.confirm"),
+        cancelButtonText: this.$t("op.cancel"),
       }).then(() => {
         this.$zpan.File.delete(obj.alias).then((ret) => {
           this.$message({
@@ -209,10 +209,10 @@ export default {
       this.selectedItems = selection;
     },
     deleteSelection() {
-      this.$confirm(this.$t("tips.batch-delete"), this.$t("batch-delete"), {
+      this.$confirm(this.$t("tips.batch-delete"), this.$t("op.batch-delete"), {
         type: "warning",
-        confirmButtonText: this.$t("confirm"),
-        cancelButtonText: this.$t("cancel"),
+        confirmButtonText: this.$t("op.confirm"),
+        cancelButtonText: this.$t("op.cancel"),
       }).then(() => {
         const loading = this.$loading({
           lock: true,
