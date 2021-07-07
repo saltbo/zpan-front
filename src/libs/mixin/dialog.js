@@ -23,9 +23,12 @@ const DialogMixin = {
         close() {
             this.visible = false;
         },
-        finish() {
-            this.visible = false;
+        completed() {
             this.$emit('completed');
+        },
+        finish() {
+            this.close();
+            this.completed();
         },
     }
 }

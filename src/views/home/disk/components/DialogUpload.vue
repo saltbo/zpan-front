@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-dialog :title="$t('dialog.upload-title')" :visible.sync="visible" width="400px">
+    <el-dialog :title="$t('dialog.upload-title')" :visible.sync="visible" :file-list="fileList" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="closeConfirm" width="400px">
       {{ destDir }}
-      <el-upload class="upload-demo" action :http-request="handleUpload" :file-list="fileList" :limit="20" :on-exceed="handleExceed" drag multiple>
+      <el-upload class="uploader" action="" :http-request="handleUpload" :limit="20" :on-progress="handleProgress" :on-success="handleProgress" :on-exceed="handleExceed" drag multiple>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">
           {{ $t("dialog.upload-tips") }}
@@ -24,25 +24,50 @@ export default {
   data() {
     return {
       fileList: [],
+      uploading: false,
+      cancel: (msg) => {},
     };
   },
-  watch: {
-    visible(newValue, oldValue) {
-      this.fileList = [];
-    },
-  },
   methods: {
+    closeConfirm(done) {
+      if (this.uploading) {
+        this.$confirm("文件上传中，取消将终止上传，是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+          customClass: "cancel-confirm",
+        }).then(() => {
+          this.cancel("canceled by the user");
+          done();
+        });
+        return;
+      }
+
+      done();
+    },
+
+    handleProgress(event, file, fileList) {
+      this.uploading = file.status == "uploading";
+      this.fileList = fileList;
+    },
     handleExceed(files, fileList) {
       this.$message.warning(`每次最多允许 20 个文件同时上传，请分批操作！`);
     },
     handleUpload(fileObj) {
       fileObj.filename = fileObj.file.name;
 
-      this.$zpan.File.upload(Number(this.sid), fileObj, this.destDir).then(this.finish);
+      this.$zpan.File.upload(Number(this.sid), fileObj, this.destDir, (c) => {
+        this.cancel = c;
+      }).then(() => {
+        this.completed();
+      });
     },
   },
 };
 </script>
 
-<style scoped>
+<style >
+.cancel-confirm {
+  vertical-align: top;
+}
 </style>

@@ -1,14 +1,20 @@
 /* eslint-disable no-console */
 
+import axios from "axios";
+
 let utils = {
-    upload(fileObj, destURL, headers) {
+    upload(fileObj, destURL, headers, cancel) {
         let file = fileObj.file
         return new Promise((resolve, reject) => {
-            let options = { headers: headers };
-            options.onUploadProgress = function (event) {
-                file.percent = event.loaded / event.total * 100;
-                if (fileObj.onProgress) fileObj.onProgress(file);
-            }
+            const CancelToken = axios.CancelToken;
+            let options = {
+                headers: headers,
+                cancelToken: new CancelToken(cancel),
+                onUploadProgress: function (event) {
+                    file.percent = event.loaded / event.total * 100;
+                    if (fileObj.onProgress) fileObj.onProgress(file);
+                }
+            };
 
             window.axios.put(destURL, file, options).then((ret) => {
                 if (fileObj.onSuccess) fileObj.onSuccess();

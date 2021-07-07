@@ -1,17 +1,16 @@
 /* eslint-disable no-console */
-import { resolve } from 'core-js/fn/promise';
 import utils from '../utils'
 import axios from './axios'
 
 class zMatter {
 
-    upload(sid, fileObj, distDir) {
+    upload(sid, fileObj, distDir, cancel) {
         let file = fileObj.file
         let body = { sid: sid, name: fileObj.filename, type: file.type, size: file.size, dir: distDir };
         return new Promise((resolve, reject) => {
             this.create(body).then(ret => {
                 let data = ret.data
-                utils.upload(fileObj, data.link, data.headers).then(() => {
+                utils.upload(fileObj, data.link, data.headers, cancel).then(() => {
                     axios.patch(`/matters/${data.alias}/done`).then((ret) => {
                         resolve(ret)
                     })

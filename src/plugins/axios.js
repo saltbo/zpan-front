@@ -35,6 +35,11 @@ _axios.interceptors.response.use(
     return response.data;
   },
   function (error) {
+    if (axios.isCancel(error)) {
+      console.log(error.message ? error.message : "Request canceled");
+      return
+    }
+
     if (error.response && error.response.status == 401) {
       window.location = "/moreu/signin"
       return Promise.reject("invalid login status");
