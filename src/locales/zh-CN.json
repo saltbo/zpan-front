@@ -59,7 +59,8 @@
     "rename-success": "重命名成功",
     "save-success": "保存成功",
     "clean-success": "清理成功",
-    "recovery-success": "恢复成功"
+    "recovery-success": "恢复成功",
+    "cancel-success": "取消成功"
   },
   "rename": "重命名",
   "share": {
@@ -70,7 +71,8 @@
     "drawfile": "提取文件",
     "expired": "失效时间",
     "link": "链接",
-    "name": "名称"
+    "name": "名称",
+    "cancel": "取消分享"
   },
   "recyclebin": {
     "recovery": "确认恢复？",
@@ -83,6 +85,7 @@
     "remove": "此操作将文件移动到回收站, 是否继续?",
     "rename": "请输入新的名称",
     "recyclebin": "提示：回收站也占用网盘空间，请及时清理哦~",
+    "share-cancel": "取消分享后，该条分享记录将被删除，好友将无法再访问此分享链接。 您确认要取消分享吗？",
     "recovery": "确认还原选中的文件？",
     "delete": "此操作将彻底删除该文件, 是否继续?",
     "clean": "确认清空回收站？",

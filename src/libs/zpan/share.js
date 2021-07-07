@@ -15,6 +15,10 @@ class zShare {
         return axios.post(`/shares`, body)
     }
 
+    remove(alias) {
+        return axios.delete(`/shares/${alias}`)
+    }
+
     draw(alias, drawcode) {
         return axios.post(`/shares/${alias}/token`, { secret: drawcode })
     }

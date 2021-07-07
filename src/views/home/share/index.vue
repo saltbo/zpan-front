@@ -35,6 +35,11 @@
       <el-table-column prop="expired" :label="$t('share.expired')">
         <template slot-scope="scope">{{ scope.row.expire_at | moment }}</template>
       </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button size="mini" type="text" @click="onDelete(scope.$index, scope.row)">取消分享</el-button>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -68,6 +73,21 @@ export default {
           return item;
         });
         this.total = data.total;
+      });
+    },
+    onDelete(index, row) {
+      this.$confirm(this.$t("tips.share-cancel"), this.$t("share.cancel"), {
+        type: "warning",
+        confirmButtonText: this.$t("confirm"),
+        cancelButtonText: this.$t("cancel"),
+      }).then(() => {
+        this.$zpan.Share.remove(row.alias).then((ret) => {
+          this.$message({
+            type: "success",
+            message: this.$t("msg.cancel-success"),
+          });
+          this.listRefresh();
+        });
       });
     },
     onCurrentChange(currentRow, oldCurrentRow) {
