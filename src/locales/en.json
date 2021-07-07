@@ -127,8 +127,19 @@
     "label-intro": "Intro",
     "label-bucket": "Bucket",
     "label-endpoint": "Endpoint",
+    "label-region": "Region",
     "label-custom_host": "CustomHost",
     "label-access_key": "AccessKey",
     "label-secret_key": "SecretKey"
+  },
+  "cloudplatform": {
+    "COS": "TencentCloud",
+    "KODO": "QiniuCloud",
+    "MINIO": "Self-hosted",
+    "NOS": "Netease",
+    "OBS": "HuaweiCloud",
+    "OSS": "AliyunCloud",
+    "S3": "AWSCloud",
+    "US3": "UColud"
   }
 }

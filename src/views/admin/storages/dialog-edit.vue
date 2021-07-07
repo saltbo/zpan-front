@@ -14,7 +14,10 @@
           </el-form-item>
           <el-form-item prop="provider" label="云平台" label-width="120px">
             <el-select v-model="form.provider" placeholder="请选择您的云平台" :disabled="editMode" @change="refreshEplist" style="width: 100%">
-              <el-option v-for="item in providers" :key="item" :label="item" :value="item"> </el-option>
+              <el-option v-for="item in providers" :key="item.name" :label="item.name" :value="item.name">
+                <span style="float: left">{{ item.name }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">{{ item.platform }}</span>
+              </el-option>
             </el-select>
           </el-form-item>
           <el-form-item prop="bucket" :label="$t('admin.label-bucket')" label-width="120px">
@@ -182,7 +185,9 @@ export default {
   },
   mounted() {
     this.$zpan.System.providers().then((ret) => {
-      this.providers = ret.data;
+      this.providers = ret.data.sort().map((ret) => {
+        return { name: ret, platform: this.$t(`cloudplatform.${ret}`) };
+      });
     });
   },
 };

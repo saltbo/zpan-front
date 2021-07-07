@@ -136,5 +136,15 @@
     "label-custom_host": "自有域名",
     "label-access_key": "AccessKey",
     "label-secret_key": "SecretKey"
+  },
+  "cloudplatform": {
+    "COS": "腾讯云",
+    "KODO": "七牛云",
+    "MINIO": "自建云",
+    "NOS": "网易云",
+    "OBS": "华为云",
+    "OSS": "阿里云",
+    "S3": "亚马逊",
+    "US3": "UColud"
   }
 }
