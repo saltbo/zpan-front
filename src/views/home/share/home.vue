@@ -1,12 +1,30 @@
 <template>
   <div style="margin: 20px 50px">
-    <!-- for file -->
-    <el-card v-if="info.type" class="file-card" shadow="never">
+    <!-- for folder -->
+    <el-card v-if="matter.dirtype" class="folder-card" shadow="never" body-style="height: 100%">
       <div slot="header" class="header clearfix">
         <div>
           <span class="name">{{ matter.name }}</span>
           <div style="float: right">
-            <!-- <el-button type="primary" size="medium" icon="el-icon-close" plain>取消分享</el-button> -->
+            <el-button type="primary" size="medium" icon="el-icon-download">下载</el-button>
+          </div>
+        </div>
+        <p class="time">
+          <i class="el-icon-time"></i>
+          <span>{{ matter.created | moment("YYYY-MM-DD HH:hh") }}</span>
+          <span>失效时间：{{ expireTime }}</span>
+        </p>
+      </div>
+
+      <FileExplorer ref="fexp" style="height: calc(100% - 80px)" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :rootDir="rootDir" />
+    </el-card>
+
+    <!-- for file -->
+    <el-card v-else-if="info.id" class="file-card" shadow="never">
+      <div slot="header" class="header clearfix">
+        <div>
+          <span class="name">{{ matter.name }}</span>
+          <div style="float: right">
             <el-button type="primary" size="medium" icon="el-icon-download" @click="openDownload(matter)">下载</el-button>
           </div>
         </div>
@@ -23,26 +41,6 @@
           <p>文件大小：{{ matter.size }}</p>
         </div>
       </div>
-    </el-card>
-
-    <!-- for folder -->
-    <el-card v-else-if="info.id" class="folder-card" shadow="never" body-style="height: 100%">
-      <div slot="header" class="header clearfix">
-        <div>
-          <span class="name">{{ matter.name }}</span>
-          <div style="float: right">
-            <!-- <el-button type="primary" size="medium" icon="el-icon-close" plain>取消分享</el-button> -->
-            <el-button type="primary" size="medium" icon="el-icon-download">下载</el-button>
-          </div>
-        </div>
-        <p class="time">
-          <i class="el-icon-time"></i>
-          <span>{{ matter.created | moment("YYYY-MM-DD HH:hh") }}</span>
-          <span>失效时间：{{ expireTime }}</span>
-        </p>
-      </div>
-
-      <FileExplorer ref="fexp" style="height: calc(100% - 80px)" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :rootDir="rootDir" />
     </el-card>
   </div>
 </template>
@@ -152,7 +150,9 @@ export default {
   height: 600px;
 }
 .folder-card {
-  margin: auto 10px;
+  min-width: 800px;
+  max-width: 1200px;
+  margin: 0 auto;
   height: calc(100% - 120px);
 }
 
