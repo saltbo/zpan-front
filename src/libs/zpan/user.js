@@ -39,11 +39,17 @@ class User {
     find(username) {
         return axios.get(`/users/${username}`)
     }
+    delete(username) {
+        return axios.delete(`/users/${username}`)
+    }
     updatePasswordByUser(username, body) {
         return axios.put(`/users/${username}/password`, body)
     }
     updateStorageByUser(username, body) {
         return axios.put(`/users/${username}/storage`, body)
+    }
+    updateStatusByUser(username, body) {
+        return axios.put(`/users/${username}/status`, body)
     }
 }
 

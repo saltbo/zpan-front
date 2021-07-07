@@ -97,7 +97,7 @@
     "clean": "确认清空回收站？",
     "deleting": "正在删除...",
     "disable": "禁用后将不可用，是否继续？",
-    "enable": "确认启用该云存储？"
+    "enable": "确认启用？"
   },
   "topbar": {
     "netdisk": "网盘",
@@ -136,7 +136,7 @@
     "label-operation": "操作",
     "label-quota": "存储配额",
     "label-quota-change": "配额调整",
-    "label-password-change": "密码重置",
+    "label-password-reset": "密码重置",
     "label-storage-manager": "存储管理",
     "label-name": "名称",
     "label-title": "标题",
