@@ -10,6 +10,7 @@
             <el-option :label="`7 ${$t('day')}`" :value="604800"></el-option>
             <el-option :label="`30 ${$t('day')}`" :value="2592000"></el-option>
             <el-option :label="`1 ${$t('year')}`" :value="31536000"></el-option>
+            <el-option label="永久" :value="3153600000"></el-option>
           </el-select>
         </el-form-item>
       </el-form>

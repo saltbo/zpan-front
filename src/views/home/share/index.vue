@@ -33,7 +33,10 @@
         <template slot-scope="scope">{{ scope.row.created | moment }}</template>
       </el-table-column>
       <el-table-column prop="expired" :label="$t('share.expired')">
-        <template slot-scope="scope">{{ scope.row.expire_at | moment }}</template>
+        <template slot-scope="scope">
+          <span v-if="isForever(scope.row.expire_at)">永久有效</span>
+          <span v-else>{{ scope.row.expire_at | moment }}</span>
+        </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -64,6 +67,9 @@ export default {
     },
   },
   methods: {
+    isForever(expireAt) {
+      return new Date(expireAt).getFullYear() - new Date().getFullYear() > 10;
+    },
     listRefresh() {
       let host = window.location.host;
       this.$zpan.Share.list().then((ret) => {
