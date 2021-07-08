@@ -146,6 +146,7 @@
     "OBS": "HuaweiCloud",
     "OSS": "AliyunCloud",
     "S3": "AWSCloud",
-    "US3": "UColud"
+    "US3": "UColud",
+    "USS": "UPYun"
   }
 }
