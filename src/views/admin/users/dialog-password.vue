@@ -1,14 +1,11 @@
 <template>
-  <el-dialog :title="$t('admin.label-password-change')" :visible.sync="visible" width="30%">
+  <el-dialog :title="$t('admin.label-password-reset')" :visible.sync="visible" width="30%">
     <el-form ref="form" :model="form" :rules="rules" size="medium" label-width="100px" class="profile" style="width: 85%">
-      <el-form-item label="旧密码" prop="old_password">
-        <el-input v-model="form.old_password" type="password"></el-input>
-      </el-form-item>
       <el-form-item label="新密码" prop="new_password">
-        <el-input v-model="form.new_password" type="password"></el-input>
+        <el-input v-model="form.password" type="password"></el-input>
       </el-form-item>
       <el-form-item label="密码确认" prop="new_passwordr">
-        <el-input v-model="form.new_passwordr" type="password"></el-input>
+        <el-input v-model="form.passwordr" type="password"></el-input>
       </el-form-item>
     </el-form>
 
@@ -50,9 +47,8 @@ export default {
     return {
       form: {},
       rules: {
-        old_password: [{ trigger: "blur", required: true, message: "请输入当前密码" }],
-        new_password: [{ trigger: "blur", required: true, validator: validatePass }],
-        new_passwordr: [{ trigger: "blur", required: true, validator: validatePass2 }],
+        password: [{ trigger: "blur", required: true, validator: validatePass }],
+        passwordr: [{ trigger: "blur", required: true, validator: validatePass2 }],
       },
     };
   },
