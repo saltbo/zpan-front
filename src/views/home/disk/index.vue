@@ -150,7 +150,7 @@ export default {
       });
     },
     onUploadClick() {
-      transfer(DialogUpload)({ sid: this.getSid(), destDir: this.query.dir }).then(() => {
+      transfer(DialogUpload)({ sid: this.getSid(), destDir: this.query.dir, listRefresh: this.listRefresh }).then(() => {
         this.listRefresh();
       });
     },
