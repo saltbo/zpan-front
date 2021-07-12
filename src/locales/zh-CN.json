@@ -6,6 +6,7 @@
   "op": {
     "close": "关闭",
     "confirm": "确认",
+    "init": "初始化",
     "reset": "重置",
     "cancel": "取消",
     "enable": "启用",
@@ -99,7 +100,8 @@
     "deleting": "正在删除...",
     "disable": "禁用后将不可用，是否继续？",
     "enable": "确认启用？",
-    "secret-reset": "重置后，老的秘钥将无法使用，是否继续？"
+    "secret-reset": "重置后，老的秘钥将无法使用，是否继续？",
+    "secret-init": "您尚未开通开发者权限，是否开通？"
   },
   "topbar": {
     "netdisk": "网盘",
