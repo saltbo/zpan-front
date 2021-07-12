@@ -6,6 +6,7 @@
   "op": {
     "close": "关闭",
     "confirm": "确认",
+    "reset": "重置",
     "cancel": "取消",
     "enable": "启用",
     "disable": "禁用",
@@ -97,7 +98,8 @@
     "clean": "确认清空回收站？",
     "deleting": "正在删除...",
     "disable": "禁用后将不可用，是否继续？",
-    "enable": "确认启用？"
+    "enable": "确认启用？",
+    "secret-reset": "重置后，老的秘钥将无法使用，是否继续？"
   },
   "topbar": {
     "netdisk": "网盘",

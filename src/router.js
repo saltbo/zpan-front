@@ -28,6 +28,7 @@ let router = new Router({
       children: [
         { path: 'profile', name: 'profile', component: () => import('./views/settings/profile') },
         { path: 'security', name: 'security', component: () => import('./views/settings/security') },
+        { path: 'developer', name: 'developer', component: () => import('./views/settings/developer') },
       ]
     },
     {

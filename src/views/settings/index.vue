@@ -47,8 +47,9 @@ export default {
     },
     leftMenus() {
       return [
-        { path: `/settings/profile`, icon: "el-icon-share", title: "个人设置" },
-        { path: `/settings/security`, icon: "el-icon-delete", title: "密码修改" },
+        { path: `/settings/profile`, icon: "el-icon-user", title: "个人信息" },
+        { path: `/settings/security`, icon: "el-icon-lock", title: "密码修改" },
+        { path: `/settings/developer`, icon: "el-icon-cpu", title: "开发者设置" },
       ];
     },
   },
