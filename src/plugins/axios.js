@@ -36,8 +36,7 @@ _axios.interceptors.response.use(
   },
   function (error) {
     if (axios.isCancel(error)) {
-      console.log(error.message ? error.message : "Request canceled");
-      return
+      return Promise.reject(error.message ? error.message : "Request canceled");
     }
 
     if (error.response && error.response.status == 401) {
