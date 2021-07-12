@@ -54,6 +54,14 @@ export default {
     return {
       activities: [
         {
+          content: "v1.6.0版本发布",
+          timestamp: "2021-07-12",
+        },
+        {
+          content: "v1.5.0版本发布",
+          timestamp: "2020-02-14",
+        },
+        {
           content: "v1.4.1版本发布",
           timestamp: "2020-10-17",
         },

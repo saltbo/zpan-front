@@ -14,7 +14,8 @@
 
     <div style="position: absolute; right: 20px">
       <el-dropdown v-show="logined" trigger="click" @command="onDropdown">
-        <el-avatar :size="30" :src="profile.avatar" style="vertical-align: middle"></el-avatar>
+        <el-avatar :size="30" :src="profile.avatar" style="vertical-align: middle; margin-right: 4px"></el-avatar>
+        <span>{{ profile.nickname }}</span>
         <el-dropdown-menu slot="dropdown" style="width: 200px">
           <div style="margin: auto 20px">
             <el-row style="text-align: center; margin: 10px 0">
