@@ -65,10 +65,6 @@ export default {
       },
       layout: "list",
       folderBtnShown: false,
-      // rowButtons: [
-      //   { name: "download", icon: "el-icon-download", action: this.openDownload, shown: (item) => !item.dirtype },
-      //   { name: "share", icon: "el-icon-share", action: this.share },
-      // ],
       moreButtons: [
         { name: "move", title: this.$t("ftb.move"), action: this.move },
         { name: "rename", title: this.$t("ftb.rename"), action: this.rename },
@@ -128,10 +124,11 @@ export default {
     },
     openDownload(obj) {
       this.linkLoader(obj).then((link) => {
-        var a = document.createElement("a");
-        a.href = link;
-        a.download = obj.name;
+        let a = document.createElement("a");
+        a.setAttribute("href", link);
+        a.setAttribute("download", obj.name);
         a.click();
+        a.remove();
       });
     },
     openCreateDiglog() {
