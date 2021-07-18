@@ -13,7 +13,7 @@
     </el-menu>
 
     <div style="position: absolute; right: 20px">
-      <el-dropdown v-show="logined" trigger="click" @command="onDropdown">
+      <el-dropdown v-show="logined" trigger="click" @command="onDropdown" @visible-change="onVisible">
         <el-avatar :size="30" :src="profile.avatar" style="vertical-align: middle; margin-right: 4px"></el-avatar>
         <span>{{ profile.nickname }}</span>
         <el-dropdown-menu slot="dropdown" style="width: 200px">
@@ -103,6 +103,9 @@ export default {
     },
     onDropdown(index) {
       this.$router.push({ name: index });
+    },
+    onVisible(visible) {
+      if (visible) this.userInfo();
     },
   },
   mounted() {

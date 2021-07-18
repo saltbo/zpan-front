@@ -6,7 +6,7 @@
         <div>
           <span class="name">{{ matter.name }}</span>
           <div style="float: right">
-            <el-button type="primary" size="medium" icon="el-icon-download">下载</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-download" @click="onDownloadClick">下载</el-button>
           </div>
         </div>
         <p class="time">
@@ -16,7 +16,7 @@
         </p>
       </div>
 
-      <FileExplorer ref="fexp" style="height: calc(100% - 80px)" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :rootDir="rootDir" />
+      <FileExplorer ref="fexp" style="height: calc(100% - 80px)" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :rootDir="rootDir" @selection-change="onSelectionChange" />
     </el-card>
 
     <!-- for file -->
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import { transfer } from "@/helper";
+import DialogOutlink from "@/views/home/disk/components/DialogOutlink";
 import utils from "@/libs/utils.js";
 export default {
   data() {
@@ -54,6 +56,7 @@ export default {
 
       info: {},
       matter: {},
+      selectedItems: [],
     };
   },
   computed: {
@@ -109,6 +112,21 @@ export default {
         a.download = obj.name;
         a.click();
       });
+    },
+    onSelectionChange(selection) {
+      this.selectedItems = selection;
+    },
+    onDownloadClick(obj) {
+      if (this.selectedItems.length == 0) {
+        this.$message({
+          type: "warning",
+          message: "您还没有选择下载的文件",
+        });
+      } else if (this.selectedItems.length == 1) {
+        this.openDownload(this.selectedItems[0]);
+      } else {
+        transfer(DialogOutlink)({ items: this.selectedItems });
+      }
     },
     listRefresh(alias) {
       this.$zpan.Share.findMatter(alias).then((ret) => {
