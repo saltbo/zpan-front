@@ -20,7 +20,6 @@ export default {
   props: {
     sid: Number,
     destDir: String,
-    listRefresh: Function,
   },
   data() {
     return {
@@ -65,7 +64,7 @@ export default {
       };
       fileObj.filename = fileObj.file.name;
       this.$zpan.File.upload(Number(this.sid), fileObj, this.destDir, cancel).then(() => {
-        this.completed();
+        // this.completed();
       });
       return {
         abort: () => {
@@ -73,6 +72,9 @@ export default {
         },
       };
     },
+  },
+  beforeDestroy() {
+    this.completed();
   },
 };
 </script>

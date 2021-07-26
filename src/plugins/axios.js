@@ -45,7 +45,7 @@ _axios.interceptors.response.use(
     }
 
     let msg = error.message
-    if (error.response) {
+    if (error.response && error.response.data.msg) {
       msg = error.response.data.msg
     }
 
