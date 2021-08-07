@@ -21,7 +21,7 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@vue/cli-service": "3.11.0",
+    "@vue/cli-service": "3.12.1",
     "compression-webpack-plugin": "3.1.0",
     "el-table-infinite-scroll": "^1.0.10",
     "element-ui": "^2.15.5",
