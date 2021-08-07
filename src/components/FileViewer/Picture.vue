@@ -53,16 +53,21 @@
 </template>
 
 <script>
+import { DialogMixin } from "@/libs/mixin";
 import PhotoSwipe from "photoswipe";
 import PhotoSwipeDefaultUI from "photoswipe/dist/photoswipe-ui-default";
 import "photoswipe/dist/photoswipe.css";
 import "photoswipe/dist/default-skin/default-skin.css";
 export default {
+  mixins: [DialogMixin],
   name: "PhotoPreview",
+  props: {
+    url: String,
+  },
   methods: {
-    open(picURL) {
+    open() {
       // build items array
-      var items = [{ src: picURL, w: 600, h: 400 }];
+      var items = [{ src: this.url, w: 600, h: 400 }];
 
       // define options (if needed)
       var options = {
@@ -78,9 +83,11 @@ export default {
       gallery.init();
     },
   },
+  mounted() {
+    this.open();
+  },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>

@@ -1,23 +1,23 @@
 <template>
-  <el-dialog :title="value.name" :visible.sync="show" width="30%" @opened="onOpen" @close="onClose">
+  <el-dialog :title="title" :visible.sync="show" width="30%" @opened="onOpen" @close="onClose">
     <vue-plyr ref="audio" v-show="mediatype == 'audio'">
-      <audio :src="value.url"></audio>
+      <audio :src="url"></audio>
     </vue-plyr>
 
     <vue-plyr ref="video" v-show="mediatype == 'video'">
-      <video :src="value.url"></video>
+      <video :src="url"></video>
     </vue-plyr>
   </el-dialog>
 </template>
 
 <script>
+import { DialogMixin } from "@/libs/mixin";
 export default {
+  mixins: [DialogMixin],
   props: {
-    value: Object,
-    visible: {
-      type: Boolean,
-      default: false,
-    },
+    title: String,
+    type: String,
+    url: String,
   },
   data() {
     return {
@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     filetype() {
-      return this.value.type ? this.value.type : "";
+      return this.type ? this.type : "";
     },
     mediatype() {
       return this.filetype.split("/")[0];

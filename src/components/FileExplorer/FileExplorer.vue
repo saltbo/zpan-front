@@ -10,23 +10,17 @@
     <!-- explorer -->
     <GridExplorer v-model="rows" :loading="loading" :moreButtons="moreButtons" @on-click="onClick" v-if="layout == 'grid'" />
     <ListExplorer v-model="rows" :loading="loading" :rowButtons="rowButtons" :moreButtons="moreButtons" @on-click="onClick" @scroll-end="onScrollEnd" @selection-change="onSelectionChange" v-else />
-
-    <!-- viewer -->
-    <MediaViewer v-model="selected" :visible="mediavv" @close="mediavv = false"></MediaViewer>
-    <PictureViewer ref="photoView"></PictureViewer>
   </div>
 </template>
 
 <script>
 import GridExplorer from "./explorer/GridExplorer";
 import ListExplorer from "./explorer/ListExplorer";
-import { MediaViewer, PictureViewer } from "../FileViewer";
+import FileViewer from "../FileViewer";
 export default {
   components: {
     GridExplorer,
     ListExplorer,
-    MediaViewer,
-    PictureViewer,
   },
   props: {
     layout: {
@@ -51,9 +45,6 @@ export default {
       rows: [],
       total: 0,
       selection: Array,
-
-      selected: {},
-      mediavv: false,
     };
   },
   watch: {
@@ -147,19 +138,7 @@ export default {
       }
 
       this.linkLoader(obj).then((link) => {
-        switch (type) {
-          case "media":
-            this.selected = obj;
-            this.selected.url = link;
-            this.mediavv = true;
-            break;
-          case "image":
-            this.$refs.photoView.open(link);
-            break;
-          case "doc":
-            window.open("http://view.officeapps.live.com/op/view.aspx?src=" + encodeURIComponent(link));
-            break;
-        }
+        new FileViewer().view(type, obj, link);
       });
     },
   },

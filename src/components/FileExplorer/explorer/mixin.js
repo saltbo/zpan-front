@@ -70,6 +70,12 @@ const mixin = {
                 return;
             }
 
+            // preview pdf file
+            if (item.type.endsWith("pdf")) {
+                this.$emit("on-click", 'pdf', item)
+                return;
+            }
+
             // preview image file
             if (item.type.startsWith("image")) {
                 this.$emit("on-click", 'image', item)
