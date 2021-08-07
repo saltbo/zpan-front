@@ -9,6 +9,7 @@ let router = new Router({
   mode: 'history',
   routes: [
     { path: '/', name: 'home', component: () => import('./views/home') },
+    { path: '*', name: 'notfound', component: () => import('./views/404') },
     { path: '/install', name: 'installer', component: () => import('./views/installer') },
     {
       path: '/:sname',

@@ -8,27 +8,24 @@
     "dev": "vue-cli-service serve",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
   },
-  "dependencies": {
+  "devDependencies": {
+    "@vue/cli-service": "3.12.1",
     "axios": "^0.21.1",
     "clipboard": "^2.0.8",
+    "el-table-infinite-scroll": "^1.0.10",
+    "element-ui": "^2.15.5",
+    "js-cookie": "^3.0.0",
+    "js-yaml": "^4.1.0",
     "moment": "^2.29.1",
     "photoswipe": "^4.1.3",
+    "stylus": "^0.54.8",
+    "stylus-loader": "3.0.2",
     "vue": "^2.6.14",
     "vue-i18n": "^8.25.0",
     "vue-plyr": "6.0.4",
     "vue-router": "^3.5.2",
     "vue-template-compiler": "^2.6.14",
     "vuex": "^3.6.2"
-  },
-  "devDependencies": {
-    "@vue/cli-service": "3.12.1",
-    "compression-webpack-plugin": "3.1.0",
-    "el-table-infinite-scroll": "^1.0.10",
-    "element-ui": "^2.15.5",
-    "js-cookie": "^3.0.0",
-    "js-yaml": "^4.1.0",
-    "stylus": "^0.54.8",
-    "stylus-loader": "3.0.2"
   },
   "eslintConfig": {
     "root": true,
