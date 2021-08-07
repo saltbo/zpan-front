@@ -2,14 +2,29 @@
 <html lang="zh-CN">
 
 <head>
-    <title><%= htmlWebpackPlugin.options.title %></title>
     <meta charset="UTF-8">
+    <title>
+        <%= htmlWebpackPlugin.options.title %>
+    </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="icon" href="data:image/ico;base64,aWNv">
+    <!-- 使用CDN的CSS文件 -->
+    <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.css) { %>
+        <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="preload" as="style">
+        <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="stylesheet">
+        <% } %>
+            <!-- 使用CDN的JS文件 -->
+            <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
+                <link href="<%= htmlWebpackPlugin.options.cdn.js[i] %>" rel="preload" as="script">
+                <% } %>
 </head>
 
 <body>
     <div id="app"></div>
+    <!-- 使用CDN的JS文件 -->
+    <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
+        <script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
+        <% } %>
 </body>
 
 </html>

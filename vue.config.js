@@ -1,7 +1,31 @@
-const path = require('path')
-function resolve(dir) {
+
+const CompressionWebpackPlugin = require('compression-webpack-plugin');
+const path = require('path');
+const resolve = (dir) => {
     return path.join(__dirname, dir)
 }
+
+const cdn = {
+    externals: {
+        'vue': 'Vue',
+        'vuex': 'Vuex',
+        'vue-router': 'VueRouter',
+        'element-ui': 'ELEMENT',
+        'photoswipe': 'PhotoSwipe',
+        'moment': 'moment',
+    },
+    css: [
+        'https://cdn.jsdelivr.net/npm/element-ui@2.15.5/lib/theme-chalk/index.css'
+    ],
+    js: [
+        "https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js",
+        "https://cdn.jsdelivr.net/npm/vuex@3.6.2/dist/vuex.min.js",
+        "https://cdn.jsdelivr.net/npm/vue-router@3.5.2/dist/vue-router.min.js",
+        "https://cdn.jsdelivr.net/npm/element-ui@2.15.5/lib/index.js",
+        "https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js",
+        "https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"
+    ]
+};
 
 module.exports = {
     // Project deployment base
@@ -15,6 +39,41 @@ module.exports = {
     lintOnSave: false,
 
     // tweak internal webpack configuration.
+    chainWebpack: config => {
+        config.when(process.env.NODE_ENV !== 'development', //生产环境才做处理
+            config => {
+                config.plugin('html-index').tap(args => {
+                    args[0].cdn = cdn
+                    return args
+                })
+                config.optimization.splitChunks({
+                    chunks: 'async',
+                    minSize: 30000,
+                    maxSize: 0,
+                    minChunks: 1,
+                    maxAsyncRequests: 6,
+                    maxInitialRequests: 4,
+                    automaticNameDelimiter: '~',
+                    cacheGroups: {
+                        vendors: {
+                            name: `chunk-vendors`,
+                            test: /[\\/]node_modules[\\/]/,
+                            priority: -10,
+                            chunks: 'initial'
+                        },
+                        common: {
+                            name: `chunk-common`,
+                            minChunks: 2,
+                            priority: -20,
+                            chunks: 'initial',
+                            reuseExistingChunk: true
+                        }
+                    }
+                })
+            }
+        )
+    },
+
     configureWebpack: config => {
         config.resolve = {
             extensions: ['.js', '.vue', '.json', ".css"],
@@ -22,11 +81,15 @@ module.exports = {
                 'vue$': 'vue/dist/vue.esm.js',
                 '@': resolve('src'),
             }
+        };
+        // 生产环境相关配置cdn/gzip压缩
+        if (process.env.NODE_ENV !== 'development') {
+            config.externals = cdn.externals
         }
     },
 
     // generate sourceMap for production build?
-    productionSourceMap: true,
+    productionSourceMap: process.env.NODE_ENV !== 'production',
 
     // entry template
     pages: {
@@ -42,18 +105,6 @@ module.exports = {
             title: 'ZPan',
             // chunks to include on this page, by default includes
             // extracted common chunks and vendor chunks.
-            chunks: ['chunk-vendors', 'chunk-common', 'index']
-        },
-        // when using the entry-only string format,
-        // template is inferred to be `public/subpage.html`
-        // and falls back to `public/index.html` if not found.
-        // Output filename is inferred to be `subpage.html`.
-        // subpage: 'src/subpage/main.js'
-        404: {
-            entry: 'src/main.js',
-            template: 'src/template/index.ejs',
-            filename: '404.html',
-            title: 'ZPan',
             chunks: ['chunk-vendors', 'chunk-common', 'index']
         },
     },
