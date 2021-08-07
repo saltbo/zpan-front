@@ -1,55 +1,64 @@
 <template>
-  <div style="margin: 20px 50px">
-    <!-- for folder -->
-    <el-card v-if="matter.dirtype" class="folder-card" shadow="never" body-style="height: 100%">
-      <div slot="header" class="header clearfix">
-        <div>
-          <span class="name">{{ matter.name }}</span>
-          <div style="float: right">
-            <el-button type="primary" size="medium" icon="el-icon-download" @click="onDownloadClick">下载</el-button>
+  <div>
+    <Topbar />
+    <div style="margin: 20px 50px">
+      <el-empty v-if="!matter.id" description="分享已失效">
+        <el-button type="primary">去分享者主页</el-button>
+      </el-empty>
+
+      <!-- for folder -->
+      <el-card v-else-if="matter.dirtype" class="folder-card" shadow="never" body-style="height: 100%">
+        <div slot="header" class="header clearfix">
+          <div>
+            <span class="name">{{ matter.name }}</span>
+            <div style="float: right">
+              <el-button type="primary" size="medium" icon="el-icon-download" @click="onDownloadClick">下载</el-button>
+            </div>
+          </div>
+          <p class="time">
+            <i class="el-icon-time"></i>
+            <span>{{ matter.created | moment("YYYY-MM-DD HH:hh") }}</span>
+            <span>失效时间：{{ expireTime }}</span>
+          </p>
+        </div>
+
+        <FileExplorer ref="fexp" style="height: calc(100% - 80px)" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :rootDir="rootDir" @selection-change="onSelectionChange" />
+      </el-card>
+
+      <!-- for file -->
+      <el-card v-else-if="info.id" class="file-card" shadow="never">
+        <div slot="header" class="header clearfix">
+          <div>
+            <span class="name">{{ matter.name }}</span>
+            <div style="float: right">
+              <el-button type="primary" size="medium" icon="el-icon-download" @click="openDownload(matter)">下载</el-button>
+            </div>
+          </div>
+          <p class="time">
+            <i class="el-icon-time"></i>
+            <span>{{ matter.created | moment("YYYY-MM-DD HH:hh") }}</span>
+            <span>失效时间：{{ expireTime }}</span>
+          </p>
+        </div>
+
+        <div class="content">
+          <div>
+            <i class="el-icon-document"></i>
+            <p>文件大小：{{ matter.size }}</p>
           </div>
         </div>
-        <p class="time">
-          <i class="el-icon-time"></i>
-          <span>{{ matter.created | moment("YYYY-MM-DD HH:hh") }}</span>
-          <span>失效时间：{{ expireTime }}</span>
-        </p>
-      </div>
-
-      <FileExplorer ref="fexp" style="height: calc(100% - 80px)" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :rootDir="rootDir" @selection-change="onSelectionChange" />
-    </el-card>
-
-    <!-- for file -->
-    <el-card v-else-if="info.id" class="file-card" shadow="never">
-      <div slot="header" class="header clearfix">
-        <div>
-          <span class="name">{{ matter.name }}</span>
-          <div style="float: right">
-            <el-button type="primary" size="medium" icon="el-icon-download" @click="openDownload(matter)">下载</el-button>
-          </div>
-        </div>
-        <p class="time">
-          <i class="el-icon-time"></i>
-          <span>{{ matter.created | moment("YYYY-MM-DD HH:hh") }}</span>
-          <span>失效时间：{{ expireTime }}</span>
-        </p>
-      </div>
-
-      <div class="content">
-        <div>
-          <i class="el-icon-document"></i>
-          <p>文件大小：{{ matter.size }}</p>
-        </div>
-      </div>
-    </el-card>
+      </el-card>
+    </div>
   </div>
 </template>
 
 <script>
 import { transfer } from "@/helper";
-import DialogOutlink from "@/views/home/disk/components/DialogOutlink";
 import utils from "@/libs/utils.js";
+import DialogOutlink from "@/views/home/disk/components/DialogOutlink";
+import Topbar from "@/components/Topbar";
 export default {
+  components: { Topbar },
   data() {
     return {
       rowButtons: [{ name: "download", icon: "el-icon-download", action: this.openDownload, shown: (item) => !item.dirtype }],
@@ -129,14 +138,18 @@ export default {
       }
     },
     listRefresh(alias) {
-      this.$zpan.Share.findMatter(alias).then((ret) => {
-        this.matter = ret.data;
-        this.matter.size = utils.formatBytes(this.matter.size, 1);
+      this.$zpan.Share.findMatter(alias)
+        .then((ret) => {
+          this.matter = ret.data;
+          this.matter.size = utils.formatBytes(this.matter.size, 1);
 
-        if (this.$refs.fexp) {
-          this.$refs.fexp.listRefresh();
-        }
-      });
+          if (this.$refs.fexp) {
+            this.$refs.fexp.listRefresh();
+          }
+        })
+        .catch((err) => {
+          console.log(12, err);
+        });
     },
   },
   watch: {

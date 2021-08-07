@@ -36,7 +36,11 @@ _axios.interceptors.response.use(
             msg = error.response.data.msg
         }
 
-        Notification.error(msg)
+        // alert the Notification only for the operation 
+        if (error.response.config.method != 'get') {
+            Notification.error(msg)
+        }
+
         return Promise.reject(error);
     }
 );
