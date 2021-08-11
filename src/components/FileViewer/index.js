@@ -17,6 +17,9 @@ class Preview {
             case "doc":
                 window.open("http://view.officeapps.live.com/op/view.aspx?src=" + encodeURIComponent(link));
                 break;
+            case "text":
+                window.open(`/f/editor?alias=${obj.alias}`, '_blank')
+                break;
             default:
                 console.log(type, obj, link)
         }

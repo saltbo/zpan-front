@@ -8,20 +8,20 @@ class zMatter {
         let file = fileObj.file
         let body = { sid: sid, name: fileObj.filename, type: file.type, size: file.size, dir: distDir };
         return new Promise((resolve, reject) => {
-            this.create(body).then(ret => {
+            axios.post('/matters', body).then(ret => {
                 let data = ret.data
                 utils.upload(fileObj, data.link, data.headers, cancel).then(() => {
                     axios.patch(`/matters/${data.alias}/done`).then((ret) => {
-                        resolve(ret)
+                        resolve(ret.data)
                     })
                 }).catch(reject)
             }).catch(reject)
         })
     }
 
-    findLink(alias) {
+    get(alias) {
         return new Promise((resolve, reject) => {
-            axios.get(`/matters/${alias}/link`).then(ret => {
+            axios.get(`/matters/${alias}`).then(ret => {
                 resolve(ret.data)
             }).catch(reject)
         })
@@ -29,16 +29,12 @@ class zMatter {
 
     download(alias) {
         return new Promise((resolve, reject) => {
-            this.findLink(alias).then(ret => {
-                utils.download(ret.name, ret.link).then(() => {
+            this.get(alias).then(ret => {
+                utils.download(ret.name, ret.url).then(() => {
                     resolve(ret)
                 }).catch(reject)
             })
         })
-    }
-
-    create(body) {
-        return axios.post('/matters', body)
     }
 
     list(params) {
@@ -70,6 +66,19 @@ class zMatter {
 
     delete(alias) {
         return axios.delete(`/matters/${alias}`)
+    }
+
+    save(alias, content) {
+        return new Promise((resolve, reject) => {
+            axios.get(`/matters/${alias}/ulink`).then(ret => {
+                let data = ret.data
+                window.axios.put(data.link, content, { headers: data.headers }).then(() => {
+                    axios.patch(`/matters/${alias}/done`).then((ret) => {
+                        resolve(ret.data)
+                    })
+                }).catch(reject)
+            }).catch(reject)
+        })
     }
 }
 

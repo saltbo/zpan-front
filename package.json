@@ -9,6 +9,7 @@
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
   },
   "devDependencies": {
+    "@kangc/v-md-editor": "^1.7.7",
     "@vue/cli-service": "3.12.1",
     "axios": "^0.21.1",
     "clipboard": "^2.0.8",

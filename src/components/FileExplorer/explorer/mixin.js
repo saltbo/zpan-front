@@ -77,6 +77,12 @@ const mixin = {
             }
 
             // preview image file
+            if (item.type.startsWith("text")) {
+                this.$emit("on-click", 'text', item)
+                return;
+            }
+
+            // preview image file
             if (item.type.startsWith("image")) {
                 this.$emit("on-click", 'image', item)
                 return;

@@ -21,9 +21,10 @@ let router = new Router({
         { path: 'recyclebin', name: 'recyclebin', component: () => import('./views/home/recyclebin') },
       ]
     },
-    { path: '/viewer/pdf', name: 'viewer', component: () => import('./views/home/viewer/pdf') },
     { path: '/s/:alias', name: 'share-info', component: () => import('./views/home/share/home.vue') },
     { path: '/s/:alias/draw', name: 'share-draw', component: () => import('./views/home/share/draw.vue') },
+    { path: '/f/editor', name: 'editor', component: () => import('./views/home/editor') },
+    { path: '/viewer/pdf', name: 'viewer', component: () => import('./views/home/viewer/pdf') },
     {
       path: '/settings',
       component: () => import('./views/settings'),

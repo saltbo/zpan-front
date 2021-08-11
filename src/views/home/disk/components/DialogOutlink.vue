@@ -29,11 +29,11 @@ export default {
     loadLinks() {
       Promise.all(
         this.items.map((obj) => {
-          return this.$zpan.File.findLink(obj.alias);
+          return this.$zpan.File.get(obj.alias);
         })
       ).then((rets) => {
         rets.forEach((ret) => {
-          this.links += ret.link + "\r\n";
+          this.links += ret.url + "\r\n";
         });
       });
     },

@@ -112,9 +112,9 @@ export default {
     },
     linkLoader(obj) {
       return new Promise((resolve, reject) => {
-        this.$zpan.File.findLink(obj.alias)
+        this.$zpan.File.get(obj.alias)
           .then((ret) => {
-            resolve(ret.link);
+            resolve(ret.url);
           })
           .catch(reject);
       });

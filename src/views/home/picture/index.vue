@@ -35,8 +35,8 @@ export default {
   methods: {
     getLink(alias) {
       return new Promise((resolve, reject) => {
-        this.$zpan.File.findLink(alias).then((ret) => {
-          resolve(ret.link);
+        this.$zpan.File.get(alias).then((ret) => {
+          resolve(ret.url);
         });
       });
     },
