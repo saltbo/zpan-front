@@ -12,8 +12,24 @@
       </el-submenu>
     </el-menu>
 
-    <div style="position: absolute; right: 20px">
-      <el-dropdown v-show="logined" trigger="click" @command="onDropdown" @visible-change="onVisible">
+    <div v-if="logined" style="position: absolute; right: 20px">
+      <!-- 音乐播放器 -->
+      <!-- <el-popover placement="top" width="500" style="margin-right: 20px">
+        <i slot="reference" class="el-icon-service"></i>
+
+        <zp-audio-player></zp-audio-player>
+      </el-popover> -->
+
+      <!-- 任务管理器 -->
+      <el-popover ref="ulist" placement="bottom-end" width="500" style="margin-right: 20px">
+        <i slot="reference" class="el-icon-sort">
+          <el-badge v-show="ulistTotal" :value="ulistTotal" style="top: -15px"></el-badge>
+        </i>
+
+        <zp-uploader ref="uploader" @uploadAdded="$refs.ulist.doShow()" @utotal-change="onUTotalChange"></zp-uploader>
+      </el-popover>
+
+      <el-dropdown trigger="click" @command="onDropdown" @visible-change="onVisible">
         <el-avatar :size="30" :src="profile.avatar" style="vertical-align: middle; margin-right: 4px"></el-avatar>
         <span>{{ profile.nickname }}</span>
         <el-dropdown-menu slot="dropdown" style="width: 200px">
@@ -45,13 +61,18 @@ import { setup } from "@/i18n";
 import utils from "@/libs/utils";
 import Cookie from "js-cookie";
 const defaultAvatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
+import ZpUploader from "@/components/Uploader";
 export default {
+  components: {
+    ZpUploader,
+  },
   props: {
     menus: Array,
     logined: Boolean,
   },
   data() {
     return {
+      ulistTotal: 0,
       storage: {
         percentage: 0,
       },
@@ -82,6 +103,9 @@ export default {
         this.userInfo();
       }
     },
+    onUTotalChange(uTotal) {
+      this.ulistTotal = uTotal;
+    },
     userInfo() {
       this.$zpan.User.profileGet().then((ret) => {
         this.user = ret.data;
@@ -106,6 +130,9 @@ export default {
     },
     onVisible(visible) {
       if (visible) this.userInfo();
+    },
+    uploadSelect(type) {
+      this.$refs.uploader.uploadSelect(type);
     },
   },
   mounted() {

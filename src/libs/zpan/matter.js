@@ -19,6 +19,15 @@ class zMatter {
         })
     }
 
+    create(sid, dir, file) {
+        let matter = { sid: sid, name: file.name, type: file.type, size: file.size, dir: dir }
+        return axios.post('/matters', matter)
+    }
+
+    uploadDone(alias) {
+        return axios.patch(`/matters/${alias}/done`)
+    }
+
     get(alias) {
         return new Promise((resolve, reject) => {
             axios.get(`/matters/${alias}`).then(ret => {

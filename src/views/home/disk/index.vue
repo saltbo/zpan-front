@@ -18,8 +18,22 @@
 <template>
   <div style="height: 100%">
     <el-row class="toolbar">
-      <el-button type="primary" size="medium" icon="el-icon-upload" @click="onUploadClick">{{ $t("disk.upload") }}</el-button>
-      <el-button v-show="folderBtnShown" type="primary" size="medium" icon="el-icon-folder-add" @click="openCreateDiglog" plain>{{ $t("disk.folder") }}</el-button>
+      <el-dropdown size="small" style="margin-right: 10px" @command="onUploadSelect">
+        <el-button type="primary" size="small" icon="el-icon-upload" @click="onUploadSelect('file')">上传</el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="file">上传文件</el-dropdown-item>
+          <el-dropdown-item command="folder">上传文件夹</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <el-dropdown size="small">
+        <el-button type="primary" size="small" icon="el-icon-folder-add" plain>新建</el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>新建文件</el-dropdown-item>
+          <el-dropdown-item>新建文件夹</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <!-- <el-button type="primary" size="medium" icon="el-icon-upload" @click="onUploadClick">{{ $t("disk.upload") }}</el-button> -->
+      <!-- <el-button v-show="folderBtnShown" type="primary" size="medium" icon="el-icon-folder-add" @click="openCreateDiglog" plain>{{ $t("disk.folder") }}</el-button> -->
       <el-button-group v-show="selectedItems.length > 0" style="margin-left: 10px">
         <el-button type="primary" icon="el-icon-download" size="medium" plain @click="onOutlinkClick">{{ $t("disk.download") }}</el-button>
         <!-- <el-button type="primary" icon="el-icon-share" size="medium" @click="share" plain>分享</el-button> -->
@@ -150,6 +164,9 @@ export default {
       transfer(DialogUpload)({ sid: this.getSid(), destDir: this.query.dir }).then(() => {
         this.listRefresh();
       });
+    },
+    onUploadSelect(cmd) {
+      this.$emit("upload-action", cmd);
     },
     onOutlinkClick() {
       transfer(DialogOutlink)({ items: this.selectedItems });

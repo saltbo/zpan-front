@@ -1,6 +1,6 @@
 <template>
   <section>
-    <Topbar :menus="$store.state.storages" logined />
+    <Topbar ref="topbar" :menus="$store.state.storages" logined />
     <el-container style="height: 100%">
       <el-aside width="200px" style="height: 100%; background-color: #f4f4f5">
         <el-menu :default-active="leftMenuActive" background-color="#f4f4f5" router>
@@ -17,7 +17,7 @@
       </el-aside>
 
       <el-main>
-        <router-view></router-view>
+        <router-view @upload-action="onUploadClick"></router-view>
       </el-main>
     </el-container>
   </section>
@@ -86,7 +86,11 @@ export default {
   watch: {
     $route(newVal, oldVal) {},
   },
-  methods: {},
+  methods: {
+    onUploadClick(type) {
+      this.$refs.topbar.uploadSelect(type);
+    },
+  },
   mounted() {},
 };
 </script>
