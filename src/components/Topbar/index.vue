@@ -131,8 +131,8 @@ export default {
     onVisible(visible) {
       if (visible) this.userInfo();
     },
-    uploadSelect(type) {
-      this.$refs.uploader.uploadSelect(type);
+    uploadSelect(obj) {
+      this.$refs.uploader.uploadSelect(obj);
     },
   },
   mounted() {

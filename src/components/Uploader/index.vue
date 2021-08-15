@@ -5,7 +5,11 @@
       <file-upload ref="upload" v-model="files" :multiple="true" :maximum="50" @input-filter="inputFilter" @input-file="inputFile"> </file-upload>
     </div>
     <el-table :data="files" size="mini" :show-header="false" empty-text="暂无上传任务" style="width: 100%">
-      <el-table-column prop="icon" width="50"> </el-table-column>
+      <el-table-column prop="icon" width="50">
+        <template slot-scope="scope">
+          <i :class="`iconfont matter-icon ${type2icon(scope.row.type)}`"></i>
+        </template>
+      </el-table-column>
       <el-table-column prop="name">
         <template slot-scope="scope">
           <div>{{ scope.row.name }}</div>
@@ -18,9 +22,10 @@
       </el-table-column>
       <el-table-column prop="op" width="100">
         <template slot-scope="scope">
-          <el-button v-show="scope.row.progress == 100" type="primary" size="mini" icon="el-icon-folder" circle plain></el-button>
-          <el-button v-show="scope.row.progress != 100 && uploading" type="primary" size="mini" icon="el-icon-video-pause" circle plain></el-button>
-          <el-button v-show="scope.row.progress != 100 && !uploading" type="primary" size="mini" icon="el-icon-video-play" circle plain></el-button>
+          <!-- todo 暂停和继续需要依赖分片上传，先不支持，后续迭代 -->
+          <el-button v-show="scope.row.progress == 100" type="primary" size="mini" icon="el-icon-folder" circle plain @click="onFolderClick(scope.row.matter)"></el-button>
+          <!-- <el-button v-show="scope.row.progress != 100 && uploading" type="primary" size="mini" icon="el-icon-video-pause" circle plain @click="$refs.upload.active = false"></el-button> -->
+          <!-- <el-button v-show="scope.row.progress != 100 && !uploading" type="primary" size="mini" icon="el-icon-video-play" circle plain @click="$refs.upload.active = true"></el-button> -->
           <el-button v-show="scope.row.progress != 100" type="primary" size="mini" icon="el-icon-close" circle plain @click="$refs.upload.remove(scope.row)"></el-button>
         </template>
       </el-table-column>
@@ -38,6 +43,8 @@ export default {
   },
   data() {
     return {
+      sid: 0,
+      dist: "",
       files: [],
       uploading: false,
       uploadedCnt: 0,
@@ -55,11 +62,45 @@ export default {
     },
   },
   methods: {
+    type2icon(type) {
+      console.log(type);
+      let [t1, t2] = type.split("/");
+      let mt = ["pdf", "html", "xml", "psd", "rtf"];
+      if (mt.includes(t2)) {
+        return `icon-${t2}`;
+      }
+
+      let codeTypes = ["json", "yaml", "x-yaml"];
+      if (codeTypes.includes(t2)) {
+        return "icon-html";
+      }
+
+      let compressedFileTypes = ["zip", "x-gzip"];
+      if (compressedFileTypes.includes(t2)) {
+        return "icon-compressed-file";
+      }
+
+      // if (this.isOfficeFile(type)) {
+      //   return this.officeIcon(type);
+      // }
+
+      let gt = ["audio", "video", "image", "text"];
+      if (gt.includes(t1)) {
+        return `icon-${t1}`;
+      }
+
+      return "icon-file";
+    },
     fomatSize(v) {
       return utils.formatBytes(v, 1);
     },
-    uploadSelect(type) {
-      console.log(type);
+    onFolderClick(matter) {
+      this.$router.push({ name: "disk", params: this.$route.params, query: { dir: matter.parent } });
+    },
+    uploadSelect(obj) {
+      this.sid = obj.sid;
+      this.dist = obj.dist;
+      console.log(obj);
       if (!this.$refs.upload.features.directory) {
         this.alert("Your browser does not support");
         return;
@@ -69,7 +110,7 @@ export default {
       input.setAttribute("type", "file");
       input.setAttribute("style", "display: none");
       input.setAttribute("multiple", true);
-      if (type == "folder") {
+      if (obj.type == "folder") {
         input.setAttribute("allowdirs", true);
         input.setAttribute("directory", true);
         input.setAttribute("webkitdirectory", true);
@@ -89,7 +130,7 @@ export default {
         if (newFile.xhr) {
           //  获得响应状态码
           console.log("status", newFile.xhr.status);
-          this.$zpan.File.uploadDone(oldFile.alias).then((ret) => {
+          this.$zpan.File.uploadDone(oldFile.matter.alias).then((ret) => {
             this.uploadedCnt++;
           });
         }
@@ -105,10 +146,10 @@ export default {
       // Automatically activate upload
       if (Boolean(newFile) !== Boolean(oldFile) || oldFile.error !== newFile.error) {
         if (!this.$refs.upload.active) {
-          this.$zpan.File.create(1, "", newFile).then((ret) => {
-            newFile.putAction = ret.data.link;
+          this.$zpan.File.create(this.sid, this.dist, newFile).then((ret) => {
+            newFile.putAction = ret.data.uplink;
             newFile.headers = ret.data.headers;
-            newFile.alias = ret.data.alias;
+            newFile.matter = ret.data.matter;
             this.$refs.upload.active = true;
             this.uploading = true;
           });
@@ -137,4 +178,8 @@ export default {
     color: #afb3bf;
     margin-top: 10px;
     text-align: center;
+
+  .matter-icon
+    font-size: 35px;
+    padding-left: 5px;
 </style>

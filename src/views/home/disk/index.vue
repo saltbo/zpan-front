@@ -160,13 +160,8 @@ export default {
         });
       });
     },
-    onUploadClick() {
-      transfer(DialogUpload)({ sid: this.getSid(), destDir: this.query.dir }).then(() => {
-        this.listRefresh();
-      });
-    },
     onUploadSelect(cmd) {
-      this.$emit("upload-action", cmd);
+      this.$emit("upload-action", { type: cmd, sid: this.getSid(), dist: this.query.dir });
     },
     onOutlinkClick() {
       transfer(DialogOutlink)({ items: this.selectedItems });
