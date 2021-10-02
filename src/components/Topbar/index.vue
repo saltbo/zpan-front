@@ -14,11 +14,11 @@
 
     <div v-if="logined" style="position: absolute; right: 20px">
       <!-- 音乐播放器 -->
-      <!-- <el-popover placement="top" width="500" style="margin-right: 20px">
+      <el-popover v-if="alistVisible" ref="alist" placement="top" width="500" style="margin-right: 20px">
         <i slot="reference" class="el-icon-service"></i>
 
-        <zp-audio-player></zp-audio-player>
-      </el-popover> -->
+        <zp-aplayer ref="aplayer"></zp-aplayer>
+      </el-popover>
 
       <!-- 任务管理器 -->
       <el-popover ref="ulist" placement="bottom-end" width="500" style="margin-right: 20px">
@@ -62,9 +62,11 @@ import utils from "@/libs/utils";
 import Cookie from "js-cookie";
 const defaultAvatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
 import ZpUploader from "@/components/Uploader";
+import ZpAplayer from "@/components/ZAPlayer";
 export default {
   components: {
     ZpUploader,
+    ZpAplayer,
   },
   props: {
     menus: Array,
@@ -72,6 +74,7 @@ export default {
   },
   data() {
     return {
+      alistVisible: false,
       ulistTotal: 0,
       storage: {
         percentage: 0,
@@ -133,6 +136,13 @@ export default {
     },
     uploadSelect(obj) {
       this.$refs.uploader.uploadSelect(obj);
+    },
+    AplayerOpen(obj, link) {
+      this.alistVisible = true;
+      setTimeout(() => {
+        this.$refs.aplayer.play(obj, link);
+        this.$refs.alist.doShow();
+      }, 500);
     },
   },
   mounted() {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <el-row class="header">
       <el-breadcrumb separator-class="el-icon-arrow-right" class="bread">
         <el-breadcrumb-item v-for="item in breadcrumb" :key="item.dir" :index="item.dir" :to="buildQuery(item.dir)">{{ item.name }}</el-breadcrumb-item>
@@ -16,7 +16,6 @@
 <script>
 import GridExplorer from "./explorer/GridExplorer";
 import ListExplorer from "./explorer/ListExplorer";
-import FileViewer from "../FileViewer";
 export default {
   components: {
     GridExplorer,
@@ -138,7 +137,7 @@ export default {
       }
 
       this.linkLoader(obj).then((link) => {
-        new FileViewer().view(type, obj, link);
+        this.$emit("file-open", type, obj, link);
       });
     },
   },

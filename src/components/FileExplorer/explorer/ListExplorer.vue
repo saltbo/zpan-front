@@ -1,5 +1,5 @@
 <template>
-  <el-table style="width: 100%" height="calc(100% - 55px)" tooltip-effect="dark" size="small" :data="data" v-loading="loading" v-el-table-infinite-scroll="onScrollEnd" @selection-change="onSelectionChange" highlight-current-row>
+  <el-table style="width: 100%" height="100%" tooltip-effect="dark" size="small" :data="data" v-loading="loading" v-el-table-infinite-scroll="onScrollEnd" @selection-change="onSelectionChange" highlight-current-row>
     <el-table-column type="selection" width="30" :selectable="onSelectable"></el-table-column>
     <el-table-column prop="name" :label="$t('fth.name')" min-width="200" show-overflow-tooltip sortable>
       <template slot-scope="scope">
@@ -91,6 +91,14 @@ export default {
 .el-table__row:hover .operation {
   display: block;
 }
+
+.el-table >>> .el-checkbox__inner {
+  width: 15px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .operation .el-link {
   font-size: 20px !important;
   margin: 0 2px;

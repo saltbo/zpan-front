@@ -16,8 +16,8 @@
       </div>-->
       </el-aside>
 
-      <el-main>
-        <router-view @upload-action="onUploadClick"></router-view>
+      <el-main style="height: calc(100% - 65px)">
+        <router-view @upload-action="onUploadClick" @audio-open="onAudioOpen"></router-view>
       </el-main>
     </el-container>
   </section>
@@ -87,8 +87,11 @@ export default {
     $route(newVal, oldVal) {},
   },
   methods: {
-    onUploadClick(type) {
-      this.$refs.topbar.uploadSelect(type);
+    onUploadClick(obj) {
+      this.$refs.topbar.uploadSelect(obj);
+    },
+    onAudioOpen(obj, link) {
+      this.$refs.topbar.AplayerOpen(obj, link);
     },
   },
   mounted() {},

@@ -16,7 +16,7 @@
 </style>
 
 <template>
-  <div style="height: 100%">
+  <div style="height: calc(100% - 58px)">
     <el-row class="toolbar">
       <el-dropdown size="small" style="margin-right: 10px" @command="onUploadSelect">
         <el-button type="primary" size="small" icon="el-icon-upload" @click="onUploadSelect('file')">上传</el-button>
@@ -51,7 +51,7 @@
     </el-row>
 
     <!-- main -->
-    <FileExplorer :layout="layout" ref="fexp" style="height: calc(100% - 67px)" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :moreButtons="moreButtons" @selection-change="onSelectionChange" />
+    <FileExplorer :layout="layout" ref="fexp" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :moreButtons="moreButtons" @file-open="onFileOpen" @selection-change="onSelectionChange" />
 
     <!-- dialog -->
     <!-- <DialogMove ref="move" @completed="listRefresh"></DialogMove>
@@ -64,6 +64,7 @@
 <script>
 // @ is an alias to /src
 import { transfer } from "@/helper";
+import FileViewer from "@/components/FileViewer";
 import DialogMove from "./components/DialogMove";
 import DialogShare from "./components/DialogShare";
 import DialogUpload from "./components/DialogUpload";
@@ -162,6 +163,14 @@ export default {
     },
     onUploadSelect(cmd) {
       this.$emit("upload-action", { type: cmd, sid: this.getSid(), dist: this.query.dir });
+    },
+    onFileOpen(type, obj, link) {
+      if (obj.type.startsWith("audio")) {
+        this.$emit("audio-open", obj, link);
+        return;
+      }
+
+      new FileViewer().view(type, obj, link);
     },
     onOutlinkClick() {
       transfer(DialogOutlink)({ items: this.selectedItems });

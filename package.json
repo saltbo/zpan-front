@@ -15,6 +15,7 @@
     "clipboard": "^2.0.8",
     "el-table-infinite-scroll": "^1.0.10",
     "element-ui": "^2.15.5",
+    "hls.js": "^1.0.9",
     "js-cookie": "^3.0.0",
     "js-yaml": "^4.1.0",
     "moment": "^2.29.1",
@@ -22,6 +23,7 @@
     "stylus": "^0.54.8",
     "stylus-loader": "3.0.2",
     "vue": "^2.6.14",
+    "vue-aplayer": "^1.6.1",
     "vue-i18n": "^8.25.0",
     "vue-pdf-app": "^2.1.0",
     "vue-plyr": "6.0.4",
@@ -54,5 +56,6 @@
     "last 2 versions"
   ],
   "license": "GPL-3.0",
-  "repository": "git@github.com:saltbo/zpan-front.git"
+  "repository": "git@github.com:saltbo/zpan-front.git",
+  "dependencies": {}
 }
