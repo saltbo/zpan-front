@@ -130,6 +130,10 @@ export default {
       this.form.region = ""; // reset the region
 
       provider = provider.toLowerCase();
+      if (provider == "minio") {
+        return
+      }
+
       this.$axios
         .get(`https://raw.githubusercontent.com/eplist/eplist/main/${provider}.yml`)
         .then((data) => {
