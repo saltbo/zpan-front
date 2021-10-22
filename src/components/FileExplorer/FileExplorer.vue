@@ -143,7 +143,9 @@ export default {
   },
   mounted() {
     this.currentDir = this.$route.query.dir ? this.$route.query.dir : "";
-
+    this.$zpan.EventBus.$on("uploaded", () => {
+      this.listRefresh(0, this.limit)
+    });
     // this.listRefresh();
   },
 };

@@ -6,6 +6,7 @@ import zFile from './matter'
 // import zFolder from './folder'
 import zShare from './share'
 import zRecyclebin from './recyclebin'
+import EventBus from './event'
 
 const System = new zSystem();
 const User = new zUser();
@@ -25,5 +26,6 @@ export default {
     File,
     // Folder,
     Share,
-    Recyclebin
+    Recyclebin,
+    EventBus
 }

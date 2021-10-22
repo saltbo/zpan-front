@@ -131,6 +131,7 @@ export default {
           //  获得响应状态码
           console.log("status", newFile.xhr.status);
           this.$zpan.File.uploadDone(oldFile.matter.alias).then((ret) => {
+            this.$zpan.EventBus.$emit("uploaded");
             this.uploadedCnt++;
           });
         }
