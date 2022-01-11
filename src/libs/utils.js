@@ -6,15 +6,19 @@ let utils = {
     upload(fileObj, destURL, headers, cancel) {
         let file = fileObj.file
         return new Promise((resolve, reject) => {
-            const CancelToken = axios.CancelToken;
             let options = {
                 headers: headers,
-                cancelToken: new CancelToken(cancel),
                 onUploadProgress: function (event) {
                     file.percent = event.loaded / event.total * 100;
                     if (fileObj.onProgress) fileObj.onProgress(file);
                 }
             };
+            if (cancel) {
+                const CancelToken = axios.CancelToken;
+                options.cancelToken = new CancelToken(cancel)
+            }
+
+            if (!destURL) reject('none upload url')
 
             window.axios.put(destURL, file, options).then((ret) => {
                 if (fileObj.onSuccess) fileObj.onSuccess();

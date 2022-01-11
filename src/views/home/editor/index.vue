@@ -48,7 +48,7 @@ export default {
       window.document.title = ret.name;
       this.fileinfo = ret;
       this.$axios.get(ret.url).then((ret) => {
-        this.content = ret;
+        this.content = String(ret);
       });
     });
   },

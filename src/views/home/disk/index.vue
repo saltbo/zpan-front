@@ -25,15 +25,13 @@
           <el-dropdown-item command="folder">上传文件夹</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-dropdown size="small">
-        <el-button type="primary" size="small" icon="el-icon-folder-add" plain>新建</el-button>
+      <el-dropdown size="small" @command="onCreationSelect">
+        <el-button type="primary" size="small" icon="el-icon-folder-add"  @click="openCreateFolderDiglog" plain>新建</el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>新建文件</el-dropdown-item>
-          <el-dropdown-item>新建文件夹</el-dropdown-item>
+          <el-dropdown-item command="file">新建文件</el-dropdown-item>
+          <el-dropdown-item command="folder">新建文件夹</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <!-- <el-button type="primary" size="medium" icon="el-icon-upload" @click="onUploadClick">{{ $t("disk.upload") }}</el-button> -->
-      <!-- <el-button v-show="folderBtnShown" type="primary" size="medium" icon="el-icon-folder-add" @click="openCreateDiglog" plain>{{ $t("disk.folder") }}</el-button> -->
       <el-button-group v-show="selectedItems.length > 0" style="margin-left: 10px">
         <el-button type="primary" icon="el-icon-download" size="medium" plain @click="onOutlinkClick">{{ $t("disk.download") }}</el-button>
         <!-- <el-button type="primary" icon="el-icon-share" size="medium" @click="share" plain>分享</el-button> -->
@@ -146,8 +144,8 @@ export default {
         a.remove();
       });
     },
-    openCreateDiglog() {
-      this.$prompt(this.$t("tips.create-folder"), this.$t("create-folder"), {
+    openCreateFolderDiglog() {
+      this.$prompt(this.$t("tips.create-folder"), this.$t("op.create-folder"), {
         confirmButtonText: this.$t("op.confirm"),
         cancelButtonText: this.$t("op.cancel"),
       }).then(({ value }) => {
@@ -161,8 +159,46 @@ export default {
         });
       });
     },
+    openCreateFileDiglog() {
+      var filename 
+      var fileext = '.md'
+      var message = <el-input placeholder="请输入内容" v-model={filename} class="input-with-select">
+    <el-select v-model={fileext} slot="append" placeholder="请选择" style="width: 70px">
+      <el-option label=".txt" value=".txt"></el-option>
+      <el-option label=".md" value=".md"></el-option>
+    </el-select>
+  </el-input>
+      this.$msgbox({
+        title: this.$t("op.create-file"),
+        message: message,
+        showCancelButton: true,
+        confirmButtonText: this.$t("op.confirm"),
+        cancelButtonText: this.$t("op.cancel"),
+      }).then(({ value }) => {
+          let fileObj = {
+            file: new File([""], value, {type: "text/plain"}),
+            filename: value
+          }
+
+          this.$zpan.File.upload(this.getSid(), fileObj).then((data) => {
+            window.open(`f/editor?alias=${data.alias}`, "_blank")
+          });
+      });
+    },
     onUploadSelect(cmd) {
       this.$emit("upload-action", { type: cmd, sid: this.getSid(), dist: this.query.dir });
+    },
+    onCreationSelect(cmd){
+      switch (cmd) {
+        case 'file':
+          this.openCreateFileDiglog()
+          break;
+        case 'folder':
+          this.openCreateFolderDiglog()
+          break;
+        default:
+          break;
+      }
     },
     onFileOpen(type, obj, link) {
       if (obj.type.startsWith("audio")) {
