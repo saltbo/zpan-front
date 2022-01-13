@@ -1,9 +1,9 @@
 <template>
   <section>
-    <Topbar ref="topbar" :menus="$store.state.storages" logined />
+    <Topbar ref="topbar" :menus="$store.state.storages" logined @logoClick="onLogoClick" />
     <el-container style="height: 100%">
-      <el-aside width="200px" style="height: 100%; background-color: #f4f4f5">
-        <el-menu :default-active="leftMenuActive" background-color="#f4f4f5" router>
+      <el-aside width="200px" class="menu" v-bind:class="{ 'menu-open': menuActive }">
+        <el-menu :default-active="leftMenuActive" background-color="#f4f4f5" @select="onLogoClick" router>
           <el-menu-item v-for="menu in leftMenus" :key="menu.path" :index="menu.path">
             <i :class="menu.icon"></i>
             <span slot="title">{{ menu.title }}</span>
@@ -13,8 +13,9 @@
         <!-- <div class="copyright">
         <span>Powered by</span>
         <a href="https://github.com/saltbo/zpan" target="_blank">ZPan</a>
-      </div>-->
+        </div>-->
       </el-aside>
+      <div class="menu-bg-mask" v-bind:class="{ 'mask-open': menuActive }"></div>
 
       <el-main style="height: calc(100% - 65px)">
         <router-view @upload-action="onUploadClick" @audio-open="onAudioOpen"></router-view>
@@ -54,7 +55,9 @@ export default {
     });
   },
   data() {
-    return {};
+    return {
+      menuActive: false,
+    };
   },
   computed: {
     currentBucket() {
@@ -84,7 +87,7 @@ export default {
     },
   },
   watch: {
-    $route(newVal, oldVal) {},
+    $route(newVal, oldVal) { },
   },
   methods: {
     onUploadClick(obj) {
@@ -93,8 +96,11 @@ export default {
     onAudioOpen(obj, link) {
       this.$refs.topbar.AplayerOpen(obj, link);
     },
+    onLogoClick() {
+      this.menuActive = !this.menuActive
+    }
   },
-  mounted() {},
+  mounted() { },
 };
 </script>
 
@@ -121,5 +127,31 @@ export default {
 .el-aside .el-menu-item:hover {
   outline: 0;
   background-color: #eaeaea !important;
+}
+.menu {
+  width: 200px;
+  height: 100%;
+  background-color: #f4f4f5;
+}
+
+@media (max-width: 480px) {
+  .menu {
+    width: 0 !important;
+  }
+  .menu-open {
+    position: fixed;
+    width: 200px !important;
+    z-index: 999;
+  }
+
+  .menu-bg-mask {
+    height: 100%;
+    position: absolute;
+    background: rgba(1, 1, 1, 0.4);
+    z-index: 998;
+  }
+  .mask-open{
+    width: 100%;
+  }
 }
 </style>

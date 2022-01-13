@@ -1,20 +1,41 @@
 <template>
   <el-header>
-    <div class="logo">
-      <img src="@/assets/logo.png" alt="ZPan" @click="$router.push('/')" />
+    <div class="logo" @click="onLogoClick">
+      <img src="@/assets/logo.png" alt="ZPan" />
     </div>
-    <el-menu v-if="showMenu" class="navbar" :default-active="menuActive" mode="horizontal" style="width: 100%" router>
-      <el-menu-item v-for="(menu, index) in menus.slice(0, 5)" :key="index" :index="`/${menu.name}`">{{ menu.title }}</el-menu-item>
+    <el-menu
+      v-if="showMenu"
+      class="navbar"
+      :default-active="menuActive"
+      mode="horizontal"
+      style="width: 100%"
+      router
+    >
+      <el-menu-item
+        v-for="(menu, index) in menus.slice(0, 5)"
+        :key="index"
+        :index="`/${menu.name}`"
+      >{{ menu.title }}</el-menu-item>
 
       <el-submenu index="more" v-show="menus.length > 5">
         <template slot="title">更多</template>
-        <el-menu-item v-for="(menu, index) in menus.slice(5)" :key="index" :index="menu.path">{{ menu.title }}</el-menu-item>
+        <el-menu-item
+          v-for="(menu, index) in menus.slice(5)"
+          :key="index"
+          :index="menu.path"
+        >{{ menu.title }}</el-menu-item>
       </el-submenu>
     </el-menu>
 
     <div v-if="logined" style="position: absolute; right: 20px">
       <!-- 音乐播放器 -->
-      <el-popover v-if="alistVisible" ref="alist" placement="top" width="500" style="margin-right: 20px">
+      <el-popover
+        v-if="alistVisible"
+        ref="alist"
+        placement="top"
+        width="500"
+        style="margin-right: 20px"
+      >
         <i slot="reference" class="el-icon-service"></i>
 
         <zp-aplayer ref="aplayer"></zp-aplayer>
@@ -26,11 +47,19 @@
           <el-badge v-show="ulistTotal" :value="ulistTotal" style="top: -15px"></el-badge>
         </i>
 
-        <zp-uploader ref="uploader" @uploadAdded="$refs.ulist.doShow()" @utotal-change="onUTotalChange"></zp-uploader>
+        <zp-uploader
+          ref="uploader"
+          @uploadAdded="$refs.ulist.doShow()"
+          @utotal-change="onUTotalChange"
+        ></zp-uploader>
       </el-popover>
 
       <el-dropdown trigger="click" @command="onDropdown" @visible-change="onVisible">
-        <el-avatar :size="30" :src="profile.avatar" style="vertical-align: middle; margin-right: 4px"></el-avatar>
+        <el-avatar
+          :size="30"
+          :src="profile.avatar"
+          style="vertical-align: middle; margin-right: 4px"
+        ></el-avatar>
         <span>{{ profile.nickname }}</span>
         <el-dropdown-menu slot="dropdown" style="width: 200px">
           <div style="margin: auto 20px">
@@ -43,13 +72,26 @@
                 <span style="float: right">{{ storage.percentage }}%</span>
               </p>
               <el-progress :percentage="storage.percentage" :show-text="false"></el-progress>
-              <p style="color: rgba(0, 0, 0, 0.54); font-size: 0.75rem">{{ storage.used }}/{{ storage.max }}</p>
+              <p
+                style="color: rgba(0, 0, 0, 0.54); font-size: 0.75rem"
+              >{{ storage.used }}/{{ storage.max }}</p>
             </el-row>
           </div>
 
-          <el-dropdown-item icon="el-icon-setting" command="profile" divided>{{ $t("topbar.settings") }}</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-set-up" command="admin" v-show="showAdmin">{{ $t("topbar.s-platform") }}</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-switch-button" command="signout">{{ $t("topbar.signout") }}</el-dropdown-item>
+          <el-dropdown-item
+            icon="el-icon-setting"
+            command="profile"
+            divided
+          >{{ $t("topbar.settings") }}</el-dropdown-item>
+          <el-dropdown-item
+            icon="el-icon-set-up"
+            command="admin"
+            v-show="showAdmin"
+          >{{ $t("topbar.s-platform") }}</el-dropdown-item>
+          <el-dropdown-item
+            icon="el-icon-switch-button"
+            command="signout"
+          >{{ $t("topbar.signout") }}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -101,6 +143,12 @@ export default {
     },
   },
   methods: {
+    onLogoClick() {
+      this.$emit('logoClick');
+      if (this.$route.path == '/admin') {
+        this.$router.push('/')
+      }
+    },
     onRouteChange(newVal, oldVal) {
       if (this.logined) {
         this.userInfo();
