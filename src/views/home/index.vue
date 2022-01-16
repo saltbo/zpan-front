@@ -1,27 +1,63 @@
 <template>
-  <section>
-    <Topbar ref="topbar" :menus="$store.state.storages" logined @logoClick="onLogoClick" />
-    <el-container style="height: 100%">
-      <el-aside width="200px" class="menu" v-bind:class="{ 'menu-open': menuActive }">
-        <el-menu :default-active="leftMenuActive" background-color="#f4f4f5" @select="onLogoClick" router>
-          <el-menu-item v-for="menu in leftMenus" :key="menu.path" :index="menu.path">
-            <i :class="menu.icon"></i>
-            <span slot="title">{{ menu.title }}</span>
-          </el-menu-item>
-        </el-menu>
+  <v-app>
+    <v-app-bar app clipped-left>
+      <div class="logo">
+        <img src="@/assets/logo.png" alt="ZPan" />
+      </div>
+      <v-tabs align-with-title>
+        <v-tabs-slider color="yellow"></v-tabs-slider>
 
-        <!-- <div class="copyright">
+        <v-tab v-for="item in $store.state.storages.slice(0, 5)" :key="item.alias">{{ item.title }}</v-tab>
+      </v-tabs>
+      <div class="tools-bar">111</div>
+    </v-app-bar>
+
+    <v-navigation-drawer app clipped>
+      <v-list dense nav>
+        <v-list-item
+          v-for="item in leftMenus"
+          :key="item.path"
+          @click="$router.push(item.path)"
+          link
+        >
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <!-- 根据应用组件来调整你的内容 -->
+    <v-main style="height: calc(100% - 65px)">
+      <!-- 给应用提供合适的间距 -->
+      <v-container fluid>
+        <!-- 如果使用 vue-router -->
+        <router-view @upload-action="onUploadClick" @audio-open="onAudioOpen"></router-view>
+      </v-container>
+    </v-main>
+
+    <v-footer app>
+      <!-- -->
+    </v-footer>
+  </v-app>
+
+  <!-- <el-container style="height: 100%">
+      <el-aside width="200px" class="menu" v-bind:class="{ 'menu-open': menuActive }">
+        <div class="copyright">
         <span>Powered by</span>
         <a href="https://github.com/saltbo/zpan" target="_blank">ZPan</a>
-        </div>-->
+        </div>
       </el-aside>
       <div class="menu-bg-mask" v-bind:class="{ 'mask-open': menuActive }"></div>
 
       <el-main style="height: calc(100% - 65px)">
         <router-view @upload-action="onUploadClick" @audio-open="onAudioOpen"></router-view>
       </el-main>
-    </el-container>
-  </section>
+  </el-container>-->
 </template>
 
 <script>
@@ -55,13 +91,14 @@ export default {
     });
   },
   data() {
-    return {
-      menuActive: false,
-    };
+    return {};
   },
   computed: {
     currentBucket() {
       return this.$route.params.sname;
+    },
+    menuActive() {
+      return `/${this.$route.params.sname}`;
     },
     leftMenuActive() {
       return this.$route.fullPath;
@@ -96,15 +133,20 @@ export default {
     onAudioOpen(obj, link) {
       this.$refs.topbar.AplayerOpen(obj, link);
     },
-    onLogoClick() {
-      this.menuActive = !this.menuActive
-    }
   },
   mounted() { },
 };
 </script>
 
 <style scoped>
+.logo {
+  width: 150px;
+  /* display: inline-block; */
+  font-size: 35px;
+  padding: 0 15px;
+  /* vertical-align: middle; */
+}
+
 .copyright {
   text-align: center;
   position: absolute;
@@ -150,7 +192,7 @@ export default {
     background: rgba(1, 1, 1, 0.4);
     z-index: 998;
   }
-  .mask-open{
+  .mask-open {
     width: 100%;
   }
 }
