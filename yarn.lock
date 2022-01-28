@@ -9700,6 +9700,11 @@ vue-cli-plugin-vuetify@^2.4.5:
     semver "^7.1.2"
     shelljs "^0.8.3"
 
+vue-contextmenujs@^1.3.13:
+  version "1.3.13"
+  resolved "https://registry.npmmirror.com/vue-contextmenujs/download/vue-contextmenujs-1.3.13.tgz#3bdae023c7bd42095e78da4258000250d50ab8ef"
+  integrity sha1-O9rgI8e9QgleeNpCWAACUNUKuO8=
+
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-2.0.3.tgz#c268c96c6d94cfe3d938a5f7593959b0ca3360d1"

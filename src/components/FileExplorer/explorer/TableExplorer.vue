@@ -23,6 +23,7 @@
                     @click="onRowClick(idx, item)"
                     :class="{ rowHighlight: highlightIdx == idx }"
                     v-intersect="(entries, observer, isIntersecting) => { infiniteScrolling(idx, entries, observer, isIntersecting) }"
+                    @contextmenu.prevent="(e) => { openCtxMenu(e, item) }"
                 >
                     <td class="col-select">
                         <v-simple-checkbox
@@ -52,7 +53,7 @@
 </template>
 
 <script>
-import mixin from "./mixin";
+import mixin from "../explorer_mixin";
 export default {
     mixins: [mixin],
     data() {

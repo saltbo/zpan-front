@@ -13,27 +13,21 @@
     </el-row>
 
     <!-- explorer -->
-    <TableExplorer
-      v-model="rows"
-      :loading="loading"
-      @on-click="onClick"
-      @scroll-end="onScrollEnd"
-      v-if="layout == 'list'"
-    />
-    <GridExplorer v-model="rows" :loading="loading" @on-click="onClick" v-if="layout == 'grid'" />
-    <!-- <ListExplorer v-model="rows" :loading="loading" :rowButtons="rowButtons" :moreButtons="moreButtons" @on-click="onClick" @scroll-end="onScrollEnd" @selection-change="onSelectionChange" v-else /> -->
+    <template v-if="layout == 'list'">
+      <TableExplorer v-model="rows" :linkLoader="linkLoader" @scroll-end="onScrollEnd" />
+    </template>
+    <template v-else>
+      <GridExplorer v-model="rows" :linkLoader="linkLoader" @scroll-end="onScrollEnd" />
+    </template>
   </div>
 </template>
 
 <script>
-import elTableInfiniteScroll from "el-table-infinite-scroll";
 import GridExplorer from "./explorer/GridExplorer";
-import ListExplorer from "./explorer/ListExplorer";
 import TableExplorer from "./explorer/TableExplorer";
 export default {
   components: {
     GridExplorer,
-    ListExplorer,
     TableExplorer,
   },
   props: {
@@ -41,14 +35,12 @@ export default {
       type: String,
       default: "list",
     },
-    dataLoader: Function,
-    linkLoader: Function,
-    rowButtons: Array,
-    moreButtons: Array,
     rootDir: {
       type: String,
       default: "",
     },
+    dataLoader: Function,
+    linkLoader: Function,
   },
   data() {
     return {
@@ -68,8 +60,11 @@ export default {
         this.listRefresh();
       }
     },
-    rows(nv) {
-      this.$emit("selection-change", nv.filter(el => el.selected == true));
+    rows: {
+      deep: true,
+      handler(nv, ov) {
+        this.$emit("selection-change", nv.filter(el => el.selected == true));
+      }
     }
   },
   computed: {
@@ -144,7 +139,7 @@ export default {
         rtf: { name: 'file-rtf', color: '' },
         markdown: { name: 'language-markdown', color: '' },
         xml: { name: 'xml', color: '' },
-        msword: { name: 'file-word', color: '' },
+        'msword': { name: 'file-word', color: '' },
         'vnd.ms-excel': { name: 'file-excel', color: '' },
         'vnd.ms-powerpoint': { name: 'file-powerpoint', color: '' },
         'vnd.openxmlformats-officedocument.wordprocessingml.document': { name: 'file-word', color: '' },
@@ -193,16 +188,6 @@ export default {
 
       let query = !dir ? {} : { dir: dir };
       return { query: query };
-    },
-    onClick(type, obj) {
-      if (type == "folder") {
-        this.$router.push(this.buildQuery(obj.fullpath));
-        return;
-      }
-
-      this.linkLoader(obj).then((link) => {
-        this.$emit("file-open", type, obj, link);
-      });
     },
   },
   mounted() {

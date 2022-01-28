@@ -1,6 +1,12 @@
 <template>
   <div class="explorer">
-    <div class="explorer-item" v-for="item in data" :key="item.alias" @click="onNameClick(item)">
+    <div
+      class="explorer-item"
+      v-for="item in data"
+      :key="item.alias"
+      @click="onNameClick(item)"
+      @contextmenu.prevent="(e) => { openCtxMenu(e, item) }"
+    >
       <v-icon :color="item.icon.color" large>mdi-{{ item.icon.name }}</v-icon>
       <p>{{ item.name }}</p>
     </div>
@@ -8,7 +14,7 @@
 </template>
 
 <script>
-import mixin from "./mixin";
+import mixin from "../explorer_mixin";
 export default {
   mixins: [mixin],
   data() {
@@ -20,9 +26,6 @@ export default {
     },
     onSelectable(row, index) {
       if (!row.dirtype) return true;
-    },
-    handleCommand(command) {
-      command.action(command.row);
     },
     onScrollEnd() {
       this.$emit("scroll-end")
