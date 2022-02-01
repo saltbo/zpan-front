@@ -55,7 +55,7 @@
 <script>
 import { transfer } from "@/helper";
 import utils from "@/libs/utils.js";
-import DialogOutlink from "@/views/home/disk/components/DialogOutlink";
+// import DialogOutlink from "@/views/home/disk/components/DialogOutlink";
 import Topbar from "@/components/Topbar";
 export default {
   components: { Topbar },
@@ -134,7 +134,7 @@ export default {
       } else if (this.selectedItems.length == 1) {
         this.openDownload(this.selectedItems[0]);
       } else {
-        transfer(DialogOutlink)({ items: this.selectedItems });
+        // transfer(DialogOutlink)({ items: this.selectedItems });
       }
     },
     listRefresh(alias) {

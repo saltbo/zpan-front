@@ -40,6 +40,7 @@
     "vue-template-compiler": "^2.6.14",
     "vue-upload-component": "^2.8.22",
     "vuetify-loader": "^1.7.0",
+    "vuetify-toast-snackbar": "^0.6.1",
     "vuex": "^3.6.2"
   },
   "eslintConfig": {

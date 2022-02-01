@@ -98,6 +98,7 @@ export default {
       this.$router.push({ name: "disk", params: this.$route.params, query: { dir: matter.parent } });
     },
     uploadSelect(obj) {
+      console.log(obj, 111)
       this.sid = obj.sid;
       this.dist = obj.dist;
       console.log(obj);

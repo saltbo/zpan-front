@@ -4,8 +4,8 @@
       class="explorer-item"
       v-for="item in data"
       :key="item.alias"
-      @click="onNameClick(item)"
-      @contextmenu.prevent="(e) => { openCtxMenu(e, item) }"
+      @click="$parent.onNameClick(item)"
+      @contextmenu.prevent="(e) => { $parent.openCtxMenu(e, item) }"
     >
       <v-icon :color="item.icon.color" large>mdi-{{ item.icon.name }}</v-icon>
       <p>{{ item.name }}</p>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import mixin from "../explorer_mixin";
+import mixin from "./mixin";
 export default {
   mixins: [mixin],
   data() {

@@ -19,57 +19,28 @@
   <div style="height: calc(100% - 58px)">
     <el-row class="toolbar">
       <el-dropdown size="small" style="margin-right: 10px" @command="onUploadSelect">
-        <el-button
-          type="primary"
-          size="small"
-          icon="el-icon-upload"
-          @click="onUploadSelect('file')"
-        >上传</el-button>
+        <el-button type="primary" size="small" icon="el-icon-upload" @click="onUploadSelect('file')">上传</el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="file">上传文件</el-dropdown-item>
           <el-dropdown-item command="folder">上传文件夹</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       <el-dropdown size="small" @command="onCreationSelect">
-        <el-button
-          type="primary"
-          size="small"
-          icon="el-icon-folder-add"
-          @click="openCreateFolderDiglog"
-          plain
-        >新建</el-button>
+        <el-button type="primary" size="small" icon="el-icon-folder-add" @click="openCreateFolderDiglog" plain>新建</el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="file">新建文件</el-dropdown-item>
           <el-dropdown-item command="folder">新建文件夹</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       <el-button-group v-show="selectedItems.length > 0" style="margin-left: 10px">
-        <el-button
-          type="primary"
-          icon="el-icon-download"
-          size="small"
-          plain
-          <!-- @click="onOutlinkClick" -->
-        >{{ $t("disk.download") }}</el-button>
+        <el-button type="primary" icon="el-icon-download" size="small" plain @click="onDownload">{{ $t("disk.download") }}</el-button>
         <!-- <el-button type="primary" icon="el-icon-share" size="small" @click="share" plain>分享</el-button> -->
-        <el-button
-          type="primary"
-          icon="el-icon-delete"
-          size="small"
-          plain
-          @click="deleteSelection"
-        >{{ $t("disk.delete") }}</el-button>
-        <!-- <el-button type="primary" size="small" plain>移动到</el-button> -->
+        <el-button type="primary" icon="el-icon-delete" size="small" plain @click="onDelete">{{ $t("disk.delete") }}</el-button>
+        <el-button type="primary" icon="el-icon-move" size="small" plain @click="onMove">移动到</el-button>
       </el-button-group>
 
       <div style="float: right">
-        <el-input
-          class="search"
-          size="small"
-          :placeholder="$t('topbar.search')"
-          v-model="query.kw"
-          @keyup.enter.native="listRefresh"
-        >
+        <el-input class="search" size="small" :placeholder="$t('topbar.search')" v-model="query.kw" @keyup.enter.native="listRefresh">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
         <i v-if="layout == 'list'" class="iconfont icon-grid" @click="layout = 'grid'"></i>
@@ -79,10 +50,14 @@
 
     <!-- main -->
     <FileExplorer
-      :layout="layout"
       ref="fexp"
+      :layout="layout"
       :dataLoader="dataLoader"
       :linkLoader="linkLoader"
+      :action-move="$zpan.File.move"
+      :action-copy="$zpan.File.copy"
+      :action-rename="$zpan.File.rename"
+      :action-remove="$zpan.File.delete"
       @file-action="onFileAction"
       @selection-change="onSelectionChange"
     />
@@ -159,6 +134,21 @@ export default {
     listRefresh() {
       this.$refs.fexp.listRefresh();
     },
+    onUploadSelect(cmd) {
+      this.$emit("upload-action", { type: cmd, sid: this.getSid(), dist: this.query.dir });
+    },
+    onCreationSelect(cmd) {
+      switch (cmd) {
+        case 'file':
+          this.openCreateFileDiglog()
+          break;
+        case 'folder':
+          this.openCreateFolderDiglog()
+          break;
+        default:
+          break;
+      }
+    },
     openCreateFolderDiglog() {
       this.$prompt(this.$t("tips.create-folder"), this.$t("op.create-folder"), {
         confirmButtonText: this.$t("op.confirm"),
@@ -200,59 +190,15 @@ export default {
         });
       });
     },
-    onUploadSelect(cmd) {
-      this.$emit("upload-action", { type: cmd, sid: this.getSid(), dist: this.query.dir });
-    },
-    onCreationSelect(cmd) {
-      switch (cmd) {
-        case 'file':
-          this.openCreateFileDiglog()
-          break;
-        case 'folder':
-          this.openCreateFolderDiglog()
-          break;
-        default:
-          break;
-      }
-    },
-    onFileAction(){
-      
+    onFileAction() {
+
     },
     onSelectionChange(selection) {
       this.selectedItems = selection;
     },
-    deleteSelection() {
-      this.$confirm(this.$t("tips.batch-delete"), this.$t("op.batch-delete"), {
-        type: "warning",
-        confirmButtonText: this.$t("op.confirm"),
-        cancelButtonText: this.$t("op.cancel"),
-      }).then(() => {
-        const loading = this.$loading({
-          lock: true,
-          text: this.$t("tips.deleting"),
-          spinner: "el-icon-loading",
-          background: "rgba(0, 0, 0, 0.7)",
-        });
-
-        Promise.all(
-          this.selectedItems.map((obj) => {
-            return this.$zpan.File.delete(obj.alias);
-          })
-        )
-          .then((ret) => {
-            this.listRefresh();
-            loading.close();
-            this.$message({
-              type: "success",
-              message: this.$t("msg.batch-delete-success"),
-            });
-          })
-          .catch((err) => {
-            loading.close();
-            console.log(err);
-          });
-      });
-    },
+    onDownload() { this.$refs.fexp.download() },
+    onMove() { this.$refs.fexp.openMove() },
+    onDelete() { this.$refs.fexp.openRemove() }
   },
   mounted() {
     this.query.type = this.$route.query.type;

@@ -1,25 +1,12 @@
 <template>
   <v-app>
     <v-app-bar app clipped-left>
-      <div class="logo">
-        <img src="@/assets/logo.png" alt="ZPan" />
-      </div>
-      <v-tabs align-with-title>
-        <v-tabs-slider color="yellow"></v-tabs-slider>
-
-        <v-tab v-for="item in $store.state.storages.slice(0, 5)" :key="item.alias">{{ item.title }}</v-tab>
-      </v-tabs>
-      <div class="tools-bar">111</div>
+      <Topbar ref="topbar" />
     </v-app-bar>
 
     <v-navigation-drawer app clipped>
       <v-list dense nav>
-        <v-list-item
-          v-for="item in leftMenus"
-          :key="item.path"
-          @click="$router.push(item.path)"
-          link
-        >
+        <v-list-item v-for="item in leftMenus" :key="item.path" @click="$router.push(item.path)" link>
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -139,14 +126,6 @@ export default {
 </script>
 
 <style scoped>
-.logo {
-  width: 150px;
-  /* display: inline-block; */
-  font-size: 35px;
-  padding: 0 15px;
-  /* vertical-align: middle; */
-}
-
 .copyright {
   text-align: center;
   position: absolute;

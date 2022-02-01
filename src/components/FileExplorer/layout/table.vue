@@ -4,12 +4,7 @@
             <thead>
                 <tr>
                     <th class="text-left">
-                        <v-simple-checkbox
-                            style="width: 2px"
-                            v-model="selectedAll"
-                            :ripple="false"
-                            :indeterminate="selectedSome"
-                        ></v-simple-checkbox>
+                        <v-simple-checkbox style="width: 2px" v-model="selectedAll" :ripple="false" :indeterminate="selectedSome"></v-simple-checkbox>
                     </th>
                     <th class="text-left">{{ $t('fth.name') }}</th>
                     <th class="col-size text-left">{{ $t('fth.size') }}</th>
@@ -18,28 +13,21 @@
             </thead>
             <tbody>
                 <tr
-                    v-for="(item,idx) in data"
+                    v-for="(item, idx) in data"
                     :key="item.alias"
                     @click="onRowClick(idx, item)"
                     :class="{ rowHighlight: highlightIdx == idx }"
                     v-intersect="(entries, observer, isIntersecting) => { infiniteScrolling(idx, entries, observer, isIntersecting) }"
-                    @contextmenu.prevent="(e) => { openCtxMenu(e, item) }"
+                    @contextmenu.prevent="(e) => { $parent.openCtxMenu(e, item) }"
                 >
                     <td class="col-select">
-                        <v-simple-checkbox
-                            style="width: 2px"
-                            v-model="item.selected"
-                            :ripple="false"
-                        ></v-simple-checkbox>
+                        <v-simple-checkbox style="width: 2px" v-model="item.selected" :ripple="false"></v-simple-checkbox>
                     </td>
                     <td class="col-first">
                         <v-icon :color="item.icon.color" large>mdi-{{ item.icon.name }}</v-icon>
                         <div class="col-name">
                             <v-hover v-slot="{ hover }">
-                                <span
-                                    :class="{ 'name-on-hover': hover }"
-                                    @click="onNameClick(item)"
-                                >{{ item.name }}</span>
+                                <span :class="{ 'name-on-hover': hover }" @click="$parent.onNameClick(item)">{{ item.name }}</span>
                             </v-hover>
                             <span class="col-time-mobile">{{ item.updated | moment }}</span>
                         </div>
@@ -53,7 +41,7 @@
 </template>
 
 <script>
-import mixin from "../explorer_mixin";
+import mixin from "./mixin";
 export default {
     mixins: [mixin],
     data() {

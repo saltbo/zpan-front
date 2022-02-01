@@ -1,101 +1,27 @@
 <template>
-  <el-header>
-    <div class="logo" @click="onLogoClick">
+  <div style="display: contents">
+    <div class="logo">
       <img src="@/assets/logo.png" alt="ZPan" />
     </div>
-    <el-menu
-      v-if="showMenu"
-      class="navbar"
-      :default-active="menuActive"
-      mode="horizontal"
-      style="width: 100%"
-      router
-    >
-      <el-menu-item
-        v-for="(menu, index) in menus.slice(0, 5)"
-        :key="index"
-        :index="`/${menu.name}`"
-      >{{ menu.title }}</el-menu-item>
+    <v-tabs background-color="transparent" align-with-title>
+      <v-tabs-slider color="yellow"></v-tabs-slider>
 
-      <el-submenu index="more" v-show="menus.length > 5">
-        <template slot="title">更多</template>
-        <el-menu-item
-          v-for="(menu, index) in menus.slice(5)"
-          :key="index"
-          :index="menu.path"
-        >{{ menu.title }}</el-menu-item>
-      </el-submenu>
-    </el-menu>
+      <v-tab v-for="item in $store.state.storages.slice(0, 5)" :key="item.alias">{{ item.title }}</v-tab>
+    </v-tabs>
+    <div class="tools-bar">
+      <v-menu v-model="ulistTotal" :close-on-content-click="false" :nudge-width="200" offset-x>
+        <template v-slot:activator="{ on, attrs }">
+          <v-badge color="red" dot>
+            <v-icon v-bind="attrs" v-on="on">mdi-transfer-up</v-icon>
+          </v-badge>
+        </template>
 
-    <div v-if="logined" style="position: absolute; right: 20px">
-      <!-- 音乐播放器 -->
-      <el-popover
-        v-if="alistVisible"
-        ref="alist"
-        placement="top"
-        width="500"
-        style="margin-right: 20px"
-      >
-        <i slot="reference" class="el-icon-service"></i>
-
-        <zp-aplayer ref="aplayer"></zp-aplayer>
-      </el-popover>
-
-      <!-- 任务管理器 -->
-      <el-popover ref="ulist" placement="bottom-end" width="500" style="margin-right: 20px">
-        <i slot="reference" class="el-icon-sort">
-          <el-badge v-show="ulistTotal" :value="ulistTotal" style="top: -15px"></el-badge>
-        </i>
-
-        <zp-uploader
-          ref="uploader"
-          @uploadAdded="$refs.ulist.doShow()"
-          @utotal-change="onUTotalChange"
-        ></zp-uploader>
-      </el-popover>
-
-      <el-dropdown trigger="click" @command="onDropdown" @visible-change="onVisible">
-        <el-avatar
-          :size="30"
-          :src="profile.avatar"
-          style="vertical-align: middle; margin-right: 4px"
-        ></el-avatar>
-        <span>{{ profile.nickname }}</span>
-        <el-dropdown-menu slot="dropdown" style="width: 200px">
-          <div style="margin: auto 20px">
-            <el-row style="text-align: center; margin: 10px 0">
-              <el-avatar :size="50" :src="profile.avatar"></el-avatar>
-            </el-row>
-            <el-row class="storage">
-              <p>
-                <span style>{{ $t("leftnav.storage") }}</span>
-                <span style="float: right">{{ storage.percentage }}%</span>
-              </p>
-              <el-progress :percentage="storage.percentage" :show-text="false"></el-progress>
-              <p
-                style="color: rgba(0, 0, 0, 0.54); font-size: 0.75rem"
-              >{{ storage.used }}/{{ storage.max }}</p>
-            </el-row>
-          </div>
-
-          <el-dropdown-item
-            icon="el-icon-setting"
-            command="profile"
-            divided
-          >{{ $t("topbar.settings") }}</el-dropdown-item>
-          <el-dropdown-item
-            icon="el-icon-set-up"
-            command="admin"
-            v-show="showAdmin"
-          >{{ $t("topbar.s-platform") }}</el-dropdown-item>
-          <el-dropdown-item
-            icon="el-icon-switch-button"
-            command="signout"
-          >{{ $t("topbar.signout") }}</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+        <v-card>
+          <zp-uploader ref="uploader" @uploadAdded="$refs.ulist.doShow()" @utotal-change="onUTotalChange"></zp-uploader>
+        </v-card>
+      </v-menu>
     </div>
-  </el-header>
+  </div>
 </template>
 
 <script>
@@ -183,7 +109,8 @@ export default {
       if (visible) this.userInfo();
     },
     uploadSelect(obj) {
-      this.$refs.uploader.uploadSelect(obj);
+      console.log(222, obj,this.$refs.uploader)
+      // this.$refs.uploader.uploadSelect(obj);
     },
     AplayerOpen(obj, link) {
       this.alistVisible = true;
@@ -202,7 +129,7 @@ export default {
 </script>
 
 <style>
-.el-header {
+/* .el-header {
   display: flex;
   line-height: 60px;
   background-color: #fff;
@@ -215,17 +142,25 @@ export default {
   font-size: 35px;
   padding: 0 15px;
   vertical-align: middle;
+} */
+
+.logo {
+  width: 180px;
+  /* display: inline-block; */
+  font-size: 35px;
+  padding: 0 15px;
+  /* vertical-align: middle; */
 }
 
 .logo img {
   cursor: pointer;
 }
 
-.el-header .navbar {
+/* .el-header .navbar {
   font-weight: bold;
 }
 
 .el-header .storage {
   margin: 15px 0;
-}
+} */
 </style>

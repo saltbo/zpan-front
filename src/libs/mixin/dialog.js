@@ -23,12 +23,12 @@ const DialogMixin = {
         close() {
             this.visible = false;
         },
-        completed() {
-            this.$emit('completed');
+        completed(data, ) {
+            this.$emit('completed', data);
         },
-        finish() {
+        finish(data) {
             this.close();
-            this.completed();
+            this.completed(data);
         },
     }
 }
