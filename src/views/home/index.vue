@@ -23,7 +23,9 @@
       <!-- 给应用提供合适的间距 -->
       <v-container fluid>
         <!-- 如果使用 vue-router -->
+      <KeepAlive include="disk">
         <router-view @upload-action="onUploadClick" @audio-open="onAudioOpen"></router-view>
+      </KeepAlive>
       </v-container>
     </v-main>
 
@@ -149,6 +151,7 @@ export default {
   outline: 0;
   background-color: #eaeaea !important;
 }
+
 .menu {
   width: 200px;
   height: 100%;
@@ -159,6 +162,7 @@ export default {
   .menu {
     width: 0 !important;
   }
+
   .menu-open {
     position: fixed;
     width: 200px !important;
@@ -171,6 +175,7 @@ export default {
     background: rgba(1, 1, 1, 0.4);
     z-index: 998;
   }
+
   .mask-open {
     width: 100%;
   }

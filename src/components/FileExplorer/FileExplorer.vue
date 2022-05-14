@@ -197,10 +197,10 @@ export default {
       openOutline(...this.selection)
     },
     openMove() {
-      openMove(...this.selection)
+      openMove(...this.selection).then(this.listRefresh)
     },
     openRemove() {
-      openRemove(...this.selection)
+      openRemove(...this.selection).then(this.listRefresh)
     },
   },
   mounted() {

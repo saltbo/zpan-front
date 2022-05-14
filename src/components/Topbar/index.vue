@@ -4,12 +4,12 @@
       <img src="@/assets/logo.png" alt="ZPan" />
     </div>
     <v-tabs background-color="transparent" align-with-title>
-      <v-tabs-slider color="yellow"></v-tabs-slider>
+      <v-tabs-slider></v-tabs-slider>
 
       <v-tab v-for="item in $store.state.storages.slice(0, 5)" :key="item.alias">{{ item.title }}</v-tab>
     </v-tabs>
     <div class="tools-bar">
-      <v-menu v-model="ulistTotal" :close-on-content-click="false" :nudge-width="200" offset-x>
+      <v-menu v-model="uListActive2" :close-on-content-click="false" :nudge-width="200" offset-x>
         <template v-slot:activator="{ on, attrs }">
           <v-badge color="red" dot>
             <v-icon v-bind="attrs" v-on="on">mdi-transfer-up</v-icon>
@@ -17,7 +17,7 @@
         </template>
 
         <v-card>
-          <zp-uploader ref="uploader" @uploadAdded="$refs.ulist.doShow()" @utotal-change="onUTotalChange"></zp-uploader>
+          <zp-uploader-list></zp-uploader-list>
         </v-card>
       </v-menu>
     </div>
@@ -25,15 +25,18 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex'
 import { setup } from "@/i18n";
 import utils from "@/libs/utils";
 import Cookie from "js-cookie";
 const defaultAvatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
 import ZpUploader from "@/components/Uploader";
+import ZpUploaderList from "@/components/Uploader/list.vue";
 import ZpAplayer from "@/components/ZAPlayer";
 export default {
   components: {
     ZpUploader,
+    ZpUploaderList,
     ZpAplayer,
   },
   props: {
@@ -57,7 +60,21 @@ export default {
       setup(nv);
     },
   },
+
   computed: {
+    ...mapState([
+      'uListActive',
+    ]),
+    uListActive2: {
+      get() {
+        return this.uListActive;
+      },
+      set(active) {
+        console.log(123123)
+        this.$store.commit('setuListActive', active)
+        return active
+      }
+    },
     showMenu() {
       return this.menus && this.menus.length > 0;
     },
@@ -107,10 +124,6 @@ export default {
     },
     onVisible(visible) {
       if (visible) this.userInfo();
-    },
-    uploadSelect(obj) {
-      console.log(222, obj,this.$refs.uploader)
-      // this.$refs.uploader.uploadSelect(obj);
     },
     AplayerOpen(obj, link) {
       this.alistVisible = true;
