@@ -1,26 +1,52 @@
 <template>
-  <section>
-    <Topbar ref="topbar" :menus="$store.state.storages" logined />
-    <el-container style="height: 100%">
-      <el-aside width="200px" style="height: 100%; background-color: #f4f4f5">
-        <el-menu :default-active="leftMenuActive" background-color="#f4f4f5" router>
-          <el-menu-item v-for="menu in leftMenus" :key="menu.path" :index="menu.path">
-            <i :class="menu.icon"></i>
-            <span slot="title">{{ menu.title }}</span>
-          </el-menu-item>
-        </el-menu>
+  <v-app>
+    <v-app-bar app clipped-left>
+      <Topbar ref="topbar" />
+    </v-app-bar>
 
-        <!-- <div class="copyright">
+    <v-navigation-drawer app clipped>
+      <v-list dense nav>
+        <v-list-item v-for="item in leftMenus" :key="item.path" @click="$router.push(item.path)" link>
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <!-- 根据应用组件来调整你的内容 -->
+    <v-main style="height: calc(100% - 65px)">
+      <!-- 给应用提供合适的间距 -->
+      <v-container fluid>
+        <!-- 如果使用 vue-router -->
+      <KeepAlive include="disk">
+        <router-view @upload-action="onUploadClick" @audio-open="onAudioOpen"></router-view>
+      </KeepAlive>
+      </v-container>
+    </v-main>
+
+    <v-footer app>
+      <!-- -->
+    </v-footer>
+  </v-app>
+
+  <!-- <el-container style="height: 100%">
+      <el-aside width="200px" class="menu" v-bind:class="{ 'menu-open': menuActive }">
+        <div class="copyright">
         <span>Powered by</span>
         <a href="https://github.com/saltbo/zpan" target="_blank">ZPan</a>
-      </div>-->
+        </div>
       </el-aside>
+      <div class="menu-bg-mask" v-bind:class="{ 'mask-open': menuActive }"></div>
 
       <el-main style="height: calc(100% - 65px)">
         <router-view @upload-action="onUploadClick" @audio-open="onAudioOpen"></router-view>
       </el-main>
-    </el-container>
-  </section>
+  </el-container>-->
 </template>
 
 <script>
@@ -60,6 +86,9 @@ export default {
     currentBucket() {
       return this.$route.params.sname;
     },
+    menuActive() {
+      return `/${this.$route.params.sname}`;
+    },
     leftMenuActive() {
       return this.$route.fullPath;
     },
@@ -84,7 +113,7 @@ export default {
     },
   },
   watch: {
-    $route(newVal, oldVal) {},
+    $route(newVal, oldVal) { },
   },
   methods: {
     onUploadClick(obj) {
@@ -94,7 +123,7 @@ export default {
       this.$refs.topbar.AplayerOpen(obj, link);
     },
   },
-  mounted() {},
+  mounted() { },
 };
 </script>
 
@@ -121,5 +150,34 @@ export default {
 .el-aside .el-menu-item:hover {
   outline: 0;
   background-color: #eaeaea !important;
+}
+
+.menu {
+  width: 200px;
+  height: 100%;
+  background-color: #f4f4f5;
+}
+
+@media (max-width: 480px) {
+  .menu {
+    width: 0 !important;
+  }
+
+  .menu-open {
+    position: fixed;
+    width: 200px !important;
+    z-index: 999;
+  }
+
+  .menu-bg-mask {
+    height: 100%;
+    position: absolute;
+    background: rgba(1, 1, 1, 0.4);
+    z-index: 998;
+  }
+
+  .mask-open {
+    width: 100%;
+  }
 }
 </style>

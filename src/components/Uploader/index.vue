@@ -1,128 +1,63 @@
 <template>
-  <div class="uploader">
-    <div style="display: flex; justify-content: space-between">
-      <h5>{{ title }}</h5>
-      <file-upload ref="upload" v-model="files" :multiple="true" :maximum="50" @input-filter="inputFilter" @input-file="inputFile"> </file-upload>
-    </div>
-    <el-table :data="files" size="mini" :show-header="false" empty-text="暂无上传任务" style="width: 100%">
-      <el-table-column prop="icon" width="50">
-        <template slot-scope="scope">
-          <i :class="`iconfont matter-icon ${type2icon(scope.row.type)}`"></i>
-        </template>
-      </el-table-column>
-      <el-table-column prop="name">
-        <template slot-scope="scope">
-          <div>{{ scope.row.name }}</div>
-          <el-progress :percentage="Number(scope.row.progress)" :stroke-width="3" :show-text="false"></el-progress>
-          <div style="font-size: 12px">
-            <span class="size">{{ fomatSize(scope.row.size) }}</span>
-            <span class="speed">{{ fomatSize(scope.row.speed) }}/s</span>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="op" width="100">
-        <template slot-scope="scope">
-          <!-- todo 暂停和继续需要依赖分片上传，先不支持，后续迭代 -->
-          <el-button v-show="scope.row.progress == 100" type="primary" size="mini" icon="el-icon-folder" circle plain @click="onFolderClick(scope.row.matter)"></el-button>
-          <!-- <el-button v-show="scope.row.progress != 100 && uploading" type="primary" size="mini" icon="el-icon-video-pause" circle plain @click="$refs.upload.active = false"></el-button> -->
-          <!-- <el-button v-show="scope.row.progress != 100 && !uploading" type="primary" size="mini" icon="el-icon-video-play" circle plain @click="$refs.upload.active = true"></el-button> -->
-          <el-button v-show="scope.row.progress != 100" type="primary" size="mini" icon="el-icon-close" circle plain @click="$refs.upload.remove(scope.row)"></el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="tip">- 仅展示本次上传任务 -</div>
-  </div>
+  <file-upload ref="upload" v-model="files" :multiple="true" :maximum="50" @input-filter="inputFilter"
+    @input-file="inputFile" @update:modelValue="inputUpdate">
+    <slot></slot>
+  </file-upload>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import FileUpload from "vue-upload-component";
-import utils from "@/libs/utils";
 export default {
+  name: 'uploader',
+  props: {
+    sid: 0,
+    dist: "",
+  },
   components: {
     FileUpload,
   },
   data() {
     return {
-      sid: 0,
-      dist: "",
       files: [],
-      uploading: false,
-      uploadedCnt: 0,
     };
   },
   watch: {
     files(nv) {
-      this.$emit("utotal-change", nv.length);
-    },
-  },
-  computed: {
-    title() {
-      let text = this.uploading ? "正在上传" : "上传完成";
-      return `${text}（${this.uploadedCnt}/${this.files.length}）`;
+      console.log("files:", nv)
+      this.$store.commit('updateFiles', nv)
     },
   },
   methods: {
-    type2icon(type) {
-      console.log(type);
-      let [t1, t2] = type.split("/");
-      let mt = ["pdf", "html", "xml", "psd", "rtf"];
-      if (mt.includes(t2)) {
-        return `icon-${t2}`;
-      }
-
-      let codeTypes = ["json", "yaml", "x-yaml"];
-      if (codeTypes.includes(t2)) {
-        return "icon-html";
-      }
-
-      let compressedFileTypes = ["zip", "x-gzip"];
-      if (compressedFileTypes.includes(t2)) {
-        return "icon-compressed-file";
-      }
-
-      // if (this.isOfficeFile(type)) {
-      //   return this.officeIcon(type);
+    upload() {
+      // if (!this.$refs.upload.features.directory) {
+      //   this.alert("Your browser does not support");
+      //   return;
       // }
-
-      let gt = ["audio", "video", "image", "text"];
-      if (gt.includes(t1)) {
-        return `icon-${t1}`;
-      }
-
-      return "icon-file";
-    },
-    fomatSize(v) {
-      return utils.formatBytes(v, 1);
-    },
-    onFolderClick(matter) {
-      this.$router.push({ name: "disk", params: this.$route.params, query: { dir: matter.parent } });
-    },
-    uploadSelect(obj) {
-      this.sid = obj.sid;
-      this.dist = obj.dist;
-      console.log(obj);
-      if (!this.$refs.upload.features.directory) {
-        this.alert("Your browser does not support");
-        return;
-      }
 
       let input = document.createElement("input");
       input.setAttribute("type", "file");
       input.setAttribute("style", "display: none");
       input.setAttribute("multiple", true);
-      if (obj.type == "folder") {
-        input.setAttribute("allowdirs", true);
-        input.setAttribute("directory", true);
-        input.setAttribute("webkitdirectory", true);
-      }
+      // if (obj.type == "folder") {
+      //   input.setAttribute("allowdirs", true);
+      //   input.setAttribute("directory", true);
+      //   input.setAttribute("webkitdirectory", true);
+      // }
+
       document.querySelector("body").appendChild(input);
       input.click();
       input.onchange = (e) => {
         this.$refs.upload.addInputFile(input);
+        this.$store.commit('setuListActive', true);
         document.querySelector("body").removeChild(input);
       };
     },
-    inputFilter(newFile, oldFile, prevent) {},
+    inputUpdate(files) {
+      console.log("inputUpdate", files)
+      // this.$store.commit('updateFiles', files)
+    },
+    inputFilter(newFile, oldFile, prevent) { },
     inputFile(newFile, oldFile) {
       if (newFile && oldFile && !newFile.active && oldFile.active) {
         // 获得相应数据
@@ -131,7 +66,7 @@ export default {
           //  获得响应状态码
           console.log("status", newFile.xhr.status);
           this.$zpan.File.uploadDone(oldFile.matter.alias).then((ret) => {
-            this.uploadedCnt++;
+            this.$store.commit('uploadedCntIncr')
           });
         }
         return;
@@ -146,40 +81,39 @@ export default {
       // Automatically activate upload
       if (Boolean(newFile) !== Boolean(oldFile) || oldFile.error !== newFile.error) {
         if (!this.$refs.upload.active) {
+          console.log(newFile, 111)
           this.$zpan.File.create(this.sid, this.dist, newFile).then((ret) => {
             newFile.putAction = ret.data.uplink;
             newFile.headers = ret.data.headers;
             newFile.matter = ret.data.matter;
-            this.$refs.upload.active = true;
-            this.uploading = true;
+            this.$refs.upload.$data.active = true
           });
         }
       }
     },
   },
   mounted() {
+    console.log("我是mounted钩子");
     this.$watch("$refs.upload.uploaded", (uploaded) => {
-      this.uploading = !uploaded;
+      console.log("uploaded", uploaded)
+      if (uploaded) {
+        setTimeout(() => { this.$emit('uploaded') }, 300)
+      }
+
+      this.$store.commit('updateUploading', !uploaded)
     });
+  },
+  activated() {
+    console.log("我是activated钩子");
+  },
+  deactivated() {
+    console.log("我是deactivated钩子");
+  },
+  beforeDestroy() {
+    console.log("我是beforeDestroy钩子");
   },
 };
 </script>
 
 <style lang="stylus">
-.uploader
-  .size
-    color: #878c9c;
-
-  .speed
-    color: #06a7ff;
-    float: right;
-
-  .tip
-    color: #afb3bf;
-    margin-top: 10px;
-    text-align: center;
-
-  .matter-icon
-    font-size: 35px;
-    padding-left: 5px;
 </style>

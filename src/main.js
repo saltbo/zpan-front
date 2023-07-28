@@ -3,10 +3,12 @@ import App from './App'
 import i18n from './i18n'
 import store from './store'
 import router from './router'
+import vuetify from './plugins/vuetify'
 import './plugins/axios'
 import './plugins/moment'
 import './plugins/element'
 import './plugins/fileexplorer'
+import './plugins/ctxmenu'
 import './plugins/clipboard'
 import './plugins/photoswipe'
 import './plugins/plyr'
@@ -19,5 +21,6 @@ new Vue({
   i18n,
   router,
   store,
+  vuetify,
   render: h => h(App)
 }).$mount('#app')

@@ -18,29 +18,30 @@
 <template>
   <div style="height: calc(100% - 58px)">
     <el-row class="toolbar">
-      <el-dropdown size="small" style="margin-right: 10px" @command="onUploadSelect">
-        <el-button type="primary" size="small" icon="el-icon-upload" @click="onUploadSelect('file')">上传</el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="file">上传文件</el-dropdown-item>
-          <el-dropdown-item command="folder">上传文件夹</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+      <zp-uploader ref="uploader" class="btn btn-primary" :sid="getSid()" :dist="query.dir" @uploaded="listRefresh()">
+      </zp-uploader>
+      <el-button type="primary" size="small" icon="el-icon-upload" style="margin-right: 10px"
+        @click="$refs.uploader.upload()">上传</el-button>
       <el-dropdown size="small" @command="onCreationSelect">
-        <el-button type="primary" size="small" icon="el-icon-folder-add"  @click="openCreateFolderDiglog" plain>新建</el-button>
+        <el-button type="primary" size="small" icon="el-icon-folder-add" @click="openCreateFolderDiglog" plain>新建
+        </el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="file">新建文件</el-dropdown-item>
           <el-dropdown-item command="folder">新建文件夹</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       <el-button-group v-show="selectedItems.length > 0" style="margin-left: 10px">
-        <el-button type="primary" icon="el-icon-download" size="medium" plain @click="onOutlinkClick">{{ $t("disk.download") }}</el-button>
-        <!-- <el-button type="primary" icon="el-icon-share" size="medium" @click="share" plain>分享</el-button> -->
-        <el-button type="primary" icon="el-icon-delete" size="medium" plain @click="deleteSelection">{{ $t("disk.delete") }}</el-button>
-        <!-- <el-button type="primary" size="medium" plain>移动到</el-button> -->
+        <el-button type="primary" icon="el-icon-download" size="small" plain @click="onDownload">{{ $t("disk.download")
+        }}</el-button>
+        <!-- <el-button type="primary" icon="el-icon-share" size="small" @click="share" plain>分享</el-button> -->
+        <el-button type="primary" icon="el-icon-delete" size="small" plain @click="onDelete">{{ $t("disk.delete") }}
+        </el-button>
+        <el-button type="primary" icon="el-icon-move" size="small" plain @click="onMove">移动到</el-button>
       </el-button-group>
 
       <div style="float: right">
-        <el-input class="search" size="small" :placeholder="$t('topbar.search')" v-model="query.kw" @keyup.enter.native="listRefresh">
+        <el-input class="search" size="small" :placeholder="$t('topbar.search')" v-model="query.kw"
+          @keyup.enter.native="listRefresh">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
         <i v-if="layout == 'list'" class="iconfont icon-grid" @click="layout = 'grid'"></i>
@@ -49,26 +50,21 @@
     </el-row>
 
     <!-- main -->
-    <FileExplorer :layout="layout" ref="fexp" :dataLoader="dataLoader" :linkLoader="linkLoader" :rowButtons="rowButtons" :moreButtons="moreButtons" @file-open="onFileOpen" @selection-change="onSelectionChange" />
-
-    <!-- dialog -->
-    <!-- <DialogMove ref="move" @completed="listRefresh"></DialogMove>
-    <DialogShare ref="share"></DialogShare>
-    <DialogUpload ref="uploader" :sid="getSid()" :dest-dir="query.dir" @completed="listRefresh"></DialogUpload>
-    <DialogOutlink ref="outlink"></DialogOutlink> -->
+    <FileExplorer ref="fexp" :layout="layout" :dataLoader="dataLoader" :linkLoader="linkLoader"
+      :action-move="$zpan.File.move" :action-copy="$zpan.File.copy" :action-rename="$zpan.File.rename"
+      :action-remove="$zpan.File.delete" @file-action="onFileAction" @selection-change="onSelectionChange" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import { transfer } from "@/helper";
-import FileViewer from "@/components/FileViewer";
-import DialogMove from "./components/DialogMove";
-import DialogShare from "./components/DialogShare";
-import DialogUpload from "./components/DialogUpload";
-import DialogOutlink from "./components/DialogOutlink";
+import ZpUploader from "@/components/Uploader";
 import { CSMixin } from "@/libs/mixin";
 export default {
+  name: 'disk',
+  components: {
+    ZpUploader
+  },
   mixins: [CSMixin],
   data() {
     return {
@@ -135,14 +131,17 @@ export default {
     listRefresh() {
       this.$refs.fexp.listRefresh();
     },
-    openDownload(obj) {
-      this.linkLoader(obj).then((link) => {
-        let a = document.createElement("a");
-        a.setAttribute("href", link);
-        a.setAttribute("download", obj.name);
-        a.click();
-        a.remove();
-      });
+    onCreationSelect(cmd) {
+      switch (cmd) {
+        case 'file':
+          this.openCreateFileDiglog()
+          break;
+        case 'folder':
+          this.openCreateFolderDiglog()
+          break;
+        default:
+          break;
+      }
     },
     openCreateFolderDiglog() {
       this.$prompt(this.$t("tips.create-folder"), this.$t("op.create-folder"), {
@@ -160,14 +159,14 @@ export default {
       });
     },
     openCreateFileDiglog() {
-      var filename 
+      var filename
       var fileext = '.md'
       var message = <el-input placeholder="请输入内容" v-model={filename} class="input-with-select">
-    <el-select v-model={fileext} slot="append" placeholder="请选择" style="width: 70px">
-      <el-option label=".txt" value=".txt"></el-option>
-      <el-option label=".md" value=".md"></el-option>
-    </el-select>
-  </el-input>
+        <el-select v-model={fileext} slot="append" placeholder="请选择" style="width: 70px">
+          <el-option label=".txt" value=".txt"></el-option>
+          <el-option label=".md" value=".md"></el-option>
+        </el-select>
+      </el-input>
       this.$msgbox({
         title: this.$t("op.create-file"),
         message: message,
@@ -175,125 +174,25 @@ export default {
         confirmButtonText: this.$t("op.confirm"),
         cancelButtonText: this.$t("op.cancel"),
       }).then(({ value }) => {
-          let fileObj = {
-            file: new File([""], value, {type: "text/plain"}),
-            filename: value
-          }
+        let fileObj = {
+          file: new File([""], value, { type: "text/plain" }),
+          filename: value
+        }
 
-          this.$zpan.File.upload(this.getSid(), fileObj).then((data) => {
-            window.open(`f/editor?alias=${data.alias}`, "_blank")
-          });
+        this.$zpan.File.upload(this.getSid(), fileObj).then((data) => {
+          window.open(`f/editor?alias=${data.alias}`, "_blank")
+        });
       });
     },
-    onUploadSelect(cmd) {
-      this.$emit("upload-action", { type: cmd, sid: this.getSid(), dist: this.query.dir });
-    },
-    onCreationSelect(cmd){
-      switch (cmd) {
-        case 'file':
-          this.openCreateFileDiglog()
-          break;
-        case 'folder':
-          this.openCreateFolderDiglog()
-          break;
-        default:
-          break;
-      }
-    },
-    onFileOpen(type, obj, link) {
-      if (obj.type.startsWith("audio")) {
-        this.$emit("audio-open", obj, link);
-        return;
-      }
+    onFileAction() {
 
-      new FileViewer().view(type, obj, link);
-    },
-    onOutlinkClick() {
-      transfer(DialogOutlink)({ items: this.selectedItems });
-    },
-    share(obj) {
-      transfer(DialogShare)({ alias: obj.alias });
-    },
-    viewlink(obj) {
-      this.linkLoader(obj).then((link) => {
-        const h = this.$createElement;
-        this.$msgbox({
-          title: "获取外链",
-          message: h("p", null, link),
-          confirmButtonText: "确定",
-        });
-      });
-    },
-    move(obj) {
-      transfer(DialogMove)({ alias: obj.alias, isDir: obj.dirtype > 0 }).then(() => {
-        this.listRefresh();
-      });
-    },
-    rename(obj) {
-      this.$prompt(this.$t("tips.rename"), this.$t("op.rename"), {
-        inputValue: obj.name,
-        confirmButtonText: this.$t("op.confirm"),
-        cancelButtonText: this.$t("op.cancel"),
-      }).then(({ value }) => {
-        this.$zpan.File.rename(obj.alias, value).then((ret) => {
-          this.$message({
-            type: "success",
-            message: this.$t("msg.rename-success"),
-          });
-          this.listRefresh();
-        });
-      });
-    },
-    remove(obj) {
-      this.$confirm(this.$t("tips.remove"), this.$t("op.delete") + ` ${obj.name}`, {
-        type: "warning",
-        confirmButtonText: this.$t("op.confirm"),
-        cancelButtonText: this.$t("op.cancel"),
-      }).then(() => {
-        this.$zpan.File.delete(obj.alias).then((ret) => {
-          this.$message({
-            type: "success",
-            message: this.$t("msg.delete-success"),
-          });
-          this.listRefresh();
-        });
-      });
     },
     onSelectionChange(selection) {
       this.selectedItems = selection;
     },
-    deleteSelection() {
-      this.$confirm(this.$t("tips.batch-delete"), this.$t("op.batch-delete"), {
-        type: "warning",
-        confirmButtonText: this.$t("op.confirm"),
-        cancelButtonText: this.$t("op.cancel"),
-      }).then(() => {
-        const loading = this.$loading({
-          lock: true,
-          text: this.$t("tips.deleting"),
-          spinner: "el-icon-loading",
-          background: "rgba(0, 0, 0, 0.7)",
-        });
-
-        Promise.all(
-          this.selectedItems.map((obj) => {
-            return this.$zpan.File.delete(obj.alias);
-          })
-        )
-          .then((ret) => {
-            this.listRefresh();
-            loading.close();
-            this.$message({
-              type: "success",
-              message: this.$t("msg.batch-delete-success"),
-            });
-          })
-          .catch((err) => {
-            loading.close();
-            console.log(err);
-          });
-      });
-    },
+    onDownload() { this.$refs.fexp.download() },
+    onMove() { this.$refs.fexp.openMove() },
+    onDelete() { this.$refs.fexp.openRemove() }
   },
   mounted() {
     this.query.type = this.$route.query.type;

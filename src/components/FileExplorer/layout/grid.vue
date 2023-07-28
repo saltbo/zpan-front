@@ -1,8 +1,13 @@
 <template>
   <div class="explorer">
-    <div class="explorer-item" v-for="item in data" :key="item.alias" @click="onNameClick(item)">
-      <i v-if="item.dirtype" class="matter-icon el-icon-folder" style="color: #ffc402"></i>
-      <i v-else :class="`iconfont ${type2icon(item.type)}`"></i>
+    <div
+      class="explorer-item"
+      v-for="item in data"
+      :key="item.alias"
+      @click="$parent.onNameClick(item)"
+      @contextmenu.prevent="(e) => { $parent.openCtxMenu(e, item) }"
+    >
+      <v-icon :color="item.icon.color" large>mdi-{{ item.icon.name }}</v-icon>
       <p>{{ item.name }}</p>
     </div>
   </div>
@@ -22,9 +27,6 @@ export default {
     onSelectable(row, index) {
       if (!row.dirtype) return true;
     },
-    handleCommand(command) {
-      command.action(command.row);
-    },
     onScrollEnd() {
       this.$emit("scroll-end")
     },
@@ -41,7 +43,7 @@ export default {
 
 .explorer-item {
   width: 80px;
-  padding: 15px;
+  padding: 5px 10px;
   text-align: center;
   cursor: pointer;
 }
