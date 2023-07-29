@@ -19,8 +19,13 @@ class zMatter {
         })
     }
 
-    create(sid, dir, file) {
-        let matter = { sid: sid, name: file.name, type: file.type, size: file.size, dir: dir }
+    createFile(sid, dir, file) {
+        const matter = { sid: sid, name: file.name, type: file.type, size: file.size, dir: dir }
+        return axios.post('/matters', matter)
+    }
+
+    createFolder(sid, name, parent) {
+        const matter = { sid: sid, name: name, dir: parent, is_dir: true }
         return axios.post('/matters', matter)
     }
 

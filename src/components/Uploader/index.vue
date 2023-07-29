@@ -146,7 +146,7 @@ export default {
       // Automatically activate upload
       if (Boolean(newFile) !== Boolean(oldFile) || oldFile.error !== newFile.error) {
         if (!this.$refs.upload.active) {
-          this.$zpan.File.create(this.sid, this.dist, newFile).then((ret) => {
+          this.$zpan.File.createFile(this.sid, this.dist, newFile).then((ret) => {
             newFile.putAction = ret.data.uplink;
             newFile.headers = ret.data.headers;
             newFile.matter = ret.data.matter;

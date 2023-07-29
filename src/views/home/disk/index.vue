@@ -149,8 +149,7 @@ export default {
         confirmButtonText: this.$t("op.confirm"),
         cancelButtonText: this.$t("op.cancel"),
       }).then(({ value }) => {
-        let body = { sid: this.getSid(), name: value, dir: this.query.dir, is_dir: true };
-        this.$zpan.File.create(body).then((ret) => {
+        this.$zpan.File.createFolder(this.getSid(), value, this.query.dir).then((ret) => {
           this.$message({
             type: "success",
             message: this.$t("msg.create-success"),
