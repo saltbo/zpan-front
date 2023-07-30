@@ -13,20 +13,21 @@
       <el-table-column prop="name">
         <template slot-scope="scope">
           <div>{{ scope.row.name }}</div>
-          <el-progress :percentage="Number(scope.row.progress)" :stroke-width="3" :show-text="false"></el-progress>
-          <div style="font-size: 12px">
+          <el-progress :percentage="Number(scope.row.progress)" v-show="scope.row.progress != 100" :stroke-width="3" :show-text="false"></el-progress>
+          <div style="font-size: 12px;">
             <span class="size">{{ fomatSize(scope.row.size) }}</span>
-            <span class="speed">{{ fomatSize(scope.row.speed) }}/s</span>
+            <span class="speed" v-show="scope.row.progress != 100">{{ fomatSize(scope.row.speed) }}/s</span>
           </div>
         </template>
       </el-table-column>
       <el-table-column prop="op" width="100">
         <template slot-scope="scope">
+          <el-button v-if="scope.row.progress == 100" type="primary" size="mini" icon="el-icon-folder" circle plain @click="onFolderClick(scope.row.matter)"></el-button>
+          <el-button v-if="scope.row.progress != 100" type="primary" size="mini" icon="el-icon-close" circle plain @click="$refs.upload.remove(scope.row)"></el-button>
+
           <!-- todo 暂停和继续需要依赖分片上传，先不支持，后续迭代 -->
-          <el-button v-show="scope.row.progress == 100" type="primary" size="mini" icon="el-icon-folder" circle plain @click="onFolderClick(scope.row.matter)"></el-button>
-          <!-- <el-button v-show="scope.row.progress != 100 && uploading" type="primary" size="mini" icon="el-icon-video-pause" circle plain @click="$refs.upload.active = false"></el-button> -->
-          <!-- <el-button v-show="scope.row.progress != 100 && !uploading" type="primary" size="mini" icon="el-icon-video-play" circle plain @click="$refs.upload.active = true"></el-button> -->
-          <el-button v-show="scope.row.progress != 100" type="primary" size="mini" icon="el-icon-close" circle plain @click="$refs.upload.remove(scope.row)"></el-button>
+          <!-- <el-button v-if="scope.row.progress != 100 && uploading" type="primary" size="mini" icon="el-icon-video-pause" circle plain @click="$refs.upload.active = false"></el-button> -->
+          <!-- <el-button v-if="scope.row.progress != 100 && !uploading" type="primary" size="mini" icon="el-icon-video-play" circle plain @click="$refs.upload.active = true"></el-button> -->
         </template>
       </el-table-column>
     </el-table>
