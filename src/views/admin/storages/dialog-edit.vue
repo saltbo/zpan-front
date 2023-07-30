@@ -37,6 +37,9 @@
           </el-form-item>
         </el-tab-pane>
         <el-tab-pane label="高级配置" name="storage">
+          <el-form-item prop="path_style" label="PathStyle" label-width="120px">
+            <el-switch v-model="form.path_style"></el-switch>
+          </el-form-item>
           <el-form-item prop="title" :label="$t('admin.label-title')" label-width="120px">
             <el-input v-model="form.title" placeholder="设置导航栏标题，默认使用存储名称"></el-input>
           </el-form-item>
