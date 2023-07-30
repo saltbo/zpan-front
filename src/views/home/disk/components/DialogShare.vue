@@ -2,9 +2,6 @@
   <div>
     <el-dialog :title="$t('dialog.share-title')" :width="shareForm.width" :visible.sync="visible">
       <el-form v-show="!shareForm.done">
-        <el-form-item :label="$t('dialog.share-drawcode-switch')" style="margin-left: 20px">
-          <el-switch v-model="shareForm.private"></el-switch>
-        </el-form-item>
         <el-form-item :label="$t('dialog.share-expire-time')" style="margin-left: 20px">
           <el-select v-model="shareForm.expire_sec">
             <el-option :label="`7 ${$t('day')}`" :value="604800"></el-option>
@@ -12,6 +9,12 @@
             <el-option :label="`1 ${$t('year')}`" :value="31536000"></el-option>
             <el-option label="永久" :value="3153600000"></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('dialog.share-drawcode-switch')" style="margin-left: 20px">
+          <el-switch v-model="shareForm.private"></el-switch>
+        </el-form-item>
+        <el-form-item :label="$t('dialog.share-link-with-pwd')" style="margin-left: 20px">
+          <el-switch v-model="shareForm.linkWithPwd" :disabled="!shareForm.private"></el-switch>
         </el-form-item>
       </el-form>
 
@@ -29,7 +32,8 @@
           <el-button type="primary" @click="share">{{ $t("op.confirm") }}</el-button>
         </div>
         <div v-else>
-          <el-button type="primary" class="copy-link" :data-clipboard-text="shareForm.link" @click="close">{{ $t("click-copy-link") }}</el-button>
+          <el-button type="primary" class="copy-link" :data-clipboard-text="shareTxt" @click="close">{{
+            $t("click-copy-link") }}</el-button>
           <el-button @click="close">{{ $t("op.close") }}</el-button>
         </div>
       </span>
@@ -52,6 +56,7 @@ export default {
         private: false,
         expire_sec: 604800,
       },
+      shareTxt: ""
     };
   },
   methods: {
@@ -63,6 +68,13 @@ export default {
         this.shareForm.done = true;
         this.shareForm.link = `${origin}/s/${alias}`;
         this.shareForm.secret = data.data.secret;
+        if (this.shareForm.linkWithPwd) {
+          this.shareForm.link += `?pwd=${this.shareForm.secret}`
+        }
+        this.shareTxt = `分享链接: ${this.shareForm.link}`
+        if (this.shareForm.secret) {
+          this.shareTxt += `  提取码: ${this.shareForm.secret}`
+        }
       });
     },
   },
@@ -72,5 +84,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

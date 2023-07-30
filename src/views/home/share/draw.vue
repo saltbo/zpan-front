@@ -33,7 +33,14 @@ export default {
     },
   },
   mounted() {
-    this.$zpan.Share.find(this.$route.params.alias).then((ret) => {
+    const alias = this.$route.params.alias
+    this.drawcode = this.$route.query.pwd
+    if(this.drawcode){
+      this.draw(alias)
+      return
+    }
+
+    this.$zpan.Share.find(alias).then((ret) => {
       this.info = ret.data;
       document.title = `${this.info.name} | Zpan`;
     });
