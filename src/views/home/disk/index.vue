@@ -25,13 +25,7 @@
           <el-dropdown-item command="folder">上传文件夹</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-dropdown size="small" @command="onCreationSelect">
-        <el-button type="primary" size="small" icon="el-icon-folder-add"  @click="openCreateFolderDiglog" plain>新建</el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="file">新建文件</el-dropdown-item>
-          <el-dropdown-item command="folder">新建文件夹</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+      <el-button type="primary" size="small" icon="el-icon-folder-add"  @click="openCreateFolderDiglog" plain>新建文件夹</el-button>
       <el-button-group v-show="selectedItems.length > 0" style="margin-left: 10px">
         <el-button type="primary" icon="el-icon-download" size="medium" plain @click="onOutlinkClick">{{ $t("disk.download") }}</el-button>
         <!-- <el-button type="primary" icon="el-icon-share" size="medium" @click="share" plain>分享</el-button> -->
