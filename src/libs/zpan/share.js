@@ -30,6 +30,10 @@ class zShare {
     listMatters(alias, query) {
         return axios.get(`/shares/${alias}/matters`, { params: query })
     }
+
+    getMatter(alias, mAlias) {
+        return axios.get(`/shares/${alias}/matters/${mAlias}`)
+    }
 }
 
 export default zShare;

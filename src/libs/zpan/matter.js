@@ -81,19 +81,6 @@ class zMatter {
     delete(alias) {
         return axios.delete(`/matters/${alias}`)
     }
-
-    save(alias, content) {
-        return new Promise((resolve, reject) => {
-            axios.get(`/matters/${alias}/ulink`).then(ret => {
-                let data = ret.data
-                window.axios.put(data.link, content, { headers: data.headers }).then(() => {
-                    axios.patch(`/matters/${alias}/done`).then((ret) => {
-                        resolve(ret.data)
-                    })
-                }).catch(reject)
-            }).catch(reject)
-        })
-    }
 }
 
 export default zMatter;

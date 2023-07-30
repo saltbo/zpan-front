@@ -107,7 +107,7 @@ export default {
     },
     linkLoader(obj) {
       return new Promise((resolve, reject) => {
-        this.$zpan.File.get(obj.alias)
+        this.$zpan.Share.getMatter(this.info.alias, obj.alias)
           .then((ret) => {
             resolve(ret.url);
           })
