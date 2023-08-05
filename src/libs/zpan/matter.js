@@ -10,8 +10,8 @@ class zMatter {
         return new Promise((resolve, reject) => {
             axios.post('/matters', body).then(ret => {
                 let data = ret.data
-                utils.upload(fileObj, data.uplink, data.headers, cancel).then(() => {
-                    axios.patch(`/matters/${data.matter.alias}/done`).then((ret) => {
+                utils.upload(fileObj, data.uploader.upURL, data.uploader.upHeaders, cancel).then(() => {
+                    axios.patch(`/matters/${data.alias}/done`).then((ret) => {
                         resolve(ret.data)
                     })
                 }).catch(reject)

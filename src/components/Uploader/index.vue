@@ -148,9 +148,9 @@ export default {
       if (Boolean(newFile) !== Boolean(oldFile) || oldFile.error !== newFile.error) {
         if (!this.$refs.upload.active) {
           this.$zpan.File.createFile(this.sid, this.dist, newFile).then((ret) => {
-            newFile.putAction = ret.data.uplink;
-            newFile.headers = ret.data.headers;
-            newFile.matter = ret.data.matter;
+            newFile.putAction = ret.data.uploader.upURL;
+            newFile.headers = ret.data.uploader.upHeaders;
+            newFile.matter = ret.data;
             this.$refs.upload.active = true;
             this.uploading = true;
           });
