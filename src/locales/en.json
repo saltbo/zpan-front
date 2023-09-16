@@ -109,6 +109,9 @@
     "share": "My Shares",
     "recyclebin": "Recycle Bin",
     "picture": "Image Hosting",
+    "profile": "Profile",
+    "security": "Security",
+    "developer": "Developer Settings",
     "storage-quota": "Storage Quota"
   },
   "year": "Years",
